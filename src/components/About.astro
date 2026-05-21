@@ -1,0 +1,550 @@
+---
+import "../styles/tokens.css";
+import "../styles/global.css";
+import "../styles/typography.css";
+import checkIcon from "../assets/icons/timeline-check.svg";
+import groupIcon from "../assets/icons/timeline-group.svg";
+import railIcon from "../assets/icons/timeline-rail.svg";
+import settingsIcon from "../assets/icons/timeline-settings.svg";
+import targetIcon from "../assets/icons/timeline-target.svg";
+import techElementLeft from "../assets/svg/tech-elem-left.svg";
+import techElementRight from "../assets/svg/tech-elem-right.svg";
+
+const timeline = [
+  {
+    icon: checkIcon,
+    title: "1951",
+    description:
+      "Înființarea ISAF S.A. și primii pași în construirea infrastructurii feroviare",
+  },
+  {
+    icon: groupIcon,
+    title: "Extindere",
+    description:
+      "Diversificarea capacităților de producție și consolidarea competențelor tehnice",
+  },
+  {
+    icon: railIcon,
+    title: "Modernizare",
+    description:
+      "Investiții în tehnologie, echipamente și procese pentru creșterea calității și eficienței.",
+  },
+  {
+    icon: settingsIcon,
+    title: "Proiecte",
+    description:
+      "Implicare și proiecte strategice de infrastructură feroviară în întreaga țară",
+  },
+  {
+    icon: targetIcon,
+    title: "Astăzi",
+    description:
+      "Continuăm să construim viitorul mobilității feroviare cu soluții durabile și parteneriate solide.",
+  },
+];
+---
+
+<section class="about" id="about" aria-labelledby="about-title">
+  <svg
+    class="about-panel-shape"
+    viewBox="0 0 1920 657"
+    preserveAspectRatio="xMidYMid slice"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <defs>
+      <pattern
+        id="about-grid-large"
+        width="64"
+        height="64"
+        patternUnits="userSpaceOnUse"
+      >
+        <rect
+          x="0"
+          y="0"
+          width="64"
+          height="64"
+          fill="none"
+          stroke="#94a3b8"
+          stroke-opacity="0.08"
+        />
+      </pattern>
+      <pattern
+        id="about-grid-small"
+        width="16"
+        height="16"
+        patternUnits="userSpaceOnUse"
+      >
+        <rect
+          x="0"
+          y="0"
+          width="16"
+          height="16"
+          fill="none"
+          stroke="#94a3b8"
+          stroke-opacity="0.03"
+        />
+      </pattern>
+    </defs>
+
+    <g>
+      <rect width="1920" height="657" fill="#020b19" />
+      <rect width="1920" height="657" fill="url(#about-grid-large)" />
+      <rect width="1920" height="657" fill="url(#about-grid-small)" />
+    </g>
+  </svg>
+
+  <div class="about-panel">
+    <div class="about-content">
+      <div class="about-heading">
+        <img
+          class="heading-decoration heading-decoration--left"
+          src={techElementLeft.src}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+        />
+        <h2 id="about-title">Despre ISAF</h2>
+        <img
+          class="heading-decoration heading-decoration--reverse"
+          src={techElementRight.src}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+        />
+      </div>
+
+      <p class="about-description">
+        ISAF este un grup românesc cu experiență solidă în proiectarea, execuția și
+        modernizarea infrastructurii feroviare. De peste șapte decenii, livrăm soluții
+        fiabile și sustenabile, alături de parteneri de încredere, pentru un transport
+        feroviar sigur și performant.
+      </p>
+
+      <ol class="timeline" aria-label="Repere din istoria ISAF">
+        {
+          timeline.map((item) => (
+            <li class="timeline-item">
+              <span class="timeline-dot" aria-hidden="true"></span>
+              <span class="timeline-connector" aria-hidden="true"></span>
+
+              <div class="timeline-icon" aria-hidden="true">
+                <img src={item.icon.src} alt="" loading="lazy" />
+              </div>
+
+              <div class="timeline-content">
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    position: relative;
+    overflow: hidden;
+    padding-block: var(--spacing-15);
+    background: #020b19;
+  }
+
+  .about::before,
+  .about::after {
+    position: absolute;
+    content: "";
+    pointer-events: none;
+  }
+
+  .about::before {
+    content: none;
+  }
+
+  .about::after {
+    content: none;
+  }
+
+  .about-panel {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-block-size: auto;
+    padding-block: 0;
+    padding-inline: var(--spacing-10);
+  }
+
+  .about-panel::before {
+    position: absolute;
+    content: "";
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .about-panel::after {
+    position: absolute;
+    content: none;
+    pointer-events: none;
+  }
+
+  .about-panel-shape {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    pointer-events: none;
+  }
+
+  .about-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2.6875rem;
+    inline-size: min(100%, 20.125rem);
+    margin-inline: auto;
+  }
+
+  .about-heading {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--spacing-6);
+    inline-size: 100%;
+  }
+
+  .about-heading h2 {
+    flex: none;
+    color: var(--color-text-inverse);
+    font-size: var(--font-size-40);
+    line-height: var(--line-height-h2);
+    white-space: nowrap;
+  }
+
+  .heading-decoration {
+    display: block;
+    inline-size: 2.9375rem;
+    block-size: 0.4375rem;
+    flex: none;
+    object-fit: contain;
+  }
+
+  .heading-decoration--left {
+    display: none;
+  }
+
+  .heading-decoration--reverse {
+    inline-size: 2.9375rem;
+  }
+
+  .about-description {
+    max-inline-size: 20.125rem;
+    color: var(--color-text-muted-dark);
+    font-size: var(--font-size-18);
+    line-height: var(--line-height-body);
+  }
+
+  .timeline {
+    --timeline-marker-width: 5rem;
+    --timeline-marker-gap: var(--spacing-6);
+    --timeline-line-offset: var(--spacing-1);
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    inline-size: 100%;
+    max-inline-size: 19.90625rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .timeline::before {
+    position: absolute;
+    content: "";
+    display: block;
+    inset-block-start: calc(var(--size-icon-xl) / 2);
+    inset-block-end: 7.125rem;
+    inset-inline-start: var(--timeline-line-offset);
+    inline-size: var(--border-hairline);
+    background: var(--color-amber);
+    opacity: 0.95;
+  }
+
+  .timeline-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--timeline-marker-width) minmax(0, 12.625rem);
+    align-items: start;
+    column-gap: var(--timeline-marker-gap);
+    padding-block-end: var(--spacing-10);
+  }
+
+  .timeline-item:not(:last-child)::before {
+    content: none;
+  }
+
+  .timeline-item:last-child {
+    padding-block-end: 0;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    inset-inline-start: calc(var(--timeline-line-offset) - 0.28125rem);
+    inset-block-start: calc(var(--size-icon-xl) / 2);
+    z-index: 2;
+    inline-size: 0.5625rem;
+    block-size: 0.5625rem;
+    border: 0;
+    border-radius: var(--radius-full);
+    background: var(--color-amber);
+    transform: translateY(-50%);
+  }
+
+  .timeline-dot::before {
+    position: absolute;
+    content: "";
+    inset: 50% auto auto 50%;
+    inline-size: 0.4375rem;
+    block-size: 0.4375rem;
+    border-radius: inherit;
+    background: var(--color-red);
+    transform: translate(-50%, -50%);
+  }
+
+  .timeline-connector {
+    position: absolute;
+    inset-inline-start: var(--timeline-line-offset);
+    inset-block-start: calc(var(--size-icon-xl) / 2);
+    inline-size: 2.25rem;
+    block-size: var(--border-hairline);
+    background: var(--color-amber);
+    opacity: 0.95;
+  }
+
+  .timeline-icon {
+    grid-column: 1;
+    justify-self: end;
+    display: grid;
+    place-items: center;
+    inline-size: var(--size-icon-xl);
+    block-size: var(--size-icon-xl);
+    color: var(--color-slate-100);
+  }
+
+  .timeline-icon svg {
+    inline-size: 100%;
+    block-size: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .timeline-icon img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: contain;
+  }
+
+  .timeline-content {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    min-inline-size: 0;
+    inline-size: 12.625rem;
+    margin-inline-start: 0;
+  }
+
+  .timeline-content h3 {
+    color: var(--color-slate-100);
+    font-family: "Big Shoulders", sans-serif;
+    font-size: var(--font-size-20);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-110);
+    text-transform: uppercase;
+  }
+
+  .timeline-item:last-child .timeline-content h3 {
+    color: var(--color-amber);
+  }
+
+  .timeline-content p {
+    color: var(--color-slate-200);
+    font-size: var(--font-size-16);
+    line-height: var(--line-height-body);
+  }
+
+  @media (min-width: 48em) {
+    .about {
+      padding-block: 0;
+      margin-block-start: calc(-1 * var(--about-hero-overlap));
+      margin-block-end: var(--about-hero-overlap);
+      overflow: visible;
+      border: 0;
+      background: transparent;
+    }
+
+    .about::before,
+    .about::after {
+      content: none;
+    }
+
+    .about-panel {
+      isolation: isolate;
+      min-block-size: 41.1875rem;
+      padding-block: 7.5rem;
+      padding-inline: var(--spacing-12);
+      background: transparent;
+    }
+
+    .about-panel::before,
+    .about-panel::after {
+      content: none;
+    }
+
+    .about-panel-shape {
+      display: block;
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      inline-size: 100%;
+      block-size: 100%;
+      pointer-events: none;
+    }
+
+    .about-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .about-content {
+      align-items: center;
+      gap: var(--spacing-14);
+      inline-size: min(100%, var(--container-max));
+    }
+
+    .about-heading {
+      justify-content: center;
+      inline-size: auto;
+    }
+
+    .about-heading h2 {
+      line-height: var(--line-height-110);
+    }
+
+    .heading-decoration {
+      display: block;
+      inline-size: 2.9375rem;
+      block-size: 0.4375rem;
+      flex: none;
+      object-fit: contain;
+    }
+
+    .about-description {
+      max-inline-size: 46.5625rem;
+      text-align: center;
+    }
+
+    .timeline {
+      --timeline-gap: var(--spacing-3);
+
+      display: grid;
+      grid-template-columns: repeat(5, minmax(8.5rem, 15.625rem));
+      justify-content: center;
+      gap: var(--timeline-gap);
+      max-inline-size: none;
+      padding-block-start: 0;
+    }
+
+    .timeline::before {
+      display: block;
+      z-index: 0;
+      inset-block: 0 auto;
+      inset-inline: 10%;
+      inline-size: auto;
+      block-size: var(--border-hairline);
+      background: var(--color-amber);
+      opacity: 0.75;
+    }
+
+    .timeline-item:not(:last-child)::before {
+      content: none;
+    }
+
+    .timeline-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      min-block-size: 14rem;
+      padding-block-end: 0;
+      text-align: center;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-start: 50%;
+      z-index: 2;
+      transform: translate(-50%, -50%);
+    }
+
+    .timeline-dot::after {
+      position: absolute;
+      content: "";
+      inset-block-start: 100%;
+      inset-inline-start: 50%;
+      inline-size: var(--border-hairline);
+      block-size: 2.53125rem;
+      background: var(--color-amber);
+      opacity: 0.75;
+      transform: translateX(-50%);
+    }
+
+    .timeline-connector {
+      display: none;
+    }
+
+    .timeline-icon {
+      position: absolute;
+      inset-block-start: 3.28125rem;
+      inset-inline-start: 50%;
+      transform: translateX(-50%);
+    }
+
+    .timeline-content {
+      align-items: center;
+      gap: var(--spacing-4);
+      inline-size: min(100%, 15.625rem);
+      max-inline-size: 15.625rem;
+      padding: var(--spacing-2);
+      margin-block-start: 6.78125rem;
+      margin-inline-start: 0;
+    }
+
+    .timeline-content h3 {
+      font-size: var(--font-size-24);
+    }
+  }
+
+  @media (min-width: 84em) {
+    .timeline {
+      grid-template-columns: repeat(5, 15.625rem);
+      gap: var(--timeline-gap);
+      inline-size: max-content;
+    }
+
+    .timeline::before {
+      inset-inline: 7.8125rem;
+    }
+  }
+</style>

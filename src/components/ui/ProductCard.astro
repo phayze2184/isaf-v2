@@ -1,0 +1,143 @@
+---
+import "../../styles/tokens.css";
+import "../../styles/typography.css";
+
+const {
+  image,
+  imageAlt = "",
+  title = "Semnalizare",
+  items = ["semnale cu bec și unități LED", "semnale manevră pitice", "dulapuri SCB"],
+  class: className,
+  imagePosition = "center",
+  imageSize = "cover",
+} = Astro.props;
+
+const imageSrc = typeof image === "string" ? image : image?.src;
+const productItems = Array.isArray(items) ? items : [];
+---
+
+<article
+  class={`product-card ${className ?? ""}`}
+  style={`--product-image-position: ${imagePosition}; --product-image-size: ${imageSize};`}
+>
+  <div class="product-card-slot">
+    {
+      imageSrc && (
+        <div class="product-card-image">
+          <img src={imageSrc} alt={imageAlt} loading="lazy" />
+        </div>
+      )
+    }
+
+    <span class="product-card-divider" aria-hidden="true"></span>
+
+    <div class="product-card-header">
+      <h3>{title}</h3>
+    </div>
+
+    <div class="product-card-description">
+      <ul>
+        {
+          productItems.map((item) => (
+            <li>{item}</li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</article>
+
+<style>
+  .product-card {
+    inline-size: 17.5rem;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--color-sapphire);
+    color: var(--color-text-inverse);
+  }
+
+  .product-card-slot {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-block-size: 29.6875rem;
+  }
+
+  .product-card-image {
+    position: relative;
+    flex: 1 1 auto;
+    min-block-size: 19rem;
+    overflow: hidden;
+    background: var(--color-slate-950);
+  }
+
+  .product-card-image img {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: var(--product-image-size);
+    object-position: var(--product-image-position);
+  }
+
+  .product-card-divider {
+    display: block;
+    inline-size: 100%;
+    block-size: var(--border-medium);
+    flex: none;
+    background: var(--color-amber);
+  }
+
+  .product-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    padding-block-start: var(--spacing-6);
+    padding-inline: var(--spacing-8);
+  }
+
+  .product-card-header h3 {
+    position: relative;
+    max-inline-size: 10.1875rem;
+    margin: 0;
+    padding-inline-start: var(--spacing-3);
+    color: var(--color-slate-100);
+    font-family: "Big Shoulders", sans-serif;
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-heading);
+    line-height: var(--line-height-110);
+    letter-spacing: var(--letter-spacing-heading);
+    text-transform: uppercase;
+  }
+
+  .product-card-header h3::before {
+    position: absolute;
+    content: "";
+    inset-block: 0.1875rem;
+    inset-inline-start: 0;
+    inline-size: var(--border-medium);
+    background: var(--color-red);
+  }
+
+  .product-card-description {
+    padding: var(--spacing-4) var(--spacing-8) var(--spacing-6);
+  }
+
+  .product-card-description ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+    inline-size: 14.125rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .product-card-description li {
+    color: var(--color-text-muted-dark);
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-size: var(--font-size-body-md);
+    font-weight: var(--font-weight-body);
+    line-height: var(--line-height-body);
+    letter-spacing: var(--letter-spacing-body);
+  }
+</style>

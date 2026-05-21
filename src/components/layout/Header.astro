@@ -1,0 +1,352 @@
+---
+import "../../styles/tokens.css";
+import "../../styles/global.css";
+import "../../styles/typography.css";
+import logoIsaf from "../../assets/images/logo-isaf.png";
+import Button from "../ui/Button.astro";
+---
+
+<header class="header">
+  <div class="container">
+    <div class="navbar" data-navbar>
+      <div class="navbar-left">
+        <a class="brand" href="/" aria-label="ISAF home">
+          <img
+            class="brand-logo"
+            src={logoIsaf.src}
+            alt="ISAF"
+            width="1000"
+            height="394"
+          />
+        </a>
+
+        <div class="tagline" aria-hidden="true">
+          <span>on track</span>
+          <span>for the future</span>
+        </div>
+      </div>
+
+      <div class="navbar-right">
+        <nav id="primary-navigation" class="primary-nav" aria-label="Primary navigation">
+          <a href="#about">Despre noi</a>
+          <a href="#solutions">Soluții</a>
+          <a href="#production">Producție</a>
+        </nav>
+
+        <div class="contact-action">
+          <Button href="#contact" variant="secondary" class="header-contact">
+            <span>Contact</span>
+          </Button>
+        </div>
+
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="primary-navigation"
+          data-menu-toggle
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const navbar = document.querySelector("[data-navbar]");
+  const menuToggle = document.querySelector("[data-menu-toggle]");
+  const primaryNav = document.querySelector("#primary-navigation");
+
+  if (navbar && menuToggle && primaryNav) {
+    const setMenuOpen = (isOpen: boolean) => {
+      navbar.classList.toggle("is-menu-open", isOpen);
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.setAttribute(
+        "aria-label",
+        isOpen ? "Close navigation menu" : "Open navigation menu",
+      );
+    };
+
+    menuToggle.addEventListener("click", () => {
+      setMenuOpen(!navbar.classList.contains("is-menu-open"));
+    });
+
+    primaryNav.addEventListener("click", (event) => {
+      if (event.target instanceof HTMLAnchorElement) {
+        setMenuOpen(false);
+      }
+    });
+  }
+</script>
+
+<style>
+  .header {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: 10;
+    inline-size: 100%;
+    padding-block-start: var(--spacing-4);
+  }
+
+  .navbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "brand menu";
+    align-items: center;
+    align-content: center;
+    column-gap: var(--spacing-4);
+    row-gap: 0;
+    padding: var(--spacing-2) var(--spacing-4);
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: color-mix(
+      in oklch,
+      var(--color-background-surface-card-80) 94%,
+      var(--color-black)
+    );
+  }
+
+  .navbar-left {
+    grid-area: brand;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-6);
+    min-inline-size: 0;
+  }
+
+  .navbar-right {
+    display: contents;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    min-inline-size: 0;
+    flex: none;
+  }
+
+  .brand-logo {
+    inline-size: 4.5rem;
+    block-size: auto;
+    object-fit: contain;
+  }
+
+  .tagline {
+    min-block-size: 2.75rem;
+    display: none;
+    align-content: center;
+    gap: 0.125rem;
+    padding-inline-start: var(--spacing-6);
+    border-inline-start: var(--border-hairline) solid var(--color-border-navbar-stroke);
+    color: var(--color-red-100);
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-size: var(--font-size-14);
+    line-height: var(--line-height-130);
+    letter-spacing: var(--letter-spacing-caption);
+    white-space: nowrap;
+  }
+
+  .primary-nav {
+    grid-area: nav;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-4);
+    padding-block-start: var(--spacing-4);
+    border-block-start: var(--border-hairline) solid var(--color-border-navbar-stroke);
+    color: var(--color-text-on-brand);
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-size: var(--font-size-16);
+    line-height: var(--line-height-130);
+    letter-spacing: var(--letter-spacing-label);
+  }
+
+  .navbar.is-menu-open .primary-nav {
+    display: flex;
+  }
+
+  .navbar.is-menu-open {
+    grid-template-areas:
+      "brand menu"
+      "nav nav";
+    row-gap: var(--spacing-4);
+  }
+
+  .primary-nav a:hover,
+  .primary-nav a:focus-visible {
+    color: var(--color-text-accent);
+  }
+
+  .contact-action {
+    display: none;
+  }
+
+  .contact-action :global(.header-contact) {
+    min-inline-size: 7.75rem;
+    block-size: 3rem;
+    min-block-size: 3rem;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0;
+    border-width: var(--border-hairline);
+    border-color: var(--color-red-50);
+    border-radius: var(--radius-sm);
+    color: var(--color-red-50);
+    font-size: var(--font-size-button);
+    letter-spacing: var(--letter-spacing-label);
+    box-shadow: 0 0.25rem 1.25rem 0 oklch(0% 0 0 / 24%);
+  }
+
+  .contact-action :global(.header-contact:hover),
+  .contact-action :global(.header-contact:focus-visible) {
+    border-color: var(--color-amber);
+    color: var(--color-amber);
+  }
+
+  .contact-action :global(.header-contact .button-label) {
+    block-size: 100%;
+    display: inline-flex;
+    align-items: center;
+    padding-inline-start: var(--spacing-6);
+    line-height: var(--line-height-130);
+    white-space: nowrap;
+  }
+
+  .contact-action :global(.header-contact .button-icon-area) {
+    align-self: stretch;
+    inline-size: var(--spacing-16);
+  }
+
+  .contact-action :global(.header-contact .button-icon) {
+    inline-size: var(--size-icon-lg);
+    block-size: var(--size-icon-lg);
+    stroke-width: 1.35;
+  }
+
+  .menu-toggle {
+    grid-area: menu;
+    inline-size: auto;
+    block-size: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2);
+    padding-inline: var(--spacing-3);
+    border: var(--border-hairline) solid var(--color-red-50);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-red-50);
+    cursor: pointer;
+    box-shadow: 0 0.25rem 1.25rem 0 oklch(0% 0 0 / 24%);
+  }
+
+  .menu-toggle span {
+    inline-size: 1.375rem;
+    block-size: var(--border-hairline);
+    border-radius: var(--radius-full);
+    background: currentColor;
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
+  }
+
+  .menu-toggle:hover,
+  .menu-toggle:focus-visible {
+    color: var(--color-text-accent);
+    border-color: var(--color-text-accent);
+  }
+
+  .menu-toggle:focus-visible {
+    outline: var(--border-medium) solid var(--color-text-accent);
+    outline-offset: var(--spacing-1);
+  }
+
+  .navbar.is-menu-open .menu-toggle span:nth-child(1) {
+    transform: translateY(0.5625rem) rotate(45deg);
+  }
+
+  .navbar.is-menu-open .menu-toggle span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .navbar.is-menu-open .menu-toggle span:nth-child(3) {
+    transform: translateY(-0.5625rem) rotate(-45deg);
+  }
+
+  @media (min-width: 48em) {
+    .header {
+      padding-block-start: var(--spacing-6);
+    }
+
+    .navbar {
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-areas: "brand nav";
+      gap: var(--spacing-6);
+      padding: var(--spacing-4) var(--spacing-8);
+      border: var(--border-hairline) solid var(--color-border-navbar-stroke);
+      border-radius: var(--radius-md);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand-logo {
+      inline-size: clamp(3.75rem, 20vw, 6.75rem);
+    }
+
+    .navbar-right {
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: 2.25rem;
+    }
+
+    .primary-nav {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--spacing-6);
+      padding: var(--spacing-3) var(--spacing-5);
+      border-block-start: 0;
+      border-radius: var(--radius-sm);
+      font-size: var(--font-size-nav-link);
+    }
+
+    .contact-action {
+      display: block;
+      margin-inline-start: 0;
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+  }
+
+  @media (min-width: 64em) {
+    .header {
+      padding-block-start: var(--spacing-8);
+    }
+
+    .navbar {
+      max-block-size: 4.875rem;
+      grid-template-columns: auto minmax(0, 1fr);
+      padding: 0.875rem var(--spacing-12);
+      border-radius: var(--radius-lg);
+    }
+
+    .brand-logo {
+      inline-size: 7.5rem;
+    }
+
+    .tagline {
+      display: grid;
+    }
+
+    .primary-nav {
+      gap: var(--spacing-6);
+    }
+  }
+</style>

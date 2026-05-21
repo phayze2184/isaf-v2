@@ -1,0 +1,203 @@
+---
+import arrowRight from "../../assets/icons/arrowRight.svg";
+
+const {
+  href,
+  variant = "primary",
+  class: className,
+  type = "button",
+  ...attrs
+} = Astro.props;
+
+const Element = href ? "a" : "button";
+const variants = ["primary", "secondary"];
+const buttonVariant = variants.includes(variant) ? variant : "primary";
+---
+
+<Element
+  {...attrs}
+  href={href}
+  type={href ? undefined : type}
+  class={`button button--${buttonVariant} ${className ?? ""}`}
+>
+  <span class="button-label">
+    <slot />
+  </span>
+  <span class="button-icon-area" aria-hidden="true">
+    <span class="button-icon-decor"></span>
+    <span
+      class="button-icon"
+      style={`--button-icon: url("${arrowRight.src}")`}
+    ></span>
+  </span>
+</Element>
+
+<style>
+  .button {
+    min-height: var(--size-control-lg);
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: var(--border-medium) solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-size: var(--font-size-button);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-130);
+    letter-spacing: var(--letter-spacing-button);
+    text-decoration: none;
+    overflow: hidden;
+    transition:
+      background-color 400ms ease-in-out,
+      border-color 400ms ease-in-out,
+      color 400ms ease-in-out,
+      transform 400ms ease-in-out;
+  }
+
+  .button-label {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .button-icon-area {
+    position: relative;
+    z-index: 1;
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    transition:
+      color 400ms ease-in,
+      background-color 400ms ease-in-out;  
+  }
+
+  .button-icon-decor {
+    display: none;
+  }
+
+  .button-icon {
+    width: var(--size-icon-lg);
+    height: var(--size-icon-lg);
+    position: relative;
+    z-index: 1;
+    display: block;
+    background: currentColor;
+    -webkit-mask: var(--button-icon) center / contain no-repeat;
+    mask: var(--button-icon) center / contain no-repeat;
+    transition: transform 200ms ease;
+  }
+
+  .button:hover .button-icon,
+  .button:focus-visible .button-icon {
+    transform: rotate(-45deg);
+  }
+
+  .button:focus-visible {
+    outline: var(--border-medium) solid var(--color-text-accent);
+    outline-offset: var(--spacing-1);
+  }
+
+  .button:active {
+    transform: translateY(1px);
+  }
+
+  .button[disabled],
+  .button[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .button--primary {
+    --button-primary-text: var(--color-button-primary-text);
+    --button-primary-icon-bg: var(--color-button-primary-icon-bg);
+    --button-primary-icon-area-size: 4rem;
+
+    inline-size: fit-content;
+    max-inline-size: 100%;
+    block-size: var(--size-control-lg);
+    max-block-size: var(--size-control-lg);
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0;
+    border: var(--border-hairline) solid var(--color-white-12);
+    background: var(--color-button-primary-bg);
+    color: var(--button-primary-text);
+    box-shadow: 0 0.25rem 1.25rem 0 oklch(0% 0 0 / 24%);
+  }
+
+  .button--primary:hover,
+  .button--primary:focus-visible {
+    --button-primary-text: var(--color-button-primary-text);
+    --button-primary-icon-bg: var(--color-button-primary-icon-bg);
+
+    border-color: var(--color-red-900);
+    background: transparent;
+  }
+
+  .button--primary .button-label {
+    height: 100%;
+    justify-content: center;
+    padding: 0 var(--spacing-8) 0 var(--spacing-6);
+    line-height: var(--line-height-130);
+    white-space: nowrap;
+  }
+
+  .button--primary .button-icon-area {
+    align-self: stretch;
+    inline-size: var(--button-primary-icon-area-size);
+    background: var(--button-primary-icon-bg);
+    color: var(--button-primary-text);
+  }
+
+  .button--primary .button-icon-decor {
+    position: absolute;
+    top: -0.1875rem;
+    bottom: -0.1875rem;
+    left: -1.125rem;
+    width: 1.1875rem;
+    display: block;
+    opacity: 1;
+    background: var(--button-primary-icon-bg);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    transition: background-color 200ms ease;
+  }
+
+  .button--primary .button-icon {
+    width: var(--size-icon-lg);
+    height: var(--size-icon-lg);
+  }
+
+  .button--primary:hover .button-icon-area,
+  .button--primary:focus-visible .button-icon-area {
+    order: -1;
+  }
+
+  .button--primary:hover .button-icon-decor,
+  .button--primary:focus-visible .button-icon-decor {
+    display: none;
+  }
+
+  .button--secondary {
+    border-color: var(--color-button-secondary-border);
+    background: var(--color-button-secondary-bg);
+    color: var(--color-button-secondary-text);
+  }
+
+  .button--secondary:hover {
+    border-color: var(--color-amber);
+    color: var(--color-amber);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .button,
+    .button-label,
+    .button-icon,
+    .button-icon-area,
+    .button-icon-decor {
+      transition-duration: 0.01ms;
+    }
+  }
+</style>

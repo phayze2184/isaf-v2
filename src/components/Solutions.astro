@@ -1,0 +1,417 @@
+---
+import "../styles/tokens.css";
+import "../styles/global.css";
+import "../styles/typography.css";
+import ProductCard from "./ui/ProductCard.astro";
+import semnalizareImage from "../assets/diagrams/semnalizare.png";
+import liniiContactImage from "../assets/diagrams/linii-contact.png";
+import circuiteCaleImage from "../assets/diagrams/circuite-cale.png";
+import releeImage from "../assets/diagrams/relee.png";
+import arrowRight from "../assets/icons/arrowRight.svg";
+import techElementSolutions from "../assets/svg/tech-elem-prod.svg";
+import EyebrowText from "./ui/EyebrowText.astro";
+
+const products = [
+  {
+    image: semnalizareImage,
+    title: "Semnalizare",
+    items: ["semnale cu bec și unități LED", "semnale manevră pitice", "dulapuri SCB"],
+  },
+  {
+    image: liniiContactImage,
+    title: "Linii de contact",
+    items: ["stâlpi", "console", "traverse"],
+  },
+  {
+    image: circuiteCaleImage,
+    title: "Circuite de cale",
+    items: ["rame și dulapuri de JT", "panouri de comandă", "cutii de aparataj"],
+  },
+  {
+    image: releeImage,
+    title: "Relee",
+    items: ["neutrale fișă", "combinate tip fișă", "de prag tip PIC-1"],
+  },
+];
+---
+
+<section class="solutions" id="solutions" aria-labelledby="solutions-title">
+  <div class="solutions-header">
+    <div class="solutions-title-group">
+      <EyebrowText class="solutions-eyebrow">
+        Soluțiile noastre
+      </EyebrowText>
+
+      <h2 id="solutions-title">Proiectare, producție și integrare</h2>
+      <img
+        class="solutions-tech"
+        src={techElementSolutions.src}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="solutions-intro">
+      <p>
+        Ne implicăm în fiecare etapă, de la proiectare la fabricație, ca fiecare produs
+        să fie bine făcut și pregătit pentru utilizare reală.
+      </p>
+    </div>
+  </div>
+
+  <div class="products-carousel" data-products-carousel>
+    <div
+      class="products-scroll"
+      data-products-track
+      aria-label="Produse ISAF"
+      tabindex="0"
+    >
+      {
+        products.map((product) => (
+          <ProductCard image={product.image} title={product.title} items={product.items} />
+        ))
+      }
+    </div>
+
+    <div class="products-controls" aria-label="Navigare produse">
+      <button class="products-control" type="button" data-products-prev aria-label="Produsul anterior">
+        <span
+          class="products-control-icon products-control-icon--prev"
+          style={`--products-control-icon: url("${arrowRight.src}")`}
+          aria-hidden="true"
+        ></span>
+      </button>
+      <button class="products-control" type="button" data-products-next aria-label="Produsul următor">
+        <span
+          class="products-control-icon"
+          style={`--products-control-icon: url("${arrowRight.src}")`}
+          aria-hidden="true"
+        ></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+  const carousel = document.querySelector("[data-products-carousel]");
+
+  if (carousel instanceof HTMLElement) {
+    const track = carousel.querySelector("[data-products-track]");
+    const prevButton = carousel.querySelector("[data-products-prev]");
+    const nextButton = carousel.querySelector("[data-products-next]");
+
+    if (
+      track instanceof HTMLElement &&
+      prevButton instanceof HTMLButtonElement &&
+      nextButton instanceof HTMLButtonElement
+    ) {
+      const getStep = () => {
+        const firstCard = track.querySelector(".product-card");
+        const gap = Number.parseFloat(getComputedStyle(track).columnGap || "0");
+
+        return firstCard instanceof HTMLElement
+          ? firstCard.getBoundingClientRect().width + gap
+          : track.clientWidth;
+      };
+
+      const updateControls = () => {
+        const maxScroll = track.scrollWidth - track.clientWidth;
+
+        prevButton.disabled = track.scrollLeft <= 1;
+        nextButton.disabled = track.scrollLeft >= maxScroll - 1;
+      };
+
+      const scrollCards = (direction: number) => {
+        track.scrollBy({
+          left: getStep() * direction,
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "auto"
+            : "smooth",
+        });
+      };
+
+      prevButton.addEventListener("click", () => scrollCards(-1));
+      nextButton.addEventListener("click", () => scrollCards(1));
+      track.addEventListener("scroll", updateControls, { passive: true });
+      window.addEventListener("resize", updateControls);
+
+      let dragStartX = 0;
+      let dragScrollStart = 0;
+      let isDragging = false;
+
+      track.addEventListener("pointerdown", (event) => {
+        if (event.pointerType === "mouse" && event.button !== 0) {
+          return;
+        }
+
+        isDragging = true;
+        dragStartX = event.clientX;
+        dragScrollStart = track.scrollLeft;
+        track.dataset.dragging = "true";
+        track.setPointerCapture(event.pointerId);
+      });
+
+      track.addEventListener("pointermove", (event) => {
+        if (!isDragging) {
+          return;
+        }
+
+        track.scrollLeft = dragScrollStart - (event.clientX - dragStartX);
+      });
+
+      const stopDragging = (event: PointerEvent) => {
+        if (!isDragging) {
+          return;
+        }
+
+        isDragging = false;
+        delete track.dataset.dragging;
+
+        if (track.hasPointerCapture(event.pointerId)) {
+          track.releasePointerCapture(event.pointerId);
+        }
+      };
+
+      track.addEventListener("pointerup", stopDragging);
+      track.addEventListener("pointercancel", stopDragging);
+      track.addEventListener("pointerleave", stopDragging);
+
+      updateControls();
+    }
+  }
+</script>
+
+<style>
+  .solutions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-10);
+    overflow: hidden;
+    padding-block: var(--spacing-15);
+    padding-inline: var(--spacing-10);
+    background: var(--color-slate-200);
+    color: var(--color-text-default);
+  }
+
+  .solutions-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+  }
+
+  .solutions-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1.125rem;
+  }
+
+  .solutions-eyebrow {
+    margin-block-end: 0;
+  }
+
+  .solutions-eyebrow :global(.eyebrow-line) {
+    inline-size: var(--spacing-10);
+  }
+
+  .solutions-eyebrow :global(.eyebrow-content) {
+    color: var(--color-text-muted-light);
+    font-size: var(--font-size-18);
+  }
+
+  .solutions h2 {
+    max-inline-size: 21.3125rem;
+    color: var(--color-text-default);
+    font-size: var(--font-size-40);
+    line-height: var(--line-height-h2);
+  }
+
+  .solutions-intro {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+  }
+
+  .solutions-intro p {
+    max-inline-size: 21.8125rem;
+    color: var(--color-black);
+    font-size: var(--font-size-18);
+    line-height: var(--line-height-body);
+  }
+
+  .solutions-tech {
+    inline-size: min(100%, 20.875rem);
+    block-size: auto;
+    margin-block-start: var(--spacing-2);
+    flex: none;
+  }
+
+  .products-carousel {
+    position: relative;
+  }
+
+  .products-scroll {
+    display: flex;
+    gap: var(--spacing-6);
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-inline: calc(-1 * var(--spacing-10));
+    padding-inline: var(--spacing-10);
+    padding-block-end: var(--spacing-1);
+    scroll-padding-inline: var(--spacing-10);
+    scroll-snap-type: inline mandatory;
+    scroll-behavior: smooth;
+    touch-action: pan-x;
+    overscroll-behavior-inline: contain;
+    cursor: grab;
+    user-select: none;
+    scrollbar-width: none;
+  }
+
+  .products-scroll:focus-visible {
+    outline: var(--border-medium) solid var(--color-red);
+    outline-offset: var(--spacing-2);
+  }
+
+  .products-scroll[data-dragging="true"] {
+    cursor: grabbing;
+    scroll-snap-type: none;
+  }
+
+  .products-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .products-scroll :global(.product-card) {
+    flex: 0 0 17.5rem;
+    scroll-snap-align: start;
+  }
+
+  .products-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-3);
+    margin-block-start: var(--spacing-5);
+  }
+
+  .products-control {
+    display: grid;
+    place-items: center;
+    inline-size: var(--size-control-md);
+    block-size: var(--size-control-md);
+    border: var(--border-hairline) solid var(--color-slate-500);
+    border-radius: var(--radius-full);
+    background: transparent;
+    color: var(--color-sapphire);
+    cursor: pointer;
+    transition:
+      color 180ms ease,
+      border-color 180ms ease,
+      opacity 180ms ease,
+      transform 180ms ease;
+  }
+
+  .products-control:hover,
+  .products-control:focus-visible {
+    border-color: var(--color-red);
+    color: var(--color-red);
+  }
+
+  .products-control:focus-visible {
+    outline: var(--border-medium) solid var(--color-red);
+    outline-offset: var(--spacing-1);
+  }
+
+  .products-control:active {
+    transform: scale(0.96);
+  }
+
+  .products-control:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  .products-control-icon {
+    display: block;
+    inline-size: var(--size-icon-lg);
+    block-size: var(--size-icon-lg);
+    background: currentColor;
+    -webkit-mask: var(--products-control-icon) center / contain no-repeat;
+    mask: var(--products-control-icon) center / contain no-repeat;
+  }
+
+  .products-control-icon--prev {
+    transform: rotate(180deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .products-scroll {
+      scroll-behavior: auto;
+    }
+
+    .products-control {
+      transition-duration: 0.01ms;
+    }
+  }
+
+  @media (min-width: 48em) {
+    .solutions {
+      gap: var(--spacing-14);
+      padding-block: 7.1875rem 7.5rem;
+      padding-inline: clamp(var(--spacing-16), 8.2vw, 7.375rem);
+    }
+
+    .solutions-header {
+      display: grid;
+      grid-template-columns: minmax(21.3125rem, 22.5625rem) minmax(21.8125rem, 25.0625rem);
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(var(--spacing-16), 10vw, 17.375rem);
+      inline-size: min(100%, 76rem);
+      max-inline-size: var(--container-max);
+      margin-inline: auto;
+    }
+
+    .solutions-title-group {
+      padding-inline-start: var(--spacing-5);
+    }
+
+    .solutions-intro {
+      inline-size: min(100%, 25.0625rem);
+    }
+
+    .solutions-tech {
+      inline-size: min(100%, 20.875rem);
+      margin-block-start: var(--spacing-2);
+    }
+
+    .products-carousel {
+      inline-size: min(100%, 76rem);
+      margin-inline: auto;
+    }
+
+    .products-scroll {
+      display: grid;
+      grid-template-columns: repeat(2, 17.5rem);
+      justify-content: center;
+      gap: 1.625rem;
+      overflow: visible;
+      margin-inline: 0;
+      padding: 0;
+      cursor: default;
+      user-select: auto;
+    }
+
+    .products-controls {
+      display: none;
+    }
+  }
+
+  @media (min-width: 75em) {
+    .products-scroll {
+      grid-template-columns: repeat(4, 17.5rem);
+    }
+  }
+</style>

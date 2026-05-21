@@ -1,0 +1,203 @@
+---
+import "../../styles/tokens.css";
+import "../../styles/typography.css";
+import factoryIcon from "../../assets/icons/factory-icon.svg";
+import trainIcon from "../../assets/icons/speed-train-iconsvg.svg";
+import toolsIcon from "../../assets/icons/tools-icon.svg";
+
+const defaultItems = [
+  {
+    value: "Proiectare",
+    description: "Proiectare pentru soluții feroviare conforme cu cerințele tehnice",
+    icon: factoryIcon,
+  },
+  {
+    value: "Execuție",
+    description: "Execuție integrată pentru infrastructură feroviară, linii de contact, semnalizare.",
+    icon: toolsIcon,
+  },
+  {
+    value: "Montaj",
+    description: "Montaj, punere în funcțiune și mentenanță pentru echipamente și sisteme feroviare.",
+    icon: trainIcon,
+  },
+];
+
+const { items = defaultItems, class: className } = Astro.props;
+const stats = Array.isArray(items) && items.length > 0 ? items : defaultItems;
+---
+
+<div class={`stat-cards ${className ?? ""}`}>
+  {
+    stats.map((item, index) => {
+      const icon = item.icon ?? defaultItems[index % defaultItems.length]?.icon;
+      const iconSrc = typeof icon === "string" ? icon : icon?.src;
+
+      return (
+        <article class="stat-card">
+          <span class="stat-card-accent" aria-hidden="true"></span>
+
+          <div class="stat-card-icon-wrapper">
+            <div class="stat-card-icon" aria-hidden="true">
+              {iconSrc && <img src={iconSrc} alt="" loading="lazy" />}
+            </div>
+          </div>
+
+          <div class="stat-card-text">
+            <div class="stat-card-copy">
+              <div class="stat-card-heading">
+                <p class="stat-card-value">{item.value}</p>
+                {item.label && <p class="stat-card-label">{item.label}</p>}
+              </div>
+
+              <p class="stat-card-description">{item.description}</p>
+            </div>
+          </div>
+        </article>
+      );
+    })
+  }
+</div>
+
+<style>
+  .stat-cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6);
+    inline-size: 100%;
+  }
+
+  .stat-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--spacing-6);
+    inline-size: 100%;
+    block-size: 10.5rem;
+    min-block-size: 10.5rem;
+    overflow: hidden;
+    padding: var(--spacing-6);
+    border: var(--border-hairline) solid var(--color-slate-600);
+    border-radius: var(--radius-md);
+    background: var(--color-slate-50);
+  }
+
+  .stat-card-accent {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 0;
+    inline-size: var(--border-strong);
+    block-size: 6.25rem;
+    border-radius: var(--radius-full);
+    background: var(--color-amber);
+    transform: translateY(-50%);
+  }
+
+  .stat-card-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    min-inline-size: 0;
+  }
+
+  .stat-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 3.5rem;
+    block-size: 3.5rem;
+    padding: 0.625rem;
+    border-radius: var(--radius-full);
+    background: var(--color-sapphire);
+  }
+
+  .stat-card-icon img {
+    display: block;
+    inline-size: 2rem;
+    block-size: 1.8rem;
+  }
+
+  .stat-card:nth-child(2) .stat-card-icon img {
+    inline-size: 2.25rem;
+    block-size: 2.25rem;
+  }
+
+  .stat-card-text {
+    display: flex;
+    align-items: flex-start;
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    overflow: hidden;
+  }
+
+  .stat-card-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    inline-size: 100%;
+    max-inline-size: 100%;
+    word-break: break-word;
+  }
+
+  .stat-card-heading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+    inline-size: 100%;
+    line-height: var(--line-height-110);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .stat-card-value,
+  .stat-card-label,
+  .stat-card-description {
+    margin: 0;
+  }
+
+  .stat-card-value {
+    color: var(--color-text-default);
+    font-family: "Big Shoulders", sans-serif;
+    font-size: var(--font-size-32);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-110);
+    letter-spacing: var(--letter-spacing-tight);
+    text-transform: uppercase;
+  }
+
+  .stat-card-label {
+    color: var(--color-text-muted-light);
+    font-family: "Atkinson Hyperlegible Mono", monospace;
+    font-size: var(--font-size-14);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-110);
+    letter-spacing: var(--letter-spacing-wider);
+  }
+
+  .stat-card-description {
+    color: var(--color-text-muted-light);
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-size: var(--font-size-18);
+    font-weight: var(--font-weight-body);
+    line-height: var(--line-height-150);
+    letter-spacing: var(--letter-spacing-body);
+  }
+
+  @media (min-width: 64em) {
+    .stat-cards {
+      gap: var(--spacing-4);
+      inline-size: 29.9375rem;
+      block-size: 29.9375rem;
+    }
+
+    .stat-card {
+      inline-size: 100%;
+      block-size: 9.3125rem;
+      min-block-size: 9.3125rem;
+      flex: 0 0 9.3125rem;
+      padding: var(--spacing-6);
+    }
+  }
+</style>

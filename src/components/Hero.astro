@@ -1,0 +1,611 @@
+---
+import videoDesktop from "../assets/video/hero-section-video__desktop.mp4";
+import videoMobile from "../assets/video/hero-section-video__mobile.mp4";
+import posterMobile from "../assets/images/hero-poster-mobile.jpeg";
+import Button from "./ui/Button.astro";
+import "../styles/typography.css";
+import "../styles/tokens.css";
+import "../styles/global.css";
+import element1 from "../assets/svg/element-1.svg";
+import element2 from "../assets/svg/element-2.svg";
+import element3 from "../assets/svg/element-3.svg";
+import element4 from "../assets/svg/element-4.svg";
+import element5 from "../assets/svg/element-5.svg";
+import element6 from "../assets/svg/element-6.svg";
+import element7 from "../assets/svg/element-7.svg";
+import element8 from "../assets/svg/element-8.svg";
+
+---
+
+<section class="hero" aria-label="ISAF - semnalizare, linii de contact si electrificare feroviara">
+  
+  <video
+    class="hero-media"
+    data-hero-video
+    data-mobile-src={videoMobile}
+    data-desktop-src={videoDesktop}
+    src={videoMobile}
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    poster={posterMobile.src}
+    aria-hidden="true"
+  ></video>
+
+  <div class="hero-overlay" aria-hidden="true"></div>
+
+  <div class="hero-container">
+    <div class="hero-wrapper">
+      <div class="hero-card">
+        <div class="hero-content">
+          <div class="hero-eyebrow">
+            <span class="hero-eyebrow-line" aria-hidden="true"></span>
+            <p>
+              Sisteme de linii de contact,
+              <br />
+              semnalizare și electrificare
+            </p>
+          </div>
+
+          <div class="hero-copy">
+            <h1 id="hero-title" class="headline">
+              Partener strategic în infrastructură <span>feroviară</span>
+            </h1>
+
+            <p class="hero-lead">
+              Construim și modernizăm infrastructura feroviară din România, prin soluții
+              integrate, tehnologii avansate și parteneriate de durată.
+            </p>
+          </div>
+        </div>
+
+        <Button href="#solutions" class="hero-cta" variant="primary">
+          <span>Vezi soluțiile noastre</span>
+        </Button>
+      </div>
+
+      <div class="trust-elements" aria-hidden="true">
+        <div class="trust-item trust-item--experience">
+          <span class="trust-plus"></span>
+          <span class="trust-svg-element trust-svg-element--top" aria-hidden="true">
+            <img src={element3.src} alt="" loading="lazy" />
+          </span>
+          <span class="trust-svg-element trust-svg-element--bottom" aria-hidden="true">
+            <img src={element8.src} alt="" loading="lazy" />
+          </span>
+          <p class="trust-value">75+</p>
+          <p class="trust-caption">Ani de experiență</p>
+        </div>
+
+        <div class="trust-item trust-item--rail">
+          <span class="trust-plus"></span>
+          <span class="trust-svg-element trust-svg-element--rail-top" aria-hidden="true">
+            <img src={element4.src} alt="" loading="lazy" />
+          </span>
+          <span class="trust-svg-element trust-svg-element--rail-vertical" aria-hidden="true">
+            <img src={element7.src} alt="" loading="lazy" />
+          </span>
+          <span class="trust-svg-element trust-svg-element--rail-bottom" aria-hidden="true">
+            <img src={element1.src} alt="" loading="lazy" />
+          </span>
+          <p class="trust-value">
+            9.500 <span>km</span>
+          </p>
+          <p class="trust-caption">Cale ferată electrificată</p>
+        </div>
+
+        <div class="trust-item trust-item--partnerships">
+          <span class="trust-plus"></span>
+          <span class="trust-svg-element trust-svg-element--partnerships-top" aria-hidden="true">
+            <img src={element2.src} alt="" loading="lazy" />
+          </span>
+          <span class="trust-svg-element trust-svg-element--partnerships-left" aria-hidden="true">
+            <img src={element6.src} alt="" loading="lazy" />
+          </span>
+          <span class="trust-svg-element trust-svg-element--partnerships-right" aria-hidden="true">
+            <img src={element5.src} alt="" loading="lazy" />
+          </span>
+          <span class="trust-svg-element trust-svg-element--partnerships-bottom" aria-hidden="true">
+            <img src={element8.src} alt="" loading="lazy" />
+          </span>
+          <p class="trust-value">Parteneriate</p>
+          <p class="trust-caption">Durabile și performante</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const heroVideo = document.querySelector("[data-hero-video]");
+
+  if (heroVideo instanceof HTMLVideoElement) {
+    const desktopQuery = window.matchMedia("(min-width: 48em)");
+
+    const setHeroVideoSource = () => {
+    //checks the media query and sets the video source accordingly. It also checks if the current source is already the correct one to avoid unnecessary loading and playback.
+      const nextSource = desktopQuery.matches
+        ? heroVideo.dataset.desktopSrc
+        : heroVideo.dataset.mobileSrc;
+
+      if (!nextSource || heroVideo.currentSrc.endsWith(nextSource)) {
+        return;
+      }
+
+      heroVideo.src = nextSource;
+      heroVideo.load();
+
+      if (heroVideo.autoplay) {
+        void heroVideo.play().catch(() => {});
+      }
+    };
+
+    setHeroVideoSource();
+    desktopQuery.addEventListener("change", setHeroVideoSource);
+  }
+</script>
+
+<style>
+  .hero {
+    --section-padding-block-start: 8rem;
+    --section-padding-block-end: 3.75rem;
+
+    position: relative;
+    display: grid;
+    min-height: 100svh;
+    place-items: end center;
+    padding-block: var(--section-padding-block-start) var(--section-padding-block-end);
+    padding-inline: var(--spacing-4);
+    flex-shrink: 0;
+    align-self: stretch;
+    overflow: hidden;
+    background: var(--color-background-page-dark);
+  }
+
+  .hero::after {
+    position: absolute;
+    content: "";
+    inset-inline: 0;
+    inset-block-end: 0;
+    z-index: 1;
+    block-size: 10rem;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(7, 17, 20, 0) 0%,
+      rgba(7, 17, 20, 0.2) 38%,
+      rgba(7, 17, 20, 0.42) 72%,
+      rgba(7, 17, 20, 0.62) 100%
+    );
+  }
+
+  .hero-container {
+    position: relative;
+    z-index: 2;
+    inline-size: min(100%, var(--container-max));
+    margin: 0 auto;
+  }
+
+  .hero-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 2.3125rem;
+  }
+
+  .hero-media,
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    pointer-events: none;
+  }
+
+  .hero-media {
+    display: block;
+    z-index: 0;
+    object-fit: cover;
+    filter: saturate(1.28) contrast(1.12) brightness(1.04);
+  }
+
+  .hero-overlay {
+    z-index: 1;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(7, 17, 20, 0.04) 0%,
+        rgba(7, 17, 20, 0.22) 55%,
+        rgba(7, 17, 20, 0.55) 100%
+      ),
+      linear-gradient(
+        0deg,
+        rgba(30, 30, 30, 0.16),
+        rgba(30, 30, 30, 0.16)
+      );
+  }
+
+  .hero-card {
+    inline-size: min(100%, 40em);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-8);
+    overflow: hidden;
+    padding: var(--spacing-12) var(--spacing-10);
+    border: var(--border-hairline) solid oklch(100% 0 0 / 10%);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(
+      180deg,
+      oklch(18% 0.035 245 / 64%) 0%,
+      oklch(7% 0.028 255 / 78%) 100%
+    );
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    isolation: isolate;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-4);
+    inline-size: 100%;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+    inline-size: 100%;
+  }
+
+  .hero-eyebrow-line {
+    inline-size: var(--spacing-8);
+    block-size: var(--border-strong);
+    flex: none;
+    border-radius: var(--radius-full);
+    background: var(--color-red);
+  }
+
+  .hero-eyebrow p {
+    margin: 0;
+    color: var(--color-text-inverse-muted);
+    font-family: "Atkinson Hyperlegible Mono", monospace;
+    font-size: var(--font-size-14);
+    font-weight: var(--font-weight-label);
+    line-height: var(--line-height-110);
+    letter-spacing: var(--letter-spacing-label);
+    text-transform: uppercase;
+  }
+
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    inline-size: 100%;
+  }
+
+  .headline {
+    font-size: var(--font-size-32);
+    line-height: var(--line-height-h1);
+    letter-spacing: var(--letter-spacing-display);
+    margin: 0;
+  }
+
+  .headline span {
+    color: var(--color-amber);
+  }
+
+  .hero-lead {
+    font-size: var(--font-size-16);
+    line-height: var(--line-height-body);
+    color: var(--color-text-muted-dark);
+    margin: 0;
+  }
+
+  :global(.hero-cta) {
+    block-size: var(--size-control-lg);
+  }
+
+  .trust-elements {
+    position: relative;
+    display: none;
+    flex: 1;
+    min-block-size: 33rem;
+  }
+
+  .trust-item {
+    position: absolute;
+    inline-size: 20rem;
+    min-block-size: 6.25rem;
+    color: var(--color-gray-hint);
+    font-family: "Atkinson Hyperlegible Mono", monospace;
+    font-weight: var(--font-weight-label);
+    line-height: 1.1;
+    letter-spacing: var(--letter-spacing-display);
+    text-transform: uppercase;
+  }
+
+  .trust-item--experience {
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 12.5rem;
+    min-block-size: 6.25rem;
+  }
+
+  .trust-item--rail {
+    inset-block-start: 8.375rem;
+    inset-inline-start: 17.25rem;
+    inline-size: 19.9375rem;
+    min-block-size: 8.1875rem;
+  }
+
+  .trust-item--partnerships {
+    inset-block-start: 24.8125rem;
+    inset-inline-start: 17.625rem;
+    inline-size: 19.9375rem;
+    min-block-size: 8.1875rem;
+  }
+
+  .trust-plus {
+    position: absolute;
+    inset-block-start: 0.375rem;
+    inset-inline-start: 0;
+    inline-size: var(--size-icon-lg);
+    block-size: var(--size-icon-lg);
+  }
+
+  .trust-plus::before,
+  .trust-plus::after {
+    position: absolute;
+    content: "";
+    inset: 50% auto auto 50%;
+    inline-size: 0.875rem;
+    block-size: var(--border-hairline);
+    background: var(--color-red);
+    transform: translate(-50%, -50%);
+  }
+
+  .trust-plus::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+
+  .trust-line {
+    position: absolute;
+    display: block;
+    background: var(--color-white-30);
+  }
+
+  .trust-line--top {
+    inset-block-start: 1.625rem;
+    inset-inline-start: 1.75rem;
+    inline-size: 5.5rem;
+    block-size: var(--border-hairline);
+  }
+
+  .trust-line--top::after {
+    position: absolute;
+    content: "";
+    inset-block-start: 0;
+    inset-inline-end: -2rem;
+    inline-size: 2.25rem;
+    block-size: var(--border-hairline);
+    background: var(--color-white-30);
+    transform: rotate(32deg);
+    transform-origin: left center;
+  }
+
+  .trust-line--bottom {
+    inset-block-start: 5.1875rem;
+    inset-inline-start: 1.75rem;
+    inline-size: 8.75rem;
+    block-size: var(--border-hairline);
+  }
+
+  .trust-line--bottom::after {
+    position: absolute;
+    content: "";
+    inset-block-start: -0.1875rem;
+    inset-inline-end: -0.5rem;
+    inline-size: 0.4375rem;
+    block-size: 0.4375rem;
+    border: var(--border-hairline) solid var(--color-white-30);
+  }
+
+  .trust-line--vertical {
+    display: none;
+  }
+
+  .trust-svg-element {
+    position: absolute;
+    display: block;
+    color: var(--color-white-30);
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .trust-svg-element img {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .trust-value,
+  .trust-caption {
+    position: relative;
+    margin: 0;
+    padding-inline-start: 2.625rem;
+  }
+
+  .trust-value {
+    padding-block-start: 2.125rem;
+    color: var(--color-amber-50);
+    font-size: var(--font-size-24);
+    line-height: 1.1;
+  }
+
+  .trust-value span {
+    font-size: var(--font-size-14);
+    text-transform: lowercase;
+  }
+
+  .trust-caption {
+    margin-block-start: var(--spacing-1);
+    color: var(--color-gray-hint);
+    font-size: var(--font-size-12);
+    line-height: 1.1;
+  }
+
+  .trust-item--experience .trust-plus {
+    inset-block-start: 0.375rem;
+    inset-inline-start: 0;
+  }
+
+  .trust-item--experience .trust-svg-element--top {
+    inset-block-start: 0.9375rem;
+    inset-inline-start: 1.6875rem;
+    inline-size: 5.625rem;
+    block-size: 1.0625rem;
+  }
+
+  .trust-item--experience .trust-svg-element--bottom {
+    inset-block-start: 5.125rem;
+    inset-inline-start: 1.6875rem;
+    inline-size: 10.4375rem;
+    block-size: 0.4375rem;
+  }
+
+  .trust-item--experience .trust-value,
+  .trust-item--experience .trust-caption {
+    padding-inline-start: 1.8125rem;
+  }
+
+  .trust-item--experience .trust-value {
+    padding-block-start: 1.75rem;
+  }
+
+  .trust-item--rail .trust-plus {
+    inset-block-start: 2.0625rem;
+    inset-inline-start: 0.6875rem;
+  }
+
+  .trust-item--rail .trust-svg-element--rail-top {
+    inset-block-start: 1.5rem;
+    inset-inline-start: 5.75rem;
+    inline-size: 7.9375rem;
+    block-size: 2.6875rem;
+    transform: scaleY(-1);
+  }
+
+  .trust-item--rail .trust-svg-element--rail-vertical {
+    inset-block-start: 4.125rem;
+    inset-inline-start: 1.4375rem;
+    inline-size: var(--border-hairline);
+    block-size: 1.25rem;
+  }
+
+  .trust-item--rail .trust-svg-element--rail-bottom {
+    inset-block-start: 6.625rem;
+    inset-inline-start: 2.9375rem;
+    inline-size: 5.5625rem;
+    block-size: 0.4375rem;
+  }
+
+  .trust-item--rail .trust-value,
+  .trust-item--rail .trust-caption {
+    padding-inline-start: 4.9375rem;
+  }
+
+  .trust-item--rail .trust-value {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--spacing-1);
+    padding-block-start: 2.8125rem;
+  }
+
+  .trust-item--partnerships .trust-plus {
+    inset-block-start: 0.4375rem;
+    inset-inline-start: 1.125rem;
+  }
+
+  .trust-item--partnerships .trust-svg-element--partnerships-top {
+    inset-block-start: 1.1875rem;
+    inset-inline-start: 3rem;
+    inline-size: 7.9375rem;
+    block-size: 0.375rem;
+  }
+
+  .trust-item--partnerships .trust-svg-element--partnerships-left {
+    inset-block-start: 2.4375rem;
+    inset-inline-start: 1.8125rem;
+    inline-size: var(--border-hairline);
+    block-size: 3.75rem;
+  }
+
+  .trust-item--partnerships .trust-svg-element--partnerships-right {
+    inset-block-start: 3.0625rem;
+    inset-inline-start: 15.125rem;
+    inline-size: var(--border-hairline);
+    block-size: 3.75rem;
+  }
+
+  .trust-item--partnerships .trust-svg-element--partnerships-bottom {
+    inset-block-start: 6.8125rem;
+    inset-inline-start: 3rem;
+    inline-size: 11.0625rem;
+    block-size: 0.4375rem;
+  }
+
+  .trust-item--partnerships .trust-value,
+  .trust-item--partnerships .trust-caption {
+    padding-inline-start: 4rem;
+  }
+
+  .trust-item--partnerships .trust-value {
+    padding-block-start: 3.0625rem;
+  }
+
+  @media (min-width: 48em) {
+    .hero {
+      --section-padding-block-end: 7.5rem;
+
+      block-size: 100svh;
+      min-block-size: 100svh;
+      padding-inline: var(--spacing-8);
+    }
+
+    .hero::after {
+      block-size: 18rem;
+      background: linear-gradient(
+        180deg,
+        rgba(7, 17, 20, 0) 0%,
+        rgba(7, 17, 20, 0.16) 34%,
+        rgba(7, 17, 20, 0.38) 68%,
+        rgba(7, 17, 20, 0.58) 100%
+      );
+    }
+
+    .hero-card {
+      padding: var(--spacing-12) var(--spacing-10);
+      transform: translateY(clamp(2rem, 5vh, 4rem));
+    }
+
+    .headline {
+      font-size: var(--font-size-h1);
+    }
+  }
+
+  @media (min-width: 64em) {
+    .headline {
+      font-size: var(--font-size-h1);
+    }
+  }
+
+  @media (min-width: 75em) {
+    .trust-elements {
+      display: block;
+    }
+  }
+  </style>
