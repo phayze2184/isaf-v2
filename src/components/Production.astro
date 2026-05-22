@@ -200,6 +200,10 @@ const mobileKpis = [
     gallery.addEventListener(
       "touchstart",
       (event) => {
+        if (!(event instanceof TouchEvent)) {
+          return;
+        }
+
         const touch = event.changedTouches[0];
         touchStartX = touch.clientX;
         touchStartY = touch.clientY;
@@ -210,6 +214,10 @@ const mobileKpis = [
     gallery.addEventListener(
       "touchend",
       (event) => {
+        if (!(event instanceof TouchEvent)) {
+          return;
+        }
+
         const touch = event.changedTouches[0];
         const deltaX = touch.clientX - touchStartX;
         const deltaY = touch.clientY - touchStartY;

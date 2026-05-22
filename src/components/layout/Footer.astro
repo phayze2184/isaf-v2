@@ -107,14 +107,16 @@ const footerLinks = [
         <a
           href="https://www.linkedin.com/company/isaf-sa-san-grup-romania/"
           aria-label="ISAF on LinkedIn"
+          style={`--footer-social-icon: url("${linkedinIcon.src}")`}
         >
-          <img src={linkedinIcon.src} alt="" loading="lazy" />
+          <span class="footer-social-icon" aria-hidden="true"></span>
         </a>
         <a
           href="https://www.facebook.com/isaf.sa/"
           aria-label="ISAF on Facebook"
+          style={`--footer-social-icon: url("${facebookIcon.src}")`}
         >
-          <img src={facebookIcon.src} alt="" loading="lazy" />
+          <span class="footer-social-icon" aria-hidden="true"></span>
         </a>
       </div>
 
@@ -132,7 +134,7 @@ const footerLinks = [
   .site-footer {
     position: relative;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     inline-size: 100%;
     overflow: hidden;
@@ -223,7 +225,7 @@ const footerLinks = [
     flex: none;
     display: block;
     inline-size: 2.25rem;
-    block-size: 0.375rem;
+    block-size: 0.125rem;
     overflow: hidden;
     background: var(--color-amber);
   }
@@ -330,11 +332,29 @@ const footerLinks = [
     padding: var(--spacing-3);
     border: var(--border-hairline) solid var(--color-text-inverse-muted);
     color: var(--color-text-inverse-muted);
+    transition: transform 160ms ease;
   }
 
-  .footer-social img {
+  .footer-social a:hover {
+    transform: translateY(-0.125rem);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer-social a {
+      transition-duration: 0.01ms;
+    }
+
+    .footer-social a:hover {
+      transform: none;
+    }
+  }
+
+  .footer-social-icon {
     inline-size: var(--size-icon-lg);
     block-size: var(--size-icon-lg);
+    background: currentColor;
+    -webkit-mask: var(--footer-social-icon) center / contain no-repeat;
+    mask: var(--footer-social-icon) center / contain no-repeat;
   }
 
   .footer-copyright-wrap {
@@ -443,7 +463,8 @@ const footerLinks = [
     }
 
     .footer-social {
-      justify-content: flex-end;
+      align-self: center;
+      justify-content: center;
       gap: var(--spacing-3);
     }
 
