@@ -59,14 +59,23 @@ const copy = isEnglish
         </div>
       </div>
 
-      <nav id="primary-navigation" class="primary-nav" aria-label={copy.navLabel}>
+      <nav
+        id="primary-navigation"
+        class="primary-nav"
+        aria-label={copy.navLabel}
+      >
         <a href="#about">{copy.about}</a>
         <a href="#solutions">{copy.solutions}</a>
         <a href="#production">{copy.production}</a>
       </nav>
 
       <div class="navbar-actions">
-        <a class="language-toggle" href={languageHref} hreflang={isEnglish ? "ro" : "en"} aria-label={copy.switchLanguage}>
+        <a
+          class="language-toggle"
+          href={languageHref}
+          hreflang={isEnglish ? "ro" : "en"}
+          aria-label={copy.switchLanguage}
+        >
           <span>{copy.nextLanguage}</span>
         </a>
         <div class="contact-action">
@@ -111,8 +120,8 @@ const copy = isEnglish
         menuToggle.setAttribute(
           "aria-label",
           isOpen
-            ? menuToggle.dataset.menuCloseLabel ?? "Close navigation menu"
-            : menuToggle.dataset.menuOpenLabel ?? "Open navigation menu",
+            ? (menuToggle.dataset.menuCloseLabel ?? "Close navigation menu")
+            : (menuToggle.dataset.menuOpenLabel ?? "Open navigation menu"),
         );
       };
 
@@ -139,12 +148,12 @@ const copy = isEnglish
     padding-block-start: var(--spacing-4);
   }
 
-	  .navbar {
-	    display: grid;
-	    grid-template-columns: minmax(0, 1fr) auto;
-	    grid-template-areas:
-        "brand actions"
-        "nav nav";
+  .navbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "brand actions"
+      "nav nav";
     align-items: center;
     align-content: center;
     column-gap: var(--spacing-4);
@@ -186,7 +195,8 @@ const copy = isEnglish
     align-content: center;
     gap: 0.125rem;
     padding-inline-start: var(--spacing-6);
-    border-inline-start: var(--border-hairline) solid var(--color-border-navbar-stroke);
+    border-inline-start: var(--border-hairline) solid
+      var(--color-border-navbar-stroke);
     color: var(--color-red-100);
     font-family: "Atkinson Hyperlegible", sans-serif;
     font-size: var(--font-size-14);
@@ -195,14 +205,15 @@ const copy = isEnglish
     white-space: nowrap;
   }
 
-	  .primary-nav {
-	    grid-area: nav;
+  .primary-nav {
+    grid-area: nav;
     display: none;
     align-items: center;
     justify-content: space-between;
     gap: var(--spacing-4);
     padding-block-start: var(--spacing-4);
-    border-block-start: var(--border-hairline) solid var(--color-border-navbar-stroke);
+    border-block-start: var(--border-hairline) solid
+      var(--color-border-navbar-stroke);
     color: var(--color-text-on-brand);
     font-family: "Atkinson Hyperlegible", sans-serif;
     font-size: var(--font-size-16);
@@ -210,60 +221,68 @@ const copy = isEnglish
     letter-spacing: var(--letter-spacing-label);
   }
 
-	  .navbar.is-menu-open .primary-nav {
-	    display: flex;
-	  }
+  .navbar.is-menu-open .primary-nav {
+    display: flex;
+  }
 
-	  .navbar.is-menu-open {
-	    row-gap: var(--spacing-4);
-	  }
+  .navbar.is-menu-open {
+    row-gap: var(--spacing-4);
+  }
 
   .primary-nav a:hover,
   .primary-nav a:focus-visible {
     color: var(--color-text-accent);
   }
 
-    .navbar-actions {
-      grid-area: actions;
-      justify-self: end;
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-3);
-    }
+  .navbar-actions {
+    grid-area: actions;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+  }
 
-	    .language-toggle {
-	      display: inline-grid;
-	      place-items: center;
-	      min-inline-size: 3rem;
-	      block-size: 3rem;
-	      min-block-size: 3rem;
-      padding-inline: var(--spacing-3);
-      border: var(--border-hairline) solid var(--color-red-50);
-      border-radius: var(--radius-sm);
-      color: var(--color-red-50);
-      font-family: "Atkinson Hyperlegible Mono", monospace;
-      font-size: var(--font-size-14);
-      font-weight: var(--font-weight-label);
-      line-height: var(--line-height-110);
-      letter-spacing: var(--letter-spacing-label);
-      text-decoration: none;
-      box-shadow: 0 0.25rem 1.25rem 0 oklch(0% 0 0 / 24%);
-    }
+  .language-toggle {
+    display: inline-grid;
+    place-items: center;
+    min-inline-size: 3rem;
+    block-size: 3rem;
+    min-block-size: 3rem;
+    padding-inline: var(--spacing-3);
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-red-50);
+    font-family: "Atkinson Hyperlegible Mono", monospace;
+    font-size: var(--font-size-14);
+    font-weight: var(--font-weight-label);
+    line-height: var(--line-height-110);
+    letter-spacing: var(--letter-spacing-label);
+    text-decoration: none;
+    box-shadow: 0 0.25rem 1.25rem 0 oklch(0% 0 0 / 24%);
+    -webkit-tap-highlight-color: transparent;
+  }
 
-    .language-toggle:hover,
-    .language-toggle:focus-visible {
-      border-color: var(--color-text-accent);
-      color: var(--color-text-accent);
-    }
+  .language-toggle:hover,
+  .language-toggle:focus-visible {
+    color: var(--color-text-accent);
+  }
 
-    .language-toggle:focus-visible {
-      outline: var(--border-medium) solid var(--color-text-accent);
-      outline-offset: var(--spacing-1);
-    }
+  .language-toggle:focus-visible {
+    outline: var(--border-medium) solid var(--color-text-accent);
+    outline-offset: var(--spacing-1);
+  }
 
-	  .contact-action {
-	    display: none;
-	  }
+  .language-toggle:active,
+  .language-toggle:focus,
+  .language-toggle:focus-visible {
+    border: 0;
+    outline: none;
+  }
+
+  .contact-action {
+    display: none;
+  }
 
   .contact-action :global(.header-contact) {
     min-inline-size: 7.75rem;
@@ -358,14 +377,14 @@ const copy = isEnglish
     transform: translateY(-0.5625rem) rotate(-45deg);
   }
 
-	  @media (min-width: 48em) {
+  @media (min-width: 48em) {
     .header {
       padding-block-start: var(--spacing-6);
     }
 
-	    .navbar {
-	      grid-template-columns: auto minmax(0, 1fr) auto;
-	      grid-template-areas: "brand nav actions";
+    .navbar {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-areas: "brand nav actions";
       gap: var(--spacing-6);
       padding: var(--spacing-4) var(--spacing-8);
       border: var(--border-hairline) solid var(--color-border-navbar-stroke);
@@ -377,12 +396,26 @@ const copy = isEnglish
       inline-size: clamp(3.75rem, 20vw, 6.75rem);
     }
 
-	    .navbar-actions {
-	      justify-self: end;
-	      display: flex;
-	      align-items: center;
-	      gap: var(--spacing-4);
-	    }
+    .navbar-actions {
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+    }
+
+    .language-toggle {
+      border: var(--border-hairline) solid var(--color-red-50);
+    }
+
+    .language-toggle:hover,
+    .language-toggle:focus-visible {
+      border-color: var(--color-text-accent);
+    }
+
+    .language-toggle:active,
+    .language-toggle:focus:not(:focus-visible) {
+      border: var(--border-hairline) solid var(--color-red-50);
+    }
 
     .primary-nav {
       display: flex;
@@ -404,17 +437,17 @@ const copy = isEnglish
     }
   }
 
-	  @media (min-width: 64em) {
+  @media (min-width: 64em) {
     .header {
       padding-block-start: var(--spacing-8);
     }
 
-	    .navbar {
-	      max-block-size: 4.875rem;
-	      grid-template-columns: auto minmax(0, 1fr) auto;
-	      padding: 0.875rem var(--spacing-12);
-	      border-radius: var(--radius-lg);
-	    }
+    .navbar {
+      max-block-size: 4.875rem;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      padding: 0.875rem var(--spacing-12);
+      border-radius: var(--radius-lg);
+    }
 
     .brand-logo {
       inline-size: 7.5rem;
