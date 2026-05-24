@@ -146,94 +146,96 @@ const mobileKpis = [
 </section>
 
 <script>
-  const gallery = document.querySelector("[data-production-gallery]");
+  {
+    const gallery = document.querySelector("[data-production-gallery]");
 
-  if (gallery) {
-    const slides = Array.from(gallery.querySelectorAll("[data-production-slide]"));
-    const prevButton = gallery.querySelector("[data-gallery-prev]");
-    const nextButton = gallery.querySelector("[data-gallery-next]");
-    const counter = gallery.querySelector("[data-gallery-counter]");
-    const currentCount = gallery.querySelector("[data-gallery-current]");
-    const dots = Array.from(gallery.querySelectorAll("[data-production-dot]"));
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let activeIndex = 0;
+    if (gallery) {
+      const slides = Array.from(gallery.querySelectorAll("[data-production-slide]"));
+      const prevButton = gallery.querySelector("[data-gallery-prev]");
+      const nextButton = gallery.querySelector("[data-gallery-next]");
+      const counter = gallery.querySelector("[data-gallery-counter]");
+      const currentCount = gallery.querySelector("[data-gallery-current]");
+      const dots = Array.from(gallery.querySelectorAll("[data-production-dot]"));
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let activeIndex = 0;
 
-    const formatCount = (value: number | string) => String(value).padStart(2, "0");
+      const formatCount = (value: number | string) => String(value).padStart(2, "0");
 
-    const updateGallery = () => {
-      slides.forEach((slide, index) => {
-        const isActive = index === activeIndex;
-        slide.classList.toggle("is-active", isActive);
-        slide.setAttribute("aria-hidden", String(!isActive));
-      });
+      const updateGallery = () => {
+        slides.forEach((slide, index) => {
+          const isActive = index === activeIndex;
+          slide.classList.toggle("is-active", isActive);
+          slide.setAttribute("aria-hidden", String(!isActive));
+        });
 
-      if (currentCount) {
-        const currentValue = formatCount(activeIndex + 1);
-        currentCount.textContent = currentValue;
-        counter?.setAttribute("aria-label", `${currentValue} din 06`);
-      }
-
-      if (prevButton instanceof HTMLButtonElement) {
-        prevButton.disabled = activeIndex === 0;
-      }
-
-      if (nextButton instanceof HTMLButtonElement) {
-        nextButton.disabled = activeIndex === slides.length - 1;
-      }
-
-      dots.forEach((dot, index) => {
-        dot.classList.toggle("is-active", index === activeIndex);
-      });
-    };
-
-    prevButton?.addEventListener("click", () => {
-      activeIndex = Math.max(0, activeIndex - 1);
-      updateGallery();
-    });
-
-    nextButton?.addEventListener("click", () => {
-      activeIndex = Math.min(slides.length - 1, activeIndex + 1);
-      updateGallery();
-    });
-
-    gallery.addEventListener(
-      "touchstart",
-      (event) => {
-        if (!(event instanceof TouchEvent)) {
-          return;
+        if (currentCount) {
+          const currentValue = formatCount(activeIndex + 1);
+          currentCount.textContent = currentValue;
+          counter?.setAttribute("aria-label", `${currentValue} din 06`);
         }
 
-        const touch = event.changedTouches[0];
-        touchStartX = touch.clientX;
-        touchStartY = touch.clientY;
-      },
-      { passive: true },
-    );
-
-    gallery.addEventListener(
-      "touchend",
-      (event) => {
-        if (!(event instanceof TouchEvent)) {
-          return;
+        if (prevButton instanceof HTMLButtonElement) {
+          prevButton.disabled = activeIndex === 0;
         }
 
-        const touch = event.changedTouches[0];
-        const deltaX = touch.clientX - touchStartX;
-        const deltaY = touch.clientY - touchStartY;
-
-        if (Math.abs(deltaX) < 40 || Math.abs(deltaX) < Math.abs(deltaY)) {
-          return;
+        if (nextButton instanceof HTMLButtonElement) {
+          nextButton.disabled = activeIndex === slides.length - 1;
         }
 
-        activeIndex =
-          deltaX < 0
-            ? Math.min(slides.length - 1, activeIndex + 1)
-            : Math.max(0, activeIndex - 1);
+        dots.forEach((dot, index) => {
+          dot.classList.toggle("is-active", index === activeIndex);
+        });
+      };
+
+      prevButton?.addEventListener("click", () => {
+        activeIndex = Math.max(0, activeIndex - 1);
         updateGallery();
-      },
-      { passive: true },
-    );
+      });
+
+      nextButton?.addEventListener("click", () => {
+        activeIndex = Math.min(slides.length - 1, activeIndex + 1);
+        updateGallery();
+      });
+
+      gallery.addEventListener(
+        "touchstart",
+        (event) => {
+          if (!(event instanceof TouchEvent)) {
+            return;
+          }
+
+          const touch = event.changedTouches[0];
+          touchStartX = touch.clientX;
+          touchStartY = touch.clientY;
+        },
+        { passive: true },
+      );
+
+      gallery.addEventListener(
+        "touchend",
+        (event) => {
+          if (!(event instanceof TouchEvent)) {
+            return;
+          }
+
+          const touch = event.changedTouches[0];
+          const deltaX = touch.clientX - touchStartX;
+          const deltaY = touch.clientY - touchStartY;
+
+          if (Math.abs(deltaX) < 40 || Math.abs(deltaX) < Math.abs(deltaY)) {
+            return;
+          }
+
+          activeIndex =
+            deltaX < 0
+              ? Math.min(slides.length - 1, activeIndex + 1)
+              : Math.max(0, activeIndex - 1);
+          updateGallery();
+        },
+        { passive: true },
+      );
+    }
   }
 </script>
 

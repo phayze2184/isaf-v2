@@ -119,31 +119,32 @@ import element8 from "../assets/svg/element-8.svg";
 </section>
 
 <script>
-  const heroVideo = document.querySelector("[data-hero-video]");
+  {
+    const heroVideo = document.querySelector("[data-hero-video]");
 
-  if (heroVideo instanceof HTMLVideoElement) {
-    const desktopQuery = window.matchMedia("(min-width: 48em)");
+    if (heroVideo instanceof HTMLVideoElement) {
+      const desktopQuery = window.matchMedia("(min-width: 48em)");
 
-    const setHeroVideoSource = () => {
-    //checks the media query and sets the video source accordingly. It also checks if the current source is already the correct one to avoid unnecessary loading and playback.
-      const nextSource = desktopQuery.matches
-        ? heroVideo.dataset.desktopSrc
-        : heroVideo.dataset.mobileSrc;
+      const setHeroVideoSource = () => {
+        const nextSource = desktopQuery.matches
+          ? heroVideo.dataset.desktopSrc
+          : heroVideo.dataset.mobileSrc;
 
-      if (!nextSource || heroVideo.currentSrc.endsWith(nextSource)) {
-        return;
-      }
+        if (!nextSource || heroVideo.currentSrc.endsWith(nextSource)) {
+          return;
+        }
 
-      heroVideo.src = nextSource;
-      heroVideo.load();
+        heroVideo.src = nextSource;
+        heroVideo.load();
 
-      if (heroVideo.autoplay) {
-        void heroVideo.play().catch(() => {});
-      }
-    };
+        if (heroVideo.autoplay) {
+          void heroVideo.play().catch(() => {});
+        }
+      };
 
-    setHeroVideoSource();
-    desktopQuery.addEventListener("change", setHeroVideoSource);
+      setHeroVideoSource();
+      desktopQuery.addEventListener("change", setHeroVideoSource);
+    }
   }
 </script>
 

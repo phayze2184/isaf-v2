@@ -94,90 +94,92 @@ const products = [
 </section>
 
 <script>
-  const carousel = document.querySelector("[data-products-carousel]");
+  {
+    const carousel = document.querySelector("[data-products-carousel]");
 
-  if (carousel instanceof HTMLElement) {
-    const track = carousel.querySelector("[data-products-track]");
-    const prevButton = carousel.querySelector("[data-products-prev]");
-    const nextButton = carousel.querySelector("[data-products-next]");
+    if (carousel instanceof HTMLElement) {
+      const track = carousel.querySelector("[data-products-track]");
+      const prevButton = carousel.querySelector("[data-products-prev]");
+      const nextButton = carousel.querySelector("[data-products-next]");
 
-    if (
-      track instanceof HTMLElement &&
-      prevButton instanceof HTMLButtonElement &&
-      nextButton instanceof HTMLButtonElement
-    ) {
-      const getStep = () => {
-        const firstCard = track.querySelector(".product-card");
-        const gap = Number.parseFloat(getComputedStyle(track).columnGap || "0");
+      if (
+        track instanceof HTMLElement &&
+        prevButton instanceof HTMLButtonElement &&
+        nextButton instanceof HTMLButtonElement
+      ) {
+        const getStep = () => {
+          const firstCard = track.querySelector(".product-card");
+          const gap = Number.parseFloat(getComputedStyle(track).columnGap || "0");
 
-        return firstCard instanceof HTMLElement
-          ? firstCard.getBoundingClientRect().width + gap
-          : track.clientWidth;
-      };
+          return firstCard instanceof HTMLElement
+            ? firstCard.getBoundingClientRect().width + gap
+            : track.clientWidth;
+        };
 
-      const updateControls = () => {
-        const maxScroll = track.scrollWidth - track.clientWidth;
+        const updateControls = () => {
+          const maxScroll = track.scrollWidth - track.clientWidth;
 
-        prevButton.disabled = track.scrollLeft <= 1;
-        nextButton.disabled = track.scrollLeft >= maxScroll - 1;
-      };
+          prevButton.disabled = track.scrollLeft <= 1;
+          nextButton.disabled = track.scrollLeft >= maxScroll - 1;
+        };
 
-      const scrollCards = (direction: number) => {
-        track.scrollBy({
-          left: getStep() * direction,
-          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-            ? "auto"
-            : "smooth",
+        const scrollCards = (direction: number) => {
+          track.scrollBy({
+            left: getStep() * direction,
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+              ? "auto"
+              : "smooth",
+          });
+        };
+
+        prevButton.addEventListener("click", () => scrollCards(-1));
+        nextButton.addEventListener("click", () => scrollCards(1));
+        track.addEventListener("scroll", updateControls, { passive: true });
+        window.addEventListener("resize", updateControls);
+
+        let dragStartX = 0;
+        let dragScrollStart = 0;
+        let isDragging = false;
+
+        track.addEventListener("pointerdown", (event) => {
+          if (event.pointerType === "mouse" && event.button !== 0) {
+            return;
+          }
+
+          isDragging = true;
+          dragStartX = event.clientX;
+          dragScrollStart = track.scrollLeft;
+          track.dataset.dragging = "true";
+          track.setPointerCapture(event.pointerId);
         });
-      };
 
-      prevButton.addEventListener("click", () => scrollCards(-1));
-      nextButton.addEventListener("click", () => scrollCards(1));
-      track.addEventListener("scroll", updateControls, { passive: true });
-      window.addEventListener("resize", updateControls);
+        track.addEventListener("pointermove", (event) => {
+          if (!isDragging) {
+            return;
+          }
 
-      let dragStartX = 0;
-      let dragScrollStart = 0;
-      let isDragging = false;
+          track.scrollLeft = dragScrollStart - (event.clientX - dragStartX);
+        });
 
-      track.addEventListener("pointerdown", (event) => {
-        if (event.pointerType === "mouse" && event.button !== 0) {
-          return;
-        }
+        const stopDragging = (event: PointerEvent) => {
+          if (!isDragging) {
+            return;
+          }
 
-        isDragging = true;
-        dragStartX = event.clientX;
-        dragScrollStart = track.scrollLeft;
-        track.dataset.dragging = "true";
-        track.setPointerCapture(event.pointerId);
-      });
+          isDragging = false;
+          delete track.dataset.dragging;
 
-      track.addEventListener("pointermove", (event) => {
-        if (!isDragging) {
-          return;
-        }
+          if (track.hasPointerCapture(event.pointerId)) {
+            track.releasePointerCapture(event.pointerId);
+          }
+        };
 
-        track.scrollLeft = dragScrollStart - (event.clientX - dragStartX);
-      });
+        track.addEventListener("pointerup", stopDragging);
+        track.addEventListener("pointercancel", stopDragging);
+        track.addEventListener("pointerleave", stopDragging);
 
-      const stopDragging = (event: PointerEvent) => {
-        if (!isDragging) {
-          return;
-        }
-
-        isDragging = false;
-        delete track.dataset.dragging;
-
-        if (track.hasPointerCapture(event.pointerId)) {
-          track.releasePointerCapture(event.pointerId);
-        }
-      };
-
-      track.addEventListener("pointerup", stopDragging);
-      track.addEventListener("pointercancel", stopDragging);
-      track.addEventListener("pointerleave", stopDragging);
-
-      updateControls();
+        updateControls();
+      }
     }
   }
 </script>

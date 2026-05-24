@@ -1,46 +1,95 @@
-# Astro Starter Kit: Basics
+# ISAF v2
+
+Static Astro website for ISAF, a Romanian railway infrastructure company focused on signalling, contact lines, electrification, production, and integration services.
+
+The site is built as a single-page landing experience with responsive sections for:
+
+- Hero video and core positioning
+- Company history and milestones
+- Product and solution carousel
+- Production gallery with KPIs
+- Partner logos and contact details
+
+## Tech Stack
+
+- [Astro](https://astro.build/) 6
+- TypeScript-flavoured Astro components
+- Component-scoped CSS
+- Local images, SVG icons, fonts, and video assets
+
+## Requirements
+
+- Node.js `>=22.12.0`
+- npm
+
+## Getting Started
+
+Install dependencies:
 
 ```sh
-npm create astro@latest -- --template basics
+npm install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Start the development server:
 
-## 🚀 Project Structure
+```sh
+npm run dev
+```
 
-Inside of your Astro project, you'll see the following folders and files:
+Astro will serve the site locally, usually at:
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+http://localhost:4321/isaf-v2
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Available Scripts
 
-## 🧞 Commands
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the local Astro development server |
+| `npm run build` | Build the production site into `dist/` |
+| `npm run preview` | Preview the production build locally |
+| `npm run astro` | Run Astro CLI commands |
 
-All commands are run from the root of the project, from a terminal:
+## Project Structure
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+```text
+.
+├── public/
+├── src/
+│   ├── assets/
+│   │   ├── diagrams/
+│   │   ├── fonts/
+│   │   ├── icons/
+│   │   ├── images/
+│   │   ├── partners/
+│   │   ├── svg/
+│   │   └── video/
+│   ├── components/
+│   │   ├── layout/
+│   │   └── ui/
+│   ├── layouts/
+│   ├── pages/
+│   └── styles/
+├── astro.config.mjs
+├── package.json
+└── tsconfig.json
+```
 
-## 👀 Want to learn more?
+## Main Files
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- `src/pages/index.astro` composes the landing page sections.
+- `src/layouts/Layout.astro` defines document metadata and global page shell styles.
+- `src/components/layout/Header.astro` contains the navigation and mobile menu.
+- `src/components/Hero.astro` renders the responsive video hero.
+- `src/components/About.astro` renders the company overview and timeline.
+- `src/components/Solutions.astro` renders the product carousel.
+- `src/components/Production.astro` renders the production gallery.
+- `src/components/layout/Footer.astro` contains contact information and footer navigation.
+- `src/styles/tokens.css`, `global.css`, and `typography.css` define the shared design system.
+
+## Deployment Notes
+
+The Astro config is prepared for GitHub Pages-style hosting:
+
+If the project is deployed to another domain or path, update `site` and `base` in `astro.config.mjs`.

@@ -57,29 +57,31 @@ import Button from "../ui/Button.astro";
 </header>
 
 <script>
-  const navbar = document.querySelector("[data-navbar]");
-  const menuToggle = document.querySelector("[data-menu-toggle]");
-  const primaryNav = document.querySelector("#primary-navigation");
+  {
+    const navbar = document.querySelector("[data-navbar]");
+    const menuToggle = document.querySelector("[data-menu-toggle]");
+    const primaryNav = document.querySelector("#primary-navigation");
 
-  if (navbar && menuToggle && primaryNav) {
-    const setMenuOpen = (isOpen: boolean) => {
-      navbar.classList.toggle("is-menu-open", isOpen);
-      menuToggle.setAttribute("aria-expanded", String(isOpen));
-      menuToggle.setAttribute(
-        "aria-label",
-        isOpen ? "Close navigation menu" : "Open navigation menu",
-      );
-    };
+    if (navbar && menuToggle && primaryNav) {
+      const setMenuOpen = (isOpen: boolean) => {
+        navbar.classList.toggle("is-menu-open", isOpen);
+        menuToggle.setAttribute("aria-expanded", String(isOpen));
+        menuToggle.setAttribute(
+          "aria-label",
+          isOpen ? "Close navigation menu" : "Open navigation menu",
+        );
+      };
 
-    menuToggle.addEventListener("click", () => {
-      setMenuOpen(!navbar.classList.contains("is-menu-open"));
-    });
+      menuToggle.addEventListener("click", () => {
+        setMenuOpen(!navbar.classList.contains("is-menu-open"));
+      });
 
-    primaryNav.addEventListener("click", (event) => {
-      if (event.target instanceof HTMLAnchorElement) {
-        setMenuOpen(false);
-      }
-    });
+      primaryNav.addEventListener("click", (event) => {
+        if (event.target instanceof HTMLAnchorElement) {
+          setMenuOpen(false);
+        }
+      });
+    }
   }
 </script>
 
