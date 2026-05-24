@@ -6,6 +6,8 @@ const {
   current = 1,
   total = 6,
   class: className,
+  navigationLabel = "Navigare galerie",
+  counterSeparator = "din",
   previousLabel = "Imaginea anterioară",
   nextLabel = "Imaginea următoare",
   previousDisabled = true,
@@ -17,7 +19,7 @@ const currentCount = formatCount(current);
 const totalCount = formatCount(total);
 ---
 
-<div class={`gallery-navigation ${className ?? ""}`} aria-label="Navigare galerie">
+<div class={`gallery-navigation ${className ?? ""}`} aria-label={navigationLabel}>
   <div class="gallery-navigation-frame" aria-hidden="true">
     <svg viewBox="0 0 172 189" focusable="false">
       <path class="frame-path" d="M28 1H139L171 40V188H39L1 143V45" />
@@ -29,7 +31,7 @@ const totalCount = formatCount(total);
     <div class="gallery-navigation-text-line">
       <div
         class="gallery-navigation-counter"
-        aria-label={`${currentCount} din ${totalCount}`}
+        aria-label={`${currentCount} ${counterSeparator} ${totalCount}`}
         data-gallery-counter
       >
         <span class="gallery-navigation-current" data-gallery-current>{currentCount}</span>

@@ -17,51 +17,118 @@ import EyebrowText from "./ui/EyebrowText.astro";
 import GalleryNavigation from "./ui/GalleryNavigation.astro";
 import StatCard from "./ui/StatCard.astro";
 
-const galleryImages = [
-  {
-    mobile: galleryMobileImage1,
-    desktop: galleryDesktopImage1,
-    alt: "Sudor lucrând la componente metalice în atelierul de producție ISAF",
-  },
-  {
-    mobile: galleryMobileImage2,
-    desktop: galleryDesktopImage2,
-    alt: "Echipamente și componente electrice în procesul de producție ISAF",
-  },
-  {
-    mobile: galleryMobileImage3,
-    desktop: galleryDesktopImage3,
-    alt: "Detaliu din atelierul de producție pentru infrastructură feroviară",
-  },
-  {
-    mobile: galleryMobileImage4,
-    desktop: galleryDesktopImage4,
-    alt: "Lucrări tehnice desfășurate în fabrica ISAF",
-  },
-  {
-    mobile: galleryMobileImage5,
-    desktop: galleryDesktopImage5,
-    alt: "Proces de fabricație și integrare pentru soluții feroviare ISAF",
-  },
+const { lang = "ro" } = Astro.props;
+
+const commonGalleryImages = [
+  { mobile: galleryMobileImage1, desktop: galleryDesktopImage1 },
+  { mobile: galleryMobileImage2, desktop: galleryDesktopImage2 },
+  { mobile: galleryMobileImage3, desktop: galleryDesktopImage3 },
+  { mobile: galleryMobileImage4, desktop: galleryDesktopImage4 },
+  { mobile: galleryMobileImage5, desktop: galleryDesktopImage5 },
 ];
 
-const mobileKpis = [
-  {
-    value: "100%",
-    label: "Producție proprie",
-    description: "3 etape: proiectare, fabricație și testare",
-  },
-  {
-    value: "150+",
-    label: "Echipamente",
-    description: "Soluții dedicate electrificării feroviare",
-  },
-  {
-    value: "360°",
-    label: "Execuție în teren",
-    description: "Montaj, punere în funcțiune și mentenanță",
-  },
-];
+const copy = lang === "en"
+  ? {
+      eyebrow: "ISAF production",
+      title: "Design, production and integration",
+      intro:
+        "We produce electrical and electronic equipment and components for railway applications, with high standards for quality and reliability. From design to delivery and testing, we provide integrated solutions and performance in operation.",
+      navigationLabel: "Gallery navigation",
+      counterSeparator: "of",
+      previousImage: "Previous image",
+      nextImage: "Next image",
+      galleryAlts: [
+        "Welder working on metal components in the ISAF production workshop",
+        "Electrical equipment and components in the ISAF production process",
+        "Detail from the production workshop for railway infrastructure",
+        "Technical work carried out in the ISAF factory",
+        "Manufacturing and integration process for ISAF railway solutions",
+      ],
+      mobileKpis: [
+        {
+          value: "100%",
+          label: "Own production",
+          description: "3 stages: design, manufacturing and testing",
+        },
+        {
+          value: "150+",
+          label: "Equipment",
+          description: "Solutions dedicated to railway electrification",
+        },
+        {
+          value: "360°",
+          label: "Field execution",
+          description: "Assembly, commissioning and maintenance",
+        },
+      ],
+      desktopKpis: [
+        {
+          value: "Design",
+          description: "Design for railway solutions aligned with technical requirements",
+        },
+        {
+          value: "Execution",
+          description: "Integrated execution for railway infrastructure, contact lines and signalling.",
+        },
+        {
+          value: "Assembly",
+          description: "Assembly, commissioning and maintenance for railway equipment and systems.",
+        },
+      ],
+    }
+  : {
+      eyebrow: "Producție ISAF",
+      title: "Proiectare, producție și integrare",
+      intro:
+        "Producem echipamente și componente electrice și electronice pentru aplicații feroviare, cu standarde ridicate de calitate și fiabilitate. De la proiectare la execuție și testare, asigurăm soluții integrate și performanță în exploatare.",
+      navigationLabel: "Navigare galerie",
+      counterSeparator: "din",
+      previousImage: "Imaginea anterioară",
+      nextImage: "Imaginea următoare",
+      galleryAlts: [
+        "Sudor lucrând la componente metalice în atelierul de producție ISAF",
+        "Echipamente și componente electrice în procesul de producție ISAF",
+        "Detaliu din atelierul de producție pentru infrastructură feroviară",
+        "Lucrări tehnice desfășurate în fabrica ISAF",
+        "Proces de fabricație și integrare pentru soluții feroviare ISAF",
+      ],
+      mobileKpis: [
+        {
+          value: "100%",
+          label: "Producție proprie",
+          description: "3 etape: proiectare, fabricație și testare",
+        },
+        {
+          value: "150+",
+          label: "Echipamente",
+          description: "Soluții dedicate electrificării feroviare",
+        },
+        {
+          value: "360°",
+          label: "Execuție în teren",
+          description: "Montaj, punere în funcțiune și mentenanță",
+        },
+      ],
+      desktopKpis: [
+        {
+          value: "Proiectare",
+          description: "Proiectare pentru soluții feroviare conforme cu cerințele tehnice",
+        },
+        {
+          value: "Execuție",
+          description: "Execuție integrată pentru infrastructură feroviară, linii de contact, semnalizare.",
+        },
+        {
+          value: "Montaj",
+          description: "Montaj, punere în funcțiune și mentenanță pentru echipamente și sisteme feroviare.",
+        },
+      ],
+    };
+
+const galleryImages = commonGalleryImages.map((image, index) => ({
+  ...image,
+  alt: copy.galleryAlts[index],
+}));
 ---
 
 <section class="production section" id="production" aria-labelledby="production-title">
@@ -69,16 +136,14 @@ const mobileKpis = [
     <div class="section-left">
       <header class="production-header">
         <div class="production-heading">
-          <EyebrowText class="production-eyebrow">Producție ISAF</EyebrowText>
+          <EyebrowText class="production-eyebrow">{copy.eyebrow}</EyebrowText>
           <h2 id="production-title">
-            Proiectare, producție <br />și integrare
+            {copy.title}
           </h2>
         </div>
 
         <p class="production-intro">
-          Producem echipamente și componente electrice și electronice pentru aplicații
-          feroviare, cu standarde ridicate de calitate și fiabilitate. De la proiectare
-          la execuție și testare, asigurăm soluții integrate și performanță în exploatare.
+          {copy.intro}
         </p>
 
         <img
@@ -90,11 +155,11 @@ const mobileKpis = [
         />
       </header>
 
-      <StatCard class="production-kpis production-kpis--mobile" items={mobileKpis} />
-      <StatCard class="production-kpis production-kpis--desktop" />
+      <StatCard class="production-kpis production-kpis--mobile" items={copy.mobileKpis} />
+      <StatCard class="production-kpis production-kpis--desktop" items={copy.desktopKpis} />
     </div>
 
-    <div class="production-content" data-production-gallery>
+    <div class="production-content" data-production-gallery data-counter-separator={copy.counterSeparator}>
       {
         galleryImages.map((image, index) => (
           <figure
@@ -125,6 +190,10 @@ const mobileKpis = [
         class="production-controls"
         current={1}
         total={6}
+        navigationLabel={copy.navigationLabel}
+        counterSeparator={copy.counterSeparator}
+        previousLabel={copy.previousImage}
+        nextLabel={copy.nextImage}
         previousDisabled={true}
         nextDisabled={galleryImages.length <= 1}
       />
@@ -150,6 +219,10 @@ const mobileKpis = [
     const gallery = document.querySelector("[data-production-gallery]");
 
     if (gallery) {
+      const counterSeparator =
+        gallery instanceof HTMLElement && gallery.dataset.counterSeparator
+          ? gallery.dataset.counterSeparator
+          : "din";
       const slides = Array.from(gallery.querySelectorAll("[data-production-slide]"));
       const prevButton = gallery.querySelector("[data-gallery-prev]");
       const nextButton = gallery.querySelector("[data-gallery-next]");
@@ -172,7 +245,7 @@ const mobileKpis = [
         if (currentCount) {
           const currentValue = formatCount(activeIndex + 1);
           currentCount.textContent = currentValue;
-          counter?.setAttribute("aria-label", `${currentValue} din 06`);
+          counter?.setAttribute("aria-label", `${currentValue} ${counterSeparator} 06`);
         }
 
         if (prevButton instanceof HTMLButtonElement) {

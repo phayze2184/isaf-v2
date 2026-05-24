@@ -1,5 +1,13 @@
+---
+const {
+	lang = "ro",
+	title = "ISAF | Infrastructura feroviara",
+	description = "ISAF landing page for railway infrastructure design, production and integration services.",
+} = Astro.props;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -8,9 +16,9 @@
 		<meta name="generator" content={Astro.generator} />
 		<meta
 			name="description"
-			content="ISAF landing page for railway infrastructure design, production and integration services."
+			content={description}
 		/>
-		<title>ISAF | Infrastructura feroviara</title>
+		<title>{title}</title>
 	</head>
 	<body>
 		<slot />

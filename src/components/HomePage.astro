@@ -1,0 +1,37 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "./layout/Header.astro";
+import Hero from "./Hero.astro";
+import About from "./About.astro";
+import Solutions from "./Solutions.astro";
+import Production from "./Production.astro";
+import Footer from "./layout/Footer.astro";
+import Partners from "./Partners.astro";
+
+const { lang = "ro" } = Astro.props;
+const isEnglish = lang === "en";
+
+const meta = isEnglish
+  ? {
+      title: "ISAF | Railway infrastructure",
+      description:
+        "ISAF landing page for railway infrastructure design, production, integration and electrification services.",
+    }
+  : {
+      title: "ISAF | Infrastructura feroviara",
+      description:
+        "Pagina ISAF pentru servicii de proiectare, productie, integrare si electrificare in infrastructura feroviara.",
+    };
+---
+
+<Layout lang={lang} title={meta.title} description={meta.description}>
+  <Header lang={lang} />
+  <main>
+    <Hero lang={lang} />
+    <About lang={lang} />
+    <Solutions lang={lang} />
+    <Production lang={lang} />
+    <Partners lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</Layout>

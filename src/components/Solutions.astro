@@ -11,38 +11,82 @@ import arrowRight from "../assets/icons/arrowRight.svg";
 import techElementSolutions from "../assets/svg/tech-elem-prod.svg";
 import EyebrowText from "./ui/EyebrowText.astro";
 
-const products = [
-  {
-    image: semnalizareImage,
-    title: "Semnalizare",
-    items: ["semnale cu bec și unități LED", "semnale manevră pitice", "dulapuri SCB"],
-  },
-  {
-    image: liniiContactImage,
-    title: "Linii de contact",
-    items: ["stâlpi", "console", "traverse"],
-  },
-  {
-    image: circuiteCaleImage,
-    title: "Circuite de cale",
-    items: ["rame și dulapuri de JT", "panouri de comandă", "cutii de aparataj"],
-  },
-  {
-    image: releeImage,
-    title: "Relee",
-    items: ["neutrale fișă", "combinate fișă", "de prag tip PIC-1"],
-  },
-];
+const { lang = "ro" } = Astro.props;
+const copy = lang === "en"
+  ? {
+      eyebrow: "Our solutions",
+      title: "Design, production and integration",
+      intro:
+        "We are involved in every stage, from design to manufacturing, so every product is well built and ready for real-world use.",
+      productsLabel: "ISAF products",
+      controlsLabel: "Product navigation",
+      previousProduct: "Previous product",
+      nextProduct: "Next product",
+      products: [
+        {
+          image: semnalizareImage,
+          title: "Signalling",
+          items: ["lamp and LED signals", "low shunting signals", "SCB cabinets"],
+        },
+        {
+          image: liniiContactImage,
+          title: "Contact lines",
+          items: ["poles", "brackets", "crossbeams"],
+        },
+        {
+          image: circuiteCaleImage,
+          title: "Track circuits",
+          items: ["JT frames and cabinets", "control panels", "equipment boxes"],
+        },
+        {
+          image: releeImage,
+          title: "Relays",
+          items: ["plug-in neutral relays", "combined plug-in relays", "PIC-1 threshold relays"],
+        },
+      ],
+    }
+  : {
+      eyebrow: "Soluțiile noastre",
+      title: "Proiectare, producție și integrare",
+      intro:
+        "Ne implicăm în fiecare etapă, de la proiectare la fabricație, ca fiecare produs să fie bine făcut și pregătit pentru utilizare reală.",
+      productsLabel: "Produse ISAF",
+      controlsLabel: "Navigare produse",
+      previousProduct: "Produsul anterior",
+      nextProduct: "Produsul următor",
+      products: [
+        {
+          image: semnalizareImage,
+          title: "Semnalizare",
+          items: ["semnale cu bec și unități LED", "semnale manevră pitice", "dulapuri SCB"],
+        },
+        {
+          image: liniiContactImage,
+          title: "Linii de contact",
+          items: ["stâlpi", "console", "traverse"],
+        },
+        {
+          image: circuiteCaleImage,
+          title: "Circuite de cale",
+          items: ["rame și dulapuri de JT", "panouri de comandă", "cutii de aparataj"],
+        },
+        {
+          image: releeImage,
+          title: "Relee",
+          items: ["neutrale fișă", "combinate fișă", "de prag tip PIC-1"],
+        },
+      ],
+    };
 ---
 
 <section class="solutions" id="solutions" aria-labelledby="solutions-title">
   <div class="solutions-header">
     <div class="solutions-title-group">
       <EyebrowText class="solutions-eyebrow">
-        Soluțiile noastre
+        {copy.eyebrow}
       </EyebrowText>
 
-      <h2 id="solutions-title">Proiectare, producție și integrare</h2>
+      <h2 id="solutions-title">{copy.title}</h2>
       <img
         class="solutions-tech"
         src={techElementSolutions.src}
@@ -54,8 +98,7 @@ const products = [
 
     <div class="solutions-intro">
       <p>
-        Ne implicăm în fiecare etapă, de la proiectare la fabricație, ca fiecare produs
-        să fie bine făcut și pregătit pentru utilizare reală.
+        {copy.intro}
       </p>
     </div>
   </div>
@@ -64,25 +107,25 @@ const products = [
     <div
       class="products-scroll"
       data-products-track
-      aria-label="Produse ISAF"
+      aria-label={copy.productsLabel}
       tabindex="0"
     >
       {
-        products.map((product) => (
+        copy.products.map((product) => (
           <ProductCard image={product.image} title={product.title} items={product.items} />
         ))
       }
     </div>
 
-    <div class="products-controls" aria-label="Navigare produse">
-      <button class="products-control" type="button" data-products-prev aria-label="Produsul anterior">
+    <div class="products-controls" aria-label={copy.controlsLabel}>
+      <button class="products-control" type="button" data-products-prev aria-label={copy.previousProduct}>
         <span
           class="products-control-icon products-control-icon--prev"
           style={`--products-control-icon: url("${arrowRight.src}")`}
           aria-hidden="true"
         ></span>
       </button>
-      <button class="products-control" type="button" data-products-next aria-label="Produsul următor">
+      <button class="products-control" type="button" data-products-next aria-label={copy.nextProduct}>
         <span
           class="products-control-icon"
           style={`--products-control-icon: url("${arrowRight.src}")`}

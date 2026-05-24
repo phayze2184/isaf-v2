@@ -10,38 +10,88 @@ import targetIcon from "../assets/icons/timeline-target.svg";
 import techElementLeft from "../assets/svg/tech-elem-left.svg";
 import techElementRight from "../assets/svg/tech-elem-right.svg";
 
-const timeline = [
-  {
-    icon: checkIcon,
-    title: "1951",
+const { lang = "ro" } = Astro.props;
+
+const content = {
+  ro: {
+    title: "Despre ISAF",
     description:
-      "Înființarea ISAF S.A. și primii pași în construirea infrastructurii feroviare",
+      "ISAF este un grup românesc cu experiență solidă în proiectarea, execuția și modernizarea infrastructurii feroviare. De peste șapte decenii, livrăm soluții fiabile și sustenabile, alături de parteneri de încredere, pentru un transport feroviar sigur și performant.",
+    timelineLabel: "Repere din istoria ISAF",
+    timeline: [
+      {
+        icon: checkIcon,
+        title: "1951",
+        description:
+          "Înființarea ISAF S.A. și primii pași în construirea infrastructurii feroviare",
+      },
+      {
+        icon: groupIcon,
+        title: "Extindere",
+        description:
+          "Diversificarea capacităților de producție și consolidarea competențelor tehnice",
+      },
+      {
+        icon: railIcon,
+        title: "Modernizare",
+        description:
+          "Investiții în tehnologie, echipamente și procese pentru creșterea calității și eficienței.",
+      },
+      {
+        icon: settingsIcon,
+        title: "Proiecte",
+        description:
+          "Implicare și proiecte strategice de infrastructură feroviară în întreaga țară",
+      },
+      {
+        icon: targetIcon,
+        title: "Astăzi",
+        description:
+          "Continuăm să construim viitorul mobilității feroviare cu soluții durabile și parteneriate solide.",
+      },
+    ],
   },
-  {
-    icon: groupIcon,
-    title: "Extindere",
+  en: {
+    title: "About ISAF",
     description:
-      "Diversificarea capacităților de producție și consolidarea competențelor tehnice",
+      "ISAF is a Romanian group with solid experience in designing, delivering and modernizing railway infrastructure. For more than seven decades, we have delivered reliable, sustainable solutions with trusted partners for safe and high-performing rail transport.",
+    timelineLabel: "Milestones in ISAF history",
+    timeline: [
+      {
+        icon: checkIcon,
+        title: "1951",
+        description:
+          "ISAF S.A. is founded and begins its first railway infrastructure projects",
+      },
+      {
+        icon: groupIcon,
+        title: "Expansion",
+        description:
+          "Production capabilities diversify and technical expertise becomes stronger",
+      },
+      {
+        icon: railIcon,
+        title: "Modernization",
+        description:
+          "Investments in technology, equipment and processes increase quality and efficiency.",
+      },
+      {
+        icon: settingsIcon,
+        title: "Projects",
+        description:
+          "Strategic railway infrastructure projects are delivered across the country",
+      },
+      {
+        icon: targetIcon,
+        title: "Today",
+        description:
+          "We continue to build the future of rail mobility with durable solutions and strong partnerships.",
+      },
+    ],
   },
-  {
-    icon: railIcon,
-    title: "Modernizare",
-    description:
-      "Investiții în tehnologie, echipamente și procese pentru creșterea calității și eficienței.",
-  },
-  {
-    icon: settingsIcon,
-    title: "Proiecte",
-    description:
-      "Implicare și proiecte strategice de infrastructură feroviară în întreaga țară",
-  },
-  {
-    icon: targetIcon,
-    title: "Astăzi",
-    description:
-      "Continuăm să construim viitorul mobilității feroviare cu soluții durabile și parteneriate solide.",
-  },
-];
+};
+
+const copy = content[lang === "en" ? "en" : "ro"];
 ---
 
 <section class="about" id="about" aria-labelledby="about-title">
@@ -104,7 +154,7 @@ const timeline = [
           aria-hidden="true"
           loading="lazy"
         />
-        <h2 id="about-title">Despre ISAF</h2>
+        <h2 id="about-title">{copy.title}</h2>
         <img
           class="heading-decoration heading-decoration--reverse"
           src={techElementRight.src}
@@ -115,15 +165,12 @@ const timeline = [
       </div>
 
       <p class="about-description">
-        ISAF este un grup românesc cu experiență solidă în proiectarea, execuția și
-        modernizarea infrastructurii feroviare. De peste șapte decenii, livrăm soluții
-        fiabile și sustenabile, alături de parteneri de încredere, pentru un transport
-        feroviar sigur și performant.
+        {copy.description}
       </p>
 
-      <ol class="timeline" aria-label="Repere din istoria ISAF">
+      <ol class="timeline" aria-label={copy.timelineLabel}>
         {
-          timeline.map((item) => (
+          copy.timeline.map((item) => (
             <li class="timeline-item">
               <span class="timeline-dot" aria-hidden="true"></span>
               <span class="timeline-connector" aria-hidden="true"></span>

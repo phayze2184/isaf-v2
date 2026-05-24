@@ -3,9 +3,6 @@ import videoDesktop from "../assets/video/hero-section-video__desktop.mp4";
 import videoMobile from "../assets/video/hero-section-video__mobile.mp4";
 import posterMobile from "../assets/images/hero-poster-mobile.jpeg";
 import Button from "./ui/Button.astro";
-import "../styles/typography.css";
-import "../styles/tokens.css";
-import "../styles/global.css";
 import element1 from "../assets/svg/element-1.svg";
 import element2 from "../assets/svg/element-2.svg";
 import element3 from "../assets/svg/element-3.svg";
@@ -14,10 +11,47 @@ import element5 from "../assets/svg/element-5.svg";
 import element6 from "../assets/svg/element-6.svg";
 import element7 from "../assets/svg/element-7.svg";
 import element8 from "../assets/svg/element-8.svg";
+import "../styles/typography.css";
+import "../styles/tokens.css";
+import "../styles/global.css";
 
+const { lang = "ro" } = Astro.props;
+const copy = lang === "en"
+  ? {
+      ariaLabel: "ISAF - contact line, signalling and railway electrification systems",
+      eyebrow: ["Contact line systems,", "signalling and electrification"],
+      title: "Strategic partner in railway",
+      titleAccent: "infrastructure",
+      lead:
+        "We build and modernize railway infrastructure in Romania through integrated solutions, advanced technologies and long-term partnerships.",
+      cta: "View our solutions",
+      experienceValue: "75+",
+      experienceCaption: "Years of experience",
+      railValue: "9,500",
+      railUnit: "km",
+      railCaption: "Electrified railway",
+      partnershipsValue: "Partnerships",
+      partnershipsCaption: "Durable and high-performing",
+    }
+  : {
+      ariaLabel: "ISAF - semnalizare, linii de contact si electrificare feroviara",
+      eyebrow: ["Sisteme de linii de contact,", "semnalizare și electrificare"],
+      title: "Partener strategic în infrastructură",
+      titleAccent: "feroviară",
+      lead:
+        "Construim și modernizăm infrastructura feroviară din România, prin soluții integrate, tehnologii avansate și parteneriate de durată.",
+      cta: "Vezi soluțiile noastre",
+      experienceValue: "75+",
+      experienceCaption: "Ani de experiență",
+      railValue: "9.500",
+      railUnit: "km",
+      railCaption: "Cale ferată electrificată",
+      partnershipsValue: "Parteneriate",
+      partnershipsCaption: "Durabile și performante",
+    };
 ---
 
-<section class="hero" aria-label="ISAF - semnalizare, linii de contact si electrificare feroviara">
+<section class="hero" aria-label={copy.ariaLabel}>
   
   <video
     class="hero-media"
@@ -36,33 +70,31 @@ import element8 from "../assets/svg/element-8.svg";
 
   <div class="hero-overlay" aria-hidden="true"></div>
 
-  <div class="hero-container">
-    <div class="hero-wrapper">
+  <div class="hero-wrapper">
       <div class="hero-card">
         <div class="hero-content">
           <div class="hero-eyebrow">
             <span class="hero-eyebrow-line" aria-hidden="true"></span>
             <p>
-              Sisteme de linii de contact,
+              {copy.eyebrow[0]}
               <br />
-              semnalizare și electrificare
+              {copy.eyebrow[1]}
             </p>
           </div>
 
           <div class="hero-copy">
             <h1 id="hero-title" class="headline">
-              Partener strategic în infrastructură <span>feroviară</span>
+              {copy.title} <span>{copy.titleAccent}</span>
             </h1>
 
             <p class="hero-lead">
-              Construim și modernizăm infrastructura feroviară din România, prin soluții
-              integrate, tehnologii avansate și parteneriate de durată.
+              {copy.lead}
             </p>
           </div>
         </div>
 
         <Button href="#solutions" class="hero-cta" variant="primary">
-          <span>Vezi soluțiile noastre</span>
+          <span>{copy.cta}</span>
         </Button>
       </div>
 
@@ -75,8 +107,8 @@ import element8 from "../assets/svg/element-8.svg";
           <span class="trust-svg-element trust-svg-element--bottom" aria-hidden="true">
             <img src={element8.src} alt="" loading="lazy" />
           </span>
-          <p class="trust-value">75+</p>
-          <p class="trust-caption">Ani de experiență</p>
+          <p class="trust-value">{copy.experienceValue}</p>
+          <p class="trust-caption">{copy.experienceCaption}</p>
         </div>
 
         <div class="trust-item trust-item--rail">
@@ -91,9 +123,9 @@ import element8 from "../assets/svg/element-8.svg";
             <img src={element1.src} alt="" loading="lazy" />
           </span>
           <p class="trust-value">
-            9.500 <span>km</span>
+            {copy.railValue} <span>{copy.railUnit}</span>
           </p>
-          <p class="trust-caption">Cale ferată electrificată</p>
+          <p class="trust-caption">{copy.railCaption}</p>
         </div>
 
         <div class="trust-item trust-item--partnerships">
@@ -110,11 +142,10 @@ import element8 from "../assets/svg/element-8.svg";
           <span class="trust-svg-element trust-svg-element--partnerships-bottom" aria-hidden="true">
             <img src={element8.src} alt="" loading="lazy" />
           </span>
-          <p class="trust-value">Parteneriate</p>
-          <p class="trust-caption">Durabile și performante</p>
+          <p class="trust-value">{copy.partnershipsValue}</p>
+          <p class="trust-caption">{copy.partnershipsCaption}</p>
         </div>
       </div>
-    </div>
   </div>
 </section>
 
@@ -156,7 +187,7 @@ import element8 from "../assets/svg/element-8.svg";
     position: relative;
     display: grid;
     min-height: 100svh;
-    place-items: end center;
+    place-items: center;
     padding-block: var(--section-padding-block-start) var(--section-padding-block-end);
     padding-inline: var(--spacing-4);
     flex-shrink: 0;
@@ -182,14 +213,11 @@ import element8 from "../assets/svg/element-8.svg";
     );
   }
 
-  .hero-container {
+  .hero-wrapper {
     position: relative;
     z-index: 2;
     inline-size: min(100%, var(--container-max));
     margin: 0 auto;
-  }
-
-  .hero-wrapper {
     display: flex;
     align-items: center;
     gap: 2.3125rem;
@@ -590,7 +618,6 @@ import element8 from "../assets/svg/element-8.svg";
 
     .hero-card {
       padding: var(--spacing-12) var(--spacing-10);
-      transform: translateY(clamp(2rem, 5vh, 4rem));
     }
 
     .headline {

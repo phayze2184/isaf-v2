@@ -4,13 +4,46 @@ import "../../styles/global.css";
 import "../../styles/typography.css";
 import logoIsaf from "../../assets/images/logo-isaf.png";
 import Button from "../ui/Button.astro";
+
+const { lang = "ro" } = Astro.props;
+const isEnglish = lang === "en";
+const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const homeHref = isEnglish ? `${baseUrl}en/` : baseUrl;
+const languageHref = isEnglish ? baseUrl : `${baseUrl}en/`;
+const copy = isEnglish
+  ? {
+      homeLabel: "ISAF home",
+      navLabel: "Primary navigation",
+      about: "About us",
+      solutions: "Solutions",
+      production: "Production",
+      contact: "Contact",
+      menuOpen: "Open navigation menu",
+      menuClose: "Close navigation menu",
+      switchLanguage: "Switch to Romanian",
+      nextLanguage: "RO",
+    }
+  : {
+      homeLabel: "Pagina principala ISAF",
+      navLabel: "Navigare principala",
+      about: "Despre noi",
+      solutions: "Soluții",
+      production: "Producție",
+      contact: "Contact",
+      menuOpen: "Deschide meniul de navigare",
+      menuClose: "Închide meniul de navigare",
+      switchLanguage: "Schimbă limba în engleză",
+      nextLanguage: "EN",
+    };
 ---
 
 <header class="header">
   <div class="container">
     <div class="navbar" data-navbar>
       <div class="navbar-left">
-        <a class="brand" href="/" aria-label="ISAF home">
+        <a class="brand" href={homeHref} aria-label={copy.homeLabel}>
           <img
             class="brand-logo"
             src={logoIsaf.src}
@@ -26,25 +59,30 @@ import Button from "../ui/Button.astro";
         </div>
       </div>
 
-      <div class="navbar-right">
-        <nav id="primary-navigation" class="primary-nav" aria-label="Primary navigation">
-          <a href="#about">Despre noi</a>
-          <a href="#solutions">Soluții</a>
-          <a href="#production">Producție</a>
-        </nav>
+      <nav id="primary-navigation" class="primary-nav" aria-label={copy.navLabel}>
+        <a href="#about">{copy.about}</a>
+        <a href="#solutions">{copy.solutions}</a>
+        <a href="#production">{copy.production}</a>
+      </nav>
 
+      <div class="navbar-actions">
+        <a class="language-toggle" href={languageHref} hreflang={isEnglish ? "ro" : "en"} aria-label={copy.switchLanguage}>
+          <span>{copy.nextLanguage}</span>
+        </a>
         <div class="contact-action">
           <Button href="#contact" variant="secondary" class="header-contact">
-            <span>Contact</span>
+            <span>{copy.contact}</span>
           </Button>
         </div>
 
         <button
           class="menu-toggle"
           type="button"
-          aria-label="Open navigation menu"
+          aria-label={copy.menuOpen}
           aria-expanded="false"
           aria-controls="primary-navigation"
+          data-menu-open-label={copy.menuOpen}
+          data-menu-close-label={copy.menuClose}
           data-menu-toggle
         >
           <span></span>
@@ -62,13 +100,19 @@ import Button from "../ui/Button.astro";
     const menuToggle = document.querySelector("[data-menu-toggle]");
     const primaryNav = document.querySelector("#primary-navigation");
 
-    if (navbar && menuToggle && primaryNav) {
+    if (
+      navbar instanceof HTMLElement &&
+      menuToggle instanceof HTMLButtonElement &&
+      primaryNav instanceof HTMLElement
+    ) {
       const setMenuOpen = (isOpen: boolean) => {
         navbar.classList.toggle("is-menu-open", isOpen);
         menuToggle.setAttribute("aria-expanded", String(isOpen));
         menuToggle.setAttribute(
           "aria-label",
-          isOpen ? "Close navigation menu" : "Open navigation menu",
+          isOpen
+            ? menuToggle.dataset.menuCloseLabel ?? "Close navigation menu"
+            : menuToggle.dataset.menuOpenLabel ?? "Open navigation menu",
         );
       };
 
@@ -95,10 +139,12 @@ import Button from "../ui/Button.astro";
     padding-block-start: var(--spacing-4);
   }
 
-  .navbar {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: "brand menu";
+	  .navbar {
+	    display: grid;
+	    grid-template-columns: minmax(0, 1fr) auto;
+	    grid-template-areas:
+        "brand actions"
+        "nav nav";
     align-items: center;
     align-content: center;
     column-gap: var(--spacing-4);
@@ -119,10 +165,6 @@ import Button from "../ui/Button.astro";
     align-items: center;
     gap: var(--spacing-6);
     min-inline-size: 0;
-  }
-
-  .navbar-right {
-    display: contents;
   }
 
   .brand {
@@ -153,8 +195,8 @@ import Button from "../ui/Button.astro";
     white-space: nowrap;
   }
 
-  .primary-nav {
-    grid-area: nav;
+	  .primary-nav {
+	    grid-area: nav;
     display: none;
     align-items: center;
     justify-content: space-between;
@@ -168,25 +210,60 @@ import Button from "../ui/Button.astro";
     letter-spacing: var(--letter-spacing-label);
   }
 
-  .navbar.is-menu-open .primary-nav {
-    display: flex;
-  }
+	  .navbar.is-menu-open .primary-nav {
+	    display: flex;
+	  }
 
-  .navbar.is-menu-open {
-    grid-template-areas:
-      "brand menu"
-      "nav nav";
-    row-gap: var(--spacing-4);
-  }
+	  .navbar.is-menu-open {
+	    row-gap: var(--spacing-4);
+	  }
 
   .primary-nav a:hover,
   .primary-nav a:focus-visible {
     color: var(--color-text-accent);
   }
 
-  .contact-action {
-    display: none;
-  }
+    .navbar-actions {
+      grid-area: actions;
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+    }
+
+	    .language-toggle {
+	      display: inline-grid;
+	      place-items: center;
+	      min-inline-size: 3rem;
+	      block-size: 3rem;
+	      min-block-size: 3rem;
+      padding-inline: var(--spacing-3);
+      border: var(--border-hairline) solid var(--color-red-50);
+      border-radius: var(--radius-sm);
+      color: var(--color-red-50);
+      font-family: "Atkinson Hyperlegible Mono", monospace;
+      font-size: var(--font-size-14);
+      font-weight: var(--font-weight-label);
+      line-height: var(--line-height-110);
+      letter-spacing: var(--letter-spacing-label);
+      text-decoration: none;
+      box-shadow: 0 0.25rem 1.25rem 0 oklch(0% 0 0 / 24%);
+    }
+
+    .language-toggle:hover,
+    .language-toggle:focus-visible {
+      border-color: var(--color-text-accent);
+      color: var(--color-text-accent);
+    }
+
+    .language-toggle:focus-visible {
+      outline: var(--border-medium) solid var(--color-text-accent);
+      outline-offset: var(--spacing-1);
+    }
+
+	  .contact-action {
+	    display: none;
+	  }
 
   .contact-action :global(.header-contact) {
     min-inline-size: 7.75rem;
@@ -281,14 +358,14 @@ import Button from "../ui/Button.astro";
     transform: translateY(-0.5625rem) rotate(-45deg);
   }
 
-  @media (min-width: 48em) {
+	  @media (min-width: 48em) {
     .header {
       padding-block-start: var(--spacing-6);
     }
 
-    .navbar {
-      grid-template-columns: auto minmax(0, 1fr);
-      grid-template-areas: "brand nav";
+	    .navbar {
+	      grid-template-columns: auto minmax(0, 1fr) auto;
+	      grid-template-areas: "brand nav actions";
       gap: var(--spacing-6);
       padding: var(--spacing-4) var(--spacing-8);
       border: var(--border-hairline) solid var(--color-border-navbar-stroke);
@@ -300,12 +377,12 @@ import Button from "../ui/Button.astro";
       inline-size: clamp(3.75rem, 20vw, 6.75rem);
     }
 
-    .navbar-right {
-      justify-self: end;
-      display: flex;
-      align-items: center;
-      gap: 2.25rem;
-    }
+	    .navbar-actions {
+	      justify-self: end;
+	      display: flex;
+	      align-items: center;
+	      gap: var(--spacing-4);
+	    }
 
     .primary-nav {
       display: flex;
@@ -327,17 +404,17 @@ import Button from "../ui/Button.astro";
     }
   }
 
-  @media (min-width: 64em) {
+	  @media (min-width: 64em) {
     .header {
       padding-block-start: var(--spacing-8);
     }
 
-    .navbar {
-      max-block-size: 4.875rem;
-      grid-template-columns: auto minmax(0, 1fr);
-      padding: 0.875rem var(--spacing-12);
-      border-radius: var(--radius-lg);
-    }
+	    .navbar {
+	      max-block-size: 4.875rem;
+	      grid-template-columns: auto minmax(0, 1fr) auto;
+	      padding: 0.875rem var(--spacing-12);
+	      border-radius: var(--radius-lg);
+	    }
 
     .brand-logo {
       inline-size: 7.5rem;

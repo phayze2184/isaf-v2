@@ -8,6 +8,19 @@ import logoSiemens from "../assets/partners/logo-siemens.svg";
 import logoImsat from "../assets/partners/logo-imsat.svg";
 import EyebrowText from "./ui/EyebrowText.astro";
 
+const { lang = "ro" } = Astro.props;
+const copy = lang === "en"
+  ? {
+      sectionLabel: "Strategic partnerships",
+      eyebrow: "Strategic partnerships",
+      logosLabel: "Strategic partners",
+    }
+  : {
+      sectionLabel: "Parteneriate strategice",
+      eyebrow: "Parteneriate strategice",
+      logosLabel: "Parteneri strategici",
+    };
+
 const partners = [
   {
     name: "CFR",
@@ -32,13 +45,13 @@ const partners = [
 ];
 ---
 
-<section class="partners" aria-label="Parteneriate strategice">
+<section class="partners" aria-label={copy.sectionLabel}>
   <div class="partners-wrap">
     <EyebrowText class="partners-eyebrow" decoration="red-line" tone="dark">
-      Parteneriate strategice
+      {copy.eyebrow}
     </EyebrowText>
 
-    <div class="partners-logos" aria-label="Parteneri strategici">
+    <div class="partners-logos" aria-label={copy.logosLabel}>
       {
         partners.map((partner, index) => (
           <>

@@ -8,51 +8,122 @@ import logoIsaf from "../../assets/images/logo-isaf.png";
 import linkedinIcon from "../../assets/icons/linkedin-icon.svg";
 import facebookIcon from "../../assets/icons/facebook-icon.svg";
 
-const contactCards = [
-  {
-    title: "Contact sediu",
-    className: "footer-contact-card--office",
-    details: [
-      { label: "+40 21 220 80 75", href: "tel:+40212208075" },
-      { label: "office@isaf.ro", href: "mailto:office@isaf.ro" },
-    ],
-  },
-  {
-    title: "Resurse umane",
-    className: "footer-contact-card--hr",
-    details: [
-      { label: "+40 725 809 842", href: "tel:+40725809842" },
-      { label: "+40 756 047 832", href: "tel:+40756047832" },
-    ],
-  },
-  {
-    title: "Adresă sediu",
-    className: "footer-contact-card--address-office",
-    details: [
-      {
-        label: "Str. Lugoj nr. 68, C.P. 012212, Sector 1, București, România",
-        href: "",
-      },
-    ],
-  },
-  {
-    title: "Adresă fabrică",
-    className: "footer-contact-card--address-factory",
-    details: [
-      {
-        label: "Str. Copșa Mică nr 25, C.P. 014619\nSector 1, București, România",
-        href: "",
-      },
-    ],
-  },
-];
+const { lang = "ro" } = Astro.props;
+const isEnglish = lang === "en";
+const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const homeHref = isEnglish ? `${baseUrl}en/` : baseUrl;
 
-const footerLinks = [
-  { label: "Despre ISAF", href: "#about" },
-  { label: "Soluții", href: "#solutions" },
-  { label: "Producție", href: "#production" },
-  { label: "Cariere", href: "#contact" },
-];
+const contactCards = isEnglish
+  ? [
+      {
+        title: "Head office contact",
+        className: "footer-contact-card--office",
+        details: [
+          { label: "+40 21 220 80 75", href: "tel:+40212208075" },
+          { label: "office@isaf.ro", href: "mailto:office@isaf.ro" },
+        ],
+      },
+      {
+        title: "Human resources",
+        className: "footer-contact-card--hr",
+        details: [
+          { label: "+40 725 809 842", href: "tel:+40725809842" },
+          { label: "+40 756 047 832", href: "tel:+40756047832" },
+        ],
+      },
+      {
+        title: "Head office address",
+        className: "footer-contact-card--address-office",
+        details: [
+          {
+            label: "68 Lugoj St., 012212, Sector 1, Bucharest, Romania",
+            href: "",
+          },
+        ],
+      },
+      {
+        title: "Factory address",
+        className: "footer-contact-card--address-factory",
+        details: [
+          {
+            label: "25 Copșa Mică St., 014619\nSector 1, Bucharest, Romania",
+            href: "",
+          },
+        ],
+      },
+    ]
+  : [
+      {
+        title: "Contact sediu",
+        className: "footer-contact-card--office",
+        details: [
+          { label: "+40 21 220 80 75", href: "tel:+40212208075" },
+          { label: "office@isaf.ro", href: "mailto:office@isaf.ro" },
+        ],
+      },
+      {
+        title: "Resurse umane",
+        className: "footer-contact-card--hr",
+        details: [
+          { label: "+40 725 809 842", href: "tel:+40725809842" },
+          { label: "+40 756 047 832", href: "tel:+40756047832" },
+        ],
+      },
+      {
+        title: "Adresă sediu",
+        className: "footer-contact-card--address-office",
+        details: [
+          {
+            label: "Str. Lugoj nr. 68, C.P. 012212, Sector 1, București, România",
+            href: "",
+          },
+        ],
+      },
+      {
+        title: "Adresă fabrică",
+        className: "footer-contact-card--address-factory",
+        details: [
+          {
+            label: "Str. Copșa Mică nr 25, C.P. 014619\nSector 1, București, România",
+            href: "",
+          },
+        ],
+      },
+    ];
+
+const footerLinks = isEnglish
+  ? [
+      { label: "About ISAF", href: "#about" },
+      { label: "Solutions", href: "#solutions" },
+      { label: "Production", href: "#production" },
+      { label: "Careers", href: "#contact" },
+    ]
+  : [
+      { label: "Despre ISAF", href: "#about" },
+      { label: "Soluții", href: "#solutions" },
+      { label: "Producție", href: "#production" },
+      { label: "Cariere", href: "#contact" },
+    ];
+
+const copy = isEnglish
+  ? {
+      homeLabel: "ISAF home",
+      footerNavLabel: "Footer navigation",
+      socialLabel: "Social media",
+      linkedInLabel: "ISAF on LinkedIn",
+      facebookLabel: "ISAF on Facebook",
+      copyright: "2026 ISAF. All rights reserved.",
+    }
+  : {
+      homeLabel: "Pagina principala ISAF",
+      footerNavLabel: "Navigare subsol",
+      socialLabel: "Social media",
+      linkedInLabel: "ISAF pe LinkedIn",
+      facebookLabel: "ISAF pe Facebook",
+      copyright: "2026 ISAF. Toate drepturile rezervate.",
+    };
 ---
 
 <footer
@@ -87,11 +158,11 @@ const footerLinks = [
     </div>
 
     <div class="footer-links-block">
-      <a class="footer-logo" href="/" aria-label="ISAF home">
+      <a class="footer-logo" href={homeHref} aria-label={copy.homeLabel}>
         <img src={logoIsaf.src} alt="ISAF" loading="lazy" />
       </a>
 
-      <nav class="footer-nav" aria-label="Footer navigation">
+      <nav class="footer-nav" aria-label={copy.footerNavLabel}>
         <div class="footer-link-wrapper">
           {
             footerLinks.map((link) => (
@@ -103,17 +174,17 @@ const footerLinks = [
     </div>
 
     <div class="footer-copyright-block">
-      <div class="footer-social" aria-label="Social media">
+      <div class="footer-social" aria-label={copy.socialLabel}>
         <a
           href="https://www.linkedin.com/company/isaf-sa-san-grup-romania/"
-          aria-label="ISAF on LinkedIn"
+          aria-label={copy.linkedInLabel}
           style={`--footer-social-icon: url("${linkedinIcon.src}")`}
         >
           <span class="footer-social-icon" aria-hidden="true"></span>
         </a>
         <a
           href="https://www.facebook.com/profile.php?id=61589508899800&locale=ro_RO"
-          aria-label="ISAF on Facebook"
+          aria-label={copy.facebookLabel}
           style={`--footer-social-icon: url("${facebookIcon.src}")`}
         >
           <span class="footer-social-icon" aria-hidden="true"></span>
@@ -123,7 +194,7 @@ const footerLinks = [
       <div class="footer-copyright-wrap">
         <p class="footer-copyright">
           <span class="footer-copyright-mark">®</span>
-          <span>2026 ISAF. Toate drepturile rezervate.</span>
+          <span>{copy.copyright}</span>
         </p>
       </div>
     </div>
