@@ -2,8 +2,13 @@
 const {
 	lang = "ro",
 	title = "ISAF | Infrastructura feroviara",
-	description = "ISAF landing page for railway infrastructure design, production and integration services.",
+	description = "ISAF productie echipamente pentru infrastructura feroviara, oferind solutii inovatoare si durabile pentru intretinerea si modernizarea cailor ferate din Romania.",
 } = Astro.props;
+
+const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+	? import.meta.env.BASE_URL
+	: `${import.meta.env.BASE_URL}/`;
+const faviconHref = `${baseUrl}favicon.svg?v=1`;
 ---
 
 <!doctype html>
@@ -11,8 +16,7 @@ const {
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/svg+xml" sizes="any" href={faviconHref} />
 		<meta name="generator" content={Astro.generator} />
 		<meta
 			name="description"
