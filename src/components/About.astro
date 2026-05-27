@@ -9,89 +9,18 @@ import settingsIcon from "../assets/icons/timeline-settings.svg";
 import targetIcon from "../assets/icons/timeline-target.svg";
 import techElementLeft from "../assets/svg/tech-elem-left.svg";
 import techElementRight from "../assets/svg/tech-elem-right.svg";
+import { getSiteContent } from "../i18n/site";
+import { normalizeLocale } from "../i18n/routing";
 
 const { lang = "ro" } = Astro.props;
-
-const content = {
-  ro: {
-    title: "Despre ISAF",
-    description:
-      "ISAF este un grup românesc cu experiență solidă în proiectarea, execuția și modernizarea infrastructurii feroviare. De peste șapte decenii, livrăm soluții fiabile și sustenabile, alături de parteneri de încredere, pentru un transport feroviar sigur și performant.",
-    timelineLabel: "Repere din istoria ISAF",
-    timeline: [
-      {
-        icon: checkIcon,
-        title: "1951",
-        description:
-          "Înființarea ISAF S.A. și primii pași în construirea infrastructurii feroviare",
-      },
-      {
-        icon: groupIcon,
-        title: "Extindere",
-        description:
-          "Diversificarea capacităților de producție și consolidarea competențelor tehnice",
-      },
-      {
-        icon: railIcon,
-        title: "Modernizare",
-        description:
-          "Investiții în tehnologie, echipamente și procese pentru creșterea calității și eficienței.",
-      },
-      {
-        icon: settingsIcon,
-        title: "Proiecte",
-        description:
-          "Implicare și proiecte strategice de infrastructură feroviară în întreaga țară",
-      },
-      {
-        icon: targetIcon,
-        title: "Astăzi",
-        description:
-          "Continuăm să construim viitorul mobilității feroviare cu soluții durabile și parteneriate solide.",
-      },
-    ],
-  },
-  en: {
-    title: "About ISAF",
-    description:
-      "ISAF is a Romanian group with solid experience in designing, delivering and modernizing railway infrastructure. For more than seven decades, we have delivered reliable, sustainable solutions with trusted partners for safe and high-performing rail transport.",
-    timelineLabel: "Milestones in ISAF history",
-    timeline: [
-      {
-        icon: checkIcon,
-        title: "1951",
-        description:
-          "ISAF S.A. is founded and begins its first railway infrastructure projects",
-      },
-      {
-        icon: groupIcon,
-        title: "Expansion",
-        description:
-          "Production capabilities diversify and technical expertise becomes stronger",
-      },
-      {
-        icon: railIcon,
-        title: "Modernization",
-        description:
-          "Investments in technology, equipment and processes increase quality and efficiency.",
-      },
-      {
-        icon: settingsIcon,
-        title: "Projects",
-        description:
-          "Strategic railway infrastructure projects are delivered across the country",
-      },
-      {
-        icon: targetIcon,
-        title: "Today",
-        description:
-          "We continue to build the future of rail mobility with durable solutions and strong partnerships.",
-      },
-    ],
-  },
-};
-
-const copy = content[lang === "en" ? "en" : "ro"];
+const copy = getSiteContent(normalizeLocale(lang)).about;
+const timelineIcons = [
+  checkIcon,
+  groupIcon,
+  railIcon,
+  settingsIcon,
+  targetIcon,
+];
 ---
 
 <section class="about" id="about" aria-labelledby="about-title">
@@ -116,8 +45,7 @@ const copy = content[lang === "en" ? "en" : "ro"];
           height="64"
           fill="none"
           stroke="#94a3b8"
-          stroke-opacity="0.08"
-        />
+          stroke-opacity="0.08"></rect>
       </pattern>
       <pattern
         id="about-grid-small"
@@ -132,15 +60,14 @@ const copy = content[lang === "en" ? "en" : "ro"];
           height="16"
           fill="none"
           stroke="#94a3b8"
-          stroke-opacity="0.03"
-        />
+          stroke-opacity="0.03"></rect>
       </pattern>
     </defs>
 
     <g>
-      <rect width="1920" height="657" fill="#020b19" />
-      <rect width="1920" height="657" fill="url(#about-grid-large)" />
-      <rect width="1920" height="657" fill="url(#about-grid-small)" />
+      <rect width="1920" height="657" fill="#020b19"></rect>
+      <rect width="1920" height="657" fill="url(#about-grid-large)"></rect>
+      <rect width="1920" height="657" fill="url(#about-grid-small)"></rect>
     </g>
   </svg>
 
@@ -170,13 +97,13 @@ const copy = content[lang === "en" ? "en" : "ro"];
 
       <ol class="timeline" aria-label={copy.timelineLabel}>
         {
-          copy.timeline.map((item) => (
+          copy.timeline.map((item, index) => (
             <li class="timeline-item">
-              <span class="timeline-dot" aria-hidden="true"></span>
-              <span class="timeline-connector" aria-hidden="true"></span>
+              <span class="timeline-dot" aria-hidden="true" />
+              <span class="timeline-connector" aria-hidden="true" />
 
               <div class="timeline-icon" aria-hidden="true">
-                <img src={item.icon.src} alt="" loading="lazy" />
+                <img src={timelineIcons[index].src} alt="" loading="lazy" />
               </div>
 
               <div class="timeline-content">

@@ -7,126 +7,21 @@ import footerBgMobile from "../../assets/images/footer-bg-mobile.jpg";
 import logoIsaf from "../../assets/images/logo-isaf.png";
 import linkedinIcon from "../../assets/icons/linkedin-icon.svg";
 import facebookIcon from "../../assets/icons/facebook-icon.svg";
+import { getLocalizedPath, normalizeLocale } from "../../i18n/routing";
+import { getSiteContent } from "../../i18n/site";
 
 const { lang = "ro" } = Astro.props;
-const isEnglish = lang === "en";
-const baseUrl = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
-const homeHref = isEnglish ? `${baseUrl}en/` : baseUrl;
-const certificationsHref = isEnglish
-  ? `${baseUrl}en/certifications/`
-  : `${baseUrl}certificari/`;
-
-const contactCards = isEnglish
-  ? [
-      {
-        title: "Head office contact",
-        className: "footer-contact-card--office",
-        details: [
-          { label: "+40 21 220 80 75", href: "tel:+40212208075" },
-          { label: "office@isaf.ro", href: "mailto:office@isaf.ro" },
-        ],
-      },
-      {
-        title: "Human resources",
-        className: "footer-contact-card--hr",
-        details: [
-          { label: "+40 725 809 842", href: "tel:+40725809842" },
-          { label: "+40 756 047 832", href: "tel:+40756047832" },
-        ],
-      },
-      {
-        title: "Head office address",
-        className: "footer-contact-card--address-office",
-        details: [
-          {
-            label: "68 Lugoj St., 012212, Sector 1, Bucharest, Romania",
-            href: "",
-          },
-        ],
-      },
-      {
-        title: "Factory address",
-        className: "footer-contact-card--address-factory",
-        details: [
-          {
-            label: "25 Copșa Mică St., 014619\nSector 1, Bucharest, Romania",
-            href: "",
-          },
-        ],
-      },
-    ]
-  : [
-      {
-        title: "Contact sediu",
-        className: "footer-contact-card--office",
-        details: [
-          { label: "+40 21 220 80 75", href: "tel:+40212208075" },
-          { label: "office@isaf.ro", href: "mailto:office@isaf.ro" },
-        ],
-      },
-      {
-        title: "Resurse umane",
-        className: "footer-contact-card--hr",
-        details: [
-          { label: "+40 725 809 842", href: "tel:+40725809842" },
-          { label: "+40 756 047 832", href: "tel:+40756047832" },
-        ],
-      },
-      {
-        title: "Adresă sediu",
-        className: "footer-contact-card--address-office",
-        details: [
-          {
-            label: "Str. Lugoj nr. 68, C.P. 012212, Sector 1, București, România",
-            href: "",
-          },
-        ],
-      },
-      {
-        title: "Adresă fabrică",
-        className: "footer-contact-card--address-factory",
-        details: [
-          {
-            label: "Str. Copșa Mică nr 25, C.P. 014619\nSector 1, București, România",
-            href: "",
-          },
-        ],
-      },
-    ];
-
-const footerLinks = isEnglish
-  ? [
-      { label: "About ISAF", href: `${homeHref}#about` },
-      { label: "Solutions", href: `${homeHref}#solutions` },
-      { label: "Production", href: `${homeHref}#production` },
-      { label: "Certifications", href: certificationsHref },
-    ]
-  : [
-      { label: "Despre ISAF", href: `${homeHref}#about` },
-      { label: "Soluții", href: `${homeHref}#solutions` },
-      { label: "Producție", href: `${homeHref}#production` },
-      { label: "Certificări", href: certificationsHref },
-    ];
-
-const copy = isEnglish
-  ? {
-      homeLabel: "ISAF home",
-      footerNavLabel: "Footer navigation",
-      socialLabel: "Social media",
-      linkedInLabel: "ISAF on LinkedIn",
-      facebookLabel: "ISAF on Facebook",
-      copyright: "2026 ISAF. All rights reserved.",
-    }
-  : {
-      homeLabel: "Pagina principala ISAF",
-      footerNavLabel: "Navigare subsol",
-      socialLabel: "Social media",
-      linkedInLabel: "ISAF pe LinkedIn",
-      facebookLabel: "ISAF pe Facebook",
-      copyright: "2026 ISAF. Toate drepturile rezervate.",
-    };
+const locale = normalizeLocale(lang);
+const homeHref = getLocalizedPath(locale, "home");
+const certificationsHref = getLocalizedPath(locale, "certifications");
+const copy = getSiteContent(locale).footer;
+const contactCards = copy.contactCards;
+const footerLinks = [
+  { label: copy.links.about, href: `${homeHref}#about` },
+  { label: copy.links.solutions, href: `${homeHref}#solutions` },
+  { label: copy.links.production, href: `${homeHref}#production` },
+  { label: copy.links.certifications, href: certificationsHref },
+];
 ---
 
 <footer
@@ -141,19 +36,17 @@ const copy = isEnglish
           <section class={`footer-contact-card ${card.className}`}>
             <div class="footer-card-title">
               <h2>{card.title}</h2>
-              <span class="footer-title-line" aria-hidden="true"></span>
+              <span class="footer-title-line" aria-hidden="true" />
             </div>
 
             <div class="footer-card-details">
-              {
-                card.details.map((detail) =>
-                  detail.href ? (
-                    <a href={detail.href}>{detail.label}</a>
-                  ) : (
-                    <p>{detail.label}</p>
-                  ),
-                )
-              }
+              {card.details.map((detail) =>
+                detail.href ? (
+                  <a href={detail.href}>{detail.label}</a>
+                ) : (
+                  <p>{detail.label}</p>
+                ),
+              )}
             </div>
           </section>
         ))
@@ -167,11 +60,7 @@ const copy = isEnglish
 
       <nav class="footer-nav" aria-label={copy.footerNavLabel}>
         <div class="footer-link-wrapper">
-          {
-            footerLinks.map((link) => (
-              <a href={link.href}>{link.label}</a>
-            ))
-          }
+          {footerLinks.map((link) => <a href={link.href}>{link.label}</a>)}
         </div>
       </nav>
     </div>

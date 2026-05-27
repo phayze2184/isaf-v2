@@ -14,45 +14,14 @@ import element8 from "../assets/svg/element-8.svg";
 import "../styles/typography.css";
 import "../styles/tokens.css";
 import "../styles/global.css";
+import { getSiteContent } from "../i18n/site";
+import { normalizeLocale } from "../i18n/routing";
 
 const { lang = "ro" } = Astro.props;
-const copy = lang === "en"
-  ? {
-      ariaLabel: "ISAF - contact line, signalling and railway electrification systems",
-      eyebrow: ["Contact line systems,", "signalling and electrification"],
-      title: "Strategic partner in railway",
-      titleAccent: "infrastructure",
-      lead:
-        "We build and modernize railway infrastructure in Romania through integrated solutions, advanced technologies and long-term partnerships.",
-      cta: "View our solutions",
-      experienceValue: "75+",
-      experienceCaption: "Years of experience",
-      railValue: "9,500",
-      railUnit: "km",
-      railCaption: "Electrified railway",
-      partnershipsValue: "Partnerships",
-      partnershipsCaption: "Durable and high-performing",
-    }
-  : {
-      ariaLabel: "ISAF - semnalizare, linii de contact si electrificare feroviara",
-      eyebrow: ["Sisteme de linii de contact,", "semnalizare și electrificare"],
-      title: "Partener strategic în infrastructură",
-      titleAccent: "feroviară",
-      lead:
-        "Construim și modernizăm infrastructura feroviară din România, prin soluții integrate, tehnologii avansate și parteneriate de durată.",
-      cta: "Vezi soluțiile noastre",
-      experienceValue: "75+",
-      experienceCaption: "Ani de experiență",
-      railValue: "9.500",
-      railUnit: "km",
-      railCaption: "Cale ferată electrificată",
-      partnershipsValue: "Parteneriate",
-      partnershipsCaption: "Durabile și performante",
-    };
+const copy = getSiteContent(normalizeLocale(lang)).hero;
 ---
 
 <section class="hero" aria-label={copy.ariaLabel}>
-  
   <video
     class="hero-media"
     data-hero-video
@@ -65,87 +34,115 @@ const copy = lang === "en"
     playsinline
     preload="metadata"
     poster={posterMobile.src}
-    aria-hidden="true"
-  ></video>
+    aria-hidden="true"></video>
 
   <div class="hero-overlay" aria-hidden="true"></div>
 
   <div class="hero-wrapper">
-      <div class="hero-card">
-        <div class="hero-content">
-          <div class="hero-eyebrow">
-            <span class="hero-eyebrow-line" aria-hidden="true"></span>
-            <p>
-              {copy.eyebrow[0]}
-              <br />
-              {copy.eyebrow[1]}
-            </p>
-          </div>
-
-          <div class="hero-copy">
-            <h1 id="hero-title" class="headline">
-              {copy.title} <span>{copy.titleAccent}</span>
-            </h1>
-
-            <p class="hero-lead">
-              {copy.lead}
-            </p>
-          </div>
-        </div>
-
-        <Button href="#solutions" class="hero-cta" variant="primary">
-          <span>{copy.cta}</span>
-        </Button>
-      </div>
-
-      <div class="trust-elements" aria-hidden="true">
-        <div class="trust-item trust-item--experience">
-          <span class="trust-plus"></span>
-          <span class="trust-svg-element trust-svg-element--top" aria-hidden="true">
-            <img src={element3.src} alt="" loading="lazy" />
-          </span>
-          <span class="trust-svg-element trust-svg-element--bottom" aria-hidden="true">
-            <img src={element8.src} alt="" loading="lazy" />
-          </span>
-          <p class="trust-value">{copy.experienceValue}</p>
-          <p class="trust-caption">{copy.experienceCaption}</p>
-        </div>
-
-        <div class="trust-item trust-item--rail">
-          <span class="trust-plus"></span>
-          <span class="trust-svg-element trust-svg-element--rail-top" aria-hidden="true">
-            <img src={element4.src} alt="" loading="lazy" />
-          </span>
-          <span class="trust-svg-element trust-svg-element--rail-vertical" aria-hidden="true">
-            <img src={element7.src} alt="" loading="lazy" />
-          </span>
-          <span class="trust-svg-element trust-svg-element--rail-bottom" aria-hidden="true">
-            <img src={element1.src} alt="" loading="lazy" />
-          </span>
-          <p class="trust-value">
-            {copy.railValue} <span>{copy.railUnit}</span>
+    <div class="hero-card">
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span class="hero-eyebrow-line" aria-hidden="true"></span>
+          <p>
+            {copy.eyebrow[0]}
+            <br />
+            {copy.eyebrow[1]}
           </p>
-          <p class="trust-caption">{copy.railCaption}</p>
         </div>
 
-        <div class="trust-item trust-item--partnerships">
-          <span class="trust-plus"></span>
-          <span class="trust-svg-element trust-svg-element--partnerships-top" aria-hidden="true">
-            <img src={element2.src} alt="" loading="lazy" />
-          </span>
-          <span class="trust-svg-element trust-svg-element--partnerships-left" aria-hidden="true">
-            <img src={element6.src} alt="" loading="lazy" />
-          </span>
-          <span class="trust-svg-element trust-svg-element--partnerships-right" aria-hidden="true">
-            <img src={element5.src} alt="" loading="lazy" />
-          </span>
-          <span class="trust-svg-element trust-svg-element--partnerships-bottom" aria-hidden="true">
-            <img src={element8.src} alt="" loading="lazy" />
-          </span>
-          <p class="trust-value">{copy.partnershipsValue}</p>
-          <p class="trust-caption">{copy.partnershipsCaption}</p>
+        <div class="hero-copy">
+          <h1 id="hero-title" class="headline">
+            {copy.title}
+            <span>{copy.titleAccent}</span>
+          </h1>
+
+          <p class="hero-lead">
+            {copy.lead}
+          </p>
         </div>
       </div>
+
+      <Button href="#solutions" class="hero-cta" variant="primary">
+        <span>{copy.cta}</span>
+      </Button>
+    </div>
+
+    <div class="trust-elements" aria-hidden="true">
+      <div class="trust-item trust-item--experience">
+        <span class="trust-plus"></span>
+        <span
+          class="trust-svg-element trust-svg-element--top"
+          aria-hidden="true"
+        >
+          <img src={element3.src} alt="" loading="lazy" />
+        </span>
+        <span
+          class="trust-svg-element trust-svg-element--bottom"
+          aria-hidden="true"
+        >
+          <img src={element8.src} alt="" loading="lazy" />
+        </span>
+        <p class="trust-value">{copy.experienceValue}</p>
+        <p class="trust-caption">{copy.experienceCaption}</p>
+      </div>
+
+      <div class="trust-item trust-item--rail">
+        <span class="trust-plus"></span>
+        <span
+          class="trust-svg-element trust-svg-element--rail-top"
+          aria-hidden="true"
+        >
+          <img src={element4.src} alt="" loading="lazy" />
+        </span>
+        <span
+          class="trust-svg-element trust-svg-element--rail-vertical"
+          aria-hidden="true"
+        >
+          <img src={element7.src} alt="" loading="lazy" />
+        </span>
+        <span
+          class="trust-svg-element trust-svg-element--rail-bottom"
+          aria-hidden="true"
+        >
+          <img src={element1.src} alt="" loading="lazy" />
+        </span>
+        <p class="trust-value">
+          {copy.railValue}
+          <span>{copy.railUnit}</span>
+        </p>
+        <p class="trust-caption">{copy.railCaption}</p>
+      </div>
+
+      <div class="trust-item trust-item--partnerships">
+        <span class="trust-plus"></span>
+        <span
+          class="trust-svg-element trust-svg-element--partnerships-top"
+          aria-hidden="true"
+        >
+          <img src={element2.src} alt="" loading="lazy" />
+        </span>
+        <span
+          class="trust-svg-element trust-svg-element--partnerships-left"
+          aria-hidden="true"
+        >
+          <img src={element6.src} alt="" loading="lazy" />
+        </span>
+        <span
+          class="trust-svg-element trust-svg-element--partnerships-right"
+          aria-hidden="true"
+        >
+          <img src={element5.src} alt="" loading="lazy" />
+        </span>
+        <span
+          class="trust-svg-element trust-svg-element--partnerships-bottom"
+          aria-hidden="true"
+        >
+          <img src={element8.src} alt="" loading="lazy" />
+        </span>
+        <p class="trust-value">{copy.partnershipsValue}</p>
+        <p class="trust-caption">{copy.partnershipsCaption}</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -188,7 +185,8 @@ const copy = lang === "en"
     display: grid;
     min-height: 100svh;
     place-items: center;
-    padding-block: var(--section-padding-block-start) var(--section-padding-block-end);
+    padding-block: var(--section-padding-block-start)
+      var(--section-padding-block-end);
     padding-inline: var(--spacing-4);
     flex-shrink: 0;
     align-self: stretch;
@@ -248,11 +246,7 @@ const copy = lang === "en"
         rgba(7, 17, 20, 0.22) 55%,
         rgba(7, 17, 20, 0.55) 100%
       ),
-      linear-gradient(
-        0deg,
-        rgba(30, 30, 30, 0.16),
-        rgba(30, 30, 30, 0.16)
-      );
+      linear-gradient(0deg, rgba(30, 30, 30, 0.16), rgba(30, 30, 30, 0.16));
   }
 
   .hero-card {
@@ -636,4 +630,4 @@ const copy = lang === "en"
       display: block;
     }
   }
-  </style>
+</style>

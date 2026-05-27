@@ -10,73 +10,17 @@ import releeImage from "../assets/diagrams/relee.png";
 import arrowRight from "../assets/icons/arrowRight.svg";
 import techElementSolutions from "../assets/svg/tech-elem-prod.svg";
 import EyebrowText from "./ui/EyebrowText.astro";
+import { getSiteContent } from "../i18n/site";
+import { normalizeLocale } from "../i18n/routing";
 
 const { lang = "ro" } = Astro.props;
-const copy = lang === "en"
-  ? {
-      eyebrow: "Our solutions",
-      title: "Design, production and integration",
-      intro:
-        "We are involved in every stage, from design to manufacturing, so every product is well built and ready for real-world use.",
-      productsLabel: "ISAF products",
-      controlsLabel: "Product navigation",
-      previousProduct: "Previous product",
-      nextProduct: "Next product",
-      products: [
-        {
-          image: semnalizareImage,
-          title: "Signalling",
-          items: ["lamp and LED signals", "low shunting signals", "SCB cabinets"],
-        },
-        {
-          image: liniiContactImage,
-          title: "Contact lines",
-          items: ["poles", "brackets", "crossbeams"],
-        },
-        {
-          image: circuiteCaleImage,
-          title: "Track circuits",
-          items: ["JT frames and cabinets", "control panels", "equipment boxes"],
-        },
-        {
-          image: releeImage,
-          title: "Relays",
-          items: ["plug-in neutral relays", "combined plug-in relays", "PIC-1 threshold relays"],
-        },
-      ],
-    }
-  : {
-      eyebrow: "Soluțiile noastre",
-      title: "Proiectare, producție și integrare",
-      intro:
-        "Ne implicăm în fiecare etapă, de la proiectare la fabricație, ca fiecare produs să fie bine făcut și pregătit pentru utilizare reală.",
-      productsLabel: "Produse ISAF",
-      controlsLabel: "Navigare produse",
-      previousProduct: "Produsul anterior",
-      nextProduct: "Produsul următor",
-      products: [
-        {
-          image: semnalizareImage,
-          title: "Semnalizare",
-          items: ["semnale cu bec și unități LED", "semnale manevră pitice", "dulapuri SCB"],
-        },
-        {
-          image: liniiContactImage,
-          title: "Linii de contact",
-          items: ["stâlpi", "console", "traverse"],
-        },
-        {
-          image: circuiteCaleImage,
-          title: "Circuite de cale",
-          items: ["rame și dulapuri de JT", "panouri de comandă", "cutii de aparataj"],
-        },
-        {
-          image: releeImage,
-          title: "Relee",
-          items: ["neutrale fișă", "combinate fișă", "de prag tip PIC-1"],
-        },
-      ],
-    };
+const copy = getSiteContent(normalizeLocale(lang)).solutions;
+const productImages = [
+  semnalizareImage,
+  liniiContactImage,
+  circuiteCaleImage,
+  releeImage,
+];
 ---
 
 <section class="solutions" id="solutions" aria-labelledby="solutions-title">
@@ -111,26 +55,38 @@ const copy = lang === "en"
       tabindex="0"
     >
       {
-        copy.products.map((product) => (
-          <ProductCard image={product.image} title={product.title} items={product.items} />
+        copy.products.map((product, index) => (
+          <ProductCard
+            image={productImages[index]}
+            title={product.title}
+            items={product.items}
+          />
         ))
       }
     </div>
 
     <div class="products-controls" aria-label={copy.controlsLabel}>
-      <button class="products-control" type="button" data-products-prev aria-label={copy.previousProduct}>
+      <button
+        class="products-control"
+        type="button"
+        data-products-prev
+        aria-label={copy.previousProduct}
+      >
         <span
           class="products-control-icon products-control-icon--prev"
           style={`--products-control-icon: url("${arrowRight.src}")`}
-          aria-hidden="true"
-        ></span>
+          aria-hidden="true"></span>
       </button>
-      <button class="products-control" type="button" data-products-next aria-label={copy.nextProduct}>
+      <button
+        class="products-control"
+        type="button"
+        data-products-next
+        aria-label={copy.nextProduct}
+      >
         <span
           class="products-control-icon"
           style={`--products-control-icon: url("${arrowRight.src}")`}
-          aria-hidden="true"
-        ></span>
+          aria-hidden="true"></span>
       </button>
     </div>
   </div>
@@ -152,7 +108,9 @@ const copy = lang === "en"
       ) {
         const getStep = () => {
           const firstCard = track.querySelector(".product-card");
-          const gap = Number.parseFloat(getComputedStyle(track).columnGap || "0");
+          const gap = Number.parseFloat(
+            getComputedStyle(track).columnGap || "0",
+          );
 
           return firstCard instanceof HTMLElement
             ? firstCard.getBoundingClientRect().width + gap
@@ -169,7 +127,8 @@ const copy = lang === "en"
         const scrollCards = (direction: number) => {
           track.scrollBy({
             left: getStep() * direction,
-            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+              .matches
               ? "auto"
               : "smooth",
           });
@@ -410,7 +369,10 @@ const copy = lang === "en"
 
     .solutions-header {
       display: grid;
-      grid-template-columns: minmax(21.3125rem, 22.5625rem) minmax(21.8125rem, 25.0625rem);
+      grid-template-columns: minmax(21.3125rem, 22.5625rem) minmax(
+          21.8125rem,
+          25.0625rem
+        );
       align-items: center;
       justify-content: space-between;
       gap: clamp(var(--spacing-16), 10vw, 17.375rem);

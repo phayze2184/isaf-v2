@@ -11,9 +11,26 @@ import certSmc from "../assets/certificari/Certificat SMC 027 Sistem de manageme
 import certSsm from "../assets/certificari/Certificat SSM 050 Sistem de management al sanatatii si securitatii in munca (valabil 2028.06.19).pdf?url";
 import certIsoIqnet from "../assets/certificari/Certificat ISO 9001 IQNET 2015.67649.5 (valabil 04.07.2027).pdf?url";
 import certSmm from "../assets/certificari/Certificat SMM 074 Sistem de management de mediu (valabil 2028.04.26).pdf?url";
+import { getSiteContent } from "../i18n/site";
+import { normalizeLocale } from "../i18n/routing";
 
 const { lang = "ro" } = Astro.props;
-const isEnglish = lang === "en";
+const locale = normalizeLocale(lang);
+const pageContent = getSiteContent(locale);
+const copy = pageContent.certifications;
+const meta = pageContent.meta.certifications;
+const managementCertificateFiles = {
+  "Certificat ISO 9001 AFNOR 2015.67649.5 (valabil 04.07.2027).pdf":
+    certIsoAfnor,
+  "Certificat SMC 027 Sistem de management al calitatii (valabil 2028.04.26).pdf":
+    certSmc,
+  "Certificat SSM 050 Sistem de management al sanatatii si securitatii in munca (valabil 2028.06.19).pdf":
+    certSsm,
+  "Certificat ISO 9001 IQNET 2015.67649.5 (valabil 04.07.2027).pdf":
+    certIsoIqnet,
+  "Certificat SMM 074 Sistem de management de mediu (valabil 2028.04.26).pdf":
+    certSmm,
+} as const;
 
 const productCertificateFiles = import.meta.glob(
   "../assets/certificari/certificari-produse/*.pdf",
@@ -32,30 +49,18 @@ const getCertificateSortValue = (fileName: string) => {
 };
 
 const cleanProductCertificateName = (fileName: string) =>
-  fileName
-    .replace(/\.pdf$/i, "")
-    .replace(/^\d+(?:\.\d+)?(?:\.\s+|\s+)/, "");
+  fileName.replace(/\.pdf$/i, "").replace(/^\d+(?:\.\d+)?(?:\.\s+|\s+)/, "");
 
 const getProductCertificateType = (label: string) => {
   const type = label.match(/\b(tip|fab|prel)\b/i)?.[1]?.toLowerCase();
 
-  if (isEnglish) {
-    return type === "tip"
-      ? "Type approval"
-      : type === "fab"
-        ? "Manufacturing approval"
-        : type === "prel"
-          ? "Extension"
-          : "Product certificate";
-  }
-
   return type === "tip"
-    ? "Certificare de tip"
+    ? copy.productTypes.type
     : type === "fab"
-      ? "Certificare fabricație"
+      ? copy.productTypes.manufacturing
       : type === "prel"
-        ? "Prelungire"
-        : "Certificare produs";
+        ? copy.productTypes.extension
+        : copy.productTypes.fallback;
 };
 
 const getProductCertificateTitle = (label: string) =>
@@ -66,8 +71,9 @@ const getProductCertificateTitle = (label: string) =>
     .trim();
 
 const getProductCertificateStandard = (label: string) =>
-  label.match(/^(COT\s+\d+-\d+|AT\s+\d+-\d+|AL\s+\d+-\d+|Autorizatie furnizor feroviar\s+AF\s+\d+-\d+)/i)?.[1] ??
-  (isEnglish ? "Product certificate" : "Certificare produs");
+  label.match(
+    /^(COT\s+\d+-\d+|AT\s+\d+-\d+|AL\s+\d+-\d+|Autorizatie furnizor feroviar\s+AF\s+\d+-\d+)/i,
+  )?.[1] ?? copy.productFallback;
 
 const productCertifications = Object.entries(productCertificateFiles)
   .map(([path, file]) => {
@@ -83,125 +89,25 @@ const productCertifications = Object.entries(productCertificateFiles)
       sortValue: getCertificateSortValue(fileName),
     };
   })
-  .sort((a, b) => a.sortValue - b.sortValue || a.fileName.localeCompare(b.fileName));
+  .sort(
+    (a, b) => a.sortValue - b.sortValue || a.fileName.localeCompare(b.fileName),
+  );
 
-const certifications = isEnglish
-  ? [
-      {
-        standard: "SMC 027",
-        issuer: "AFER",
-        title: "Quality management system",
-        validity: "Valid until 26.04.2028",
-        file: certSmc,
-        fileName: "Certificat SMC 027 Sistem de management al calitatii (valabil 2028.04.26).pdf",
-      },
-      {
-        standard: "SSM 050",
-        issuer: "AFER",
-        title: "Occupational health and safety management system",
-        validity: "Valid until 19.06.2028",
-        file: certSsm,
-        fileName: "Certificat SSM 050 Sistem de management al sanatatii si securitatii in munca (valabil 2028.06.19).pdf",
-      },
-      {
-        standard: "SMM 074",
-        issuer: "AFER",
-        title: "Environmental management system",
-        validity: "Valid until 26.04.2028",
-        file: certSmm,
-        fileName: "Certificat SMM 074 Sistem de management de mediu (valabil 2028.04.26).pdf",
-      },
-      {
-        standard: "ISO 9001",
-        issuer: "IQNET",
-        title: "Quality management system",
-        validity: "Valid until 04.07.2027",
-        file: certIsoIqnet,
-        fileName: "Certificat ISO 9001 IQNET 2015.67649.5 (valabil 04.07.2027).pdf",
-      },
-      {
-        standard: "ISO 9001",
-        issuer: "AFNOR",
-        title: "Quality management system",
-        validity: "Valid until 04.07.2027",
-        file: certIsoAfnor,
-        fileName: "Certificat ISO 9001 AFNOR 2015.67649.5 (valabil 04.07.2027).pdf",
-      },
-    ]
-  : [
-      {
-        standard: "SMC 027",
-        issuer: "AFER",
-        title: "Sistem de management al calității",
-        validity: "Valabil până la 26.04.2028",
-        file: certSmc,
-        fileName: "Certificat SMC 027 Sistem de management al calitatii (valabil 2028.04.26).pdf",
-      },
-      {
-        standard: "SSM 050",
-        issuer: "AFER",
-        title: "Sistem de management al sănătății și securității în muncă",
-        validity: "Valabil până la 19.06.2028",
-        file: certSsm,
-        fileName: "Certificat SSM 050 Sistem de management al sanatatii si securitatii in munca (valabil 2028.06.19).pdf",
-      },
-      {
-        standard: "SMM 074",
-        issuer: "AFER",
-        title: "Sistem de management de mediu",
-        validity: "Valabil până la 26.04.2028",
-        file: certSmm,
-        fileName: "Certificat SMM 074 Sistem de management de mediu (valabil 2028.04.26).pdf",
-      },
-      {
-        standard: "ISO 9001",
-        issuer: "IQNET",
-        title: "Sistem de management al calității",
-        validity: "Valabil până la 04.07.2027",
-        file: certIsoIqnet,
-        fileName: "Certificat ISO 9001 IQNET 2015.67649.5 (valabil 04.07.2027).pdf",
-      },
-      {
-        standard: "ISO 9001",
-        issuer: "AFNOR",
-        title: "Sistem de management al calității",
-        validity: "Valabil până la 04.07.2027",
-        file: certIsoAfnor,
-        fileName: "Certificat ISO 9001 AFNOR 2015.67649.5 (valabil 04.07.2027).pdf",
-      },
-    ];
-
-const copy = isEnglish
-  ? {
-      title: "ISAF | Certifications",
-      description:
-        "ISAF certifications for quality, environmental, occupational health and safety management systems.",
-      eyebrow: "Certifications",
-      heading: "Certified systems for reliable railway infrastructure equipment",
-      lead:
-        "The certifications below document ISAF's management systems, audited standards and validity periods. Each document is available as a downloadable PDF.",
-      listLabel: "ISAF certifications",
-      managementSubtitle: "Management certifications",
-      productSubtitle: "Equipment certifications",
-      download: "Download PDF",
-    }
-  : {
-      title: "ISAF | Certificări",
-      description:
-        "Certificările ISAF pentru sistemele de management al calității, mediului, sănătății și securității în muncă.",
-      eyebrow: "Certificări",
-      heading: "Sisteme certificate pentru echipamente feroviare conforme și fiabile",
-      lead:
-        "Certificările de mai jos documentează sistemele de management ISAF, standardele auditate și perioadele de valabilitate. Fiecare document este disponibil pentru descărcare în format PDF.",
-      listLabel: "Certificări ISAF",
-      managementSubtitle: "Certificări management",
-      productSubtitle: "Certificări echipamente",
-      download: "Descarcă PDF",
-    };
+const certifications = copy.management.map((certificate) => ({
+  ...certificate,
+  file: managementCertificateFiles[
+    certificate.fileName as keyof typeof managementCertificateFiles
+  ],
+}));
 ---
 
-<Layout lang={lang} title={copy.title} description={copy.description}>
-  <Header lang={lang} />
+<Layout
+  lang={locale}
+  route="certifications"
+  title={meta.title}
+  description={meta.description}
+>
+  <Header lang={locale} route="certifications" />
   <main class="certifications-page">
     <section class="certifications-hero" aria-labelledby="certifications-title">
       <div class="certifications-shell">
@@ -228,7 +134,9 @@ const copy = isEnglish
                   <h2>{certificate.title}</h2>
                   <div class="certification-meta">
                     <span>{certificate.issuer}</span>
-                    {certificate.validity && <span>{certificate.validity}</span>}
+                    {certificate.validity && (
+                      <span>{certificate.validity}</span>
+                    )}
                   </div>
                 </div>
                 <a
@@ -237,7 +145,9 @@ const copy = isEnglish
                   download={certificate.fileName}
                   aria-label={`${copy.download}: ${certificate.standard} ${certificate.issuer}`}
                 >
-                  <span class="certification-download-text">{copy.download}</span>
+                  <span class="certification-download-text">
+                    {copy.download}
+                  </span>
                   <img
                     class="certification-download-icon"
                     src={arrowRight.src}
@@ -251,7 +161,9 @@ const copy = isEnglish
           }
         </div>
 
-        <h2 class="certifications-section-title certifications-section-title--products">
+        <h2
+          class="certifications-section-title certifications-section-title--products"
+        >
           {copy.productSubtitle}
         </h2>
         <div class="certifications-list">
@@ -274,7 +186,9 @@ const copy = isEnglish
                   download={certificate.fileName}
                   aria-label={`${copy.download}: ${certificate.standard}`}
                 >
-                  <span class="certification-download-text">{copy.download}</span>
+                  <span class="certification-download-text">
+                    {copy.download}
+                  </span>
                   <img
                     class="certification-download-icon"
                     src={arrowRight.src}
@@ -290,7 +204,7 @@ const copy = isEnglish
       </div>
     </section>
   </main>
-  <Footer lang={lang} />
+  <Footer lang={locale} route="certifications" />
 </Layout>
 
 <style>
@@ -308,7 +222,11 @@ const copy = isEnglish
     overflow: hidden;
     padding-block: 9.5rem var(--spacing-16);
     background:
-      linear-gradient(135deg, oklch(12.985% 0.0425 265.1322 / 94%), oklch(25.2161% 0.0562 264.0043 / 90%)),
+      linear-gradient(
+        135deg,
+        oklch(12.985% 0.0425 265.1322 / 94%),
+        oklch(25.2161% 0.0562 264.0043 / 90%)
+      ),
       var(--color-background-page-dark);
     color: var(--color-text-inverse);
   }
@@ -474,7 +392,8 @@ const copy = isEnglish
 
   .certification-download:hover .certification-download-icon,
   .certification-download:focus-visible .certification-download-icon {
-    filter: brightness(0) saturate(100%) invert(29%) sepia(98%) saturate(2482%) hue-rotate(344deg) brightness(92%) contrast(98%);
+    filter: brightness(0) saturate(100%) invert(29%) sepia(98%) saturate(2482%)
+      hue-rotate(344deg) brightness(92%) contrast(98%);
   }
 
   .certification-download:focus-visible {
@@ -492,7 +411,8 @@ const copy = isEnglish
     inline-size: var(--size-icon-lg);
     block-size: var(--size-icon-lg);
     object-fit: contain;
-    filter: brightness(0) saturate(100%) invert(4%) sepia(39%) saturate(2206%) hue-rotate(201deg) brightness(94%) contrast(99%);
+    filter: brightness(0) saturate(100%) invert(4%) sepia(39%) saturate(2206%)
+      hue-rotate(201deg) brightness(94%) contrast(99%);
     transform: rotate(90deg);
   }
 

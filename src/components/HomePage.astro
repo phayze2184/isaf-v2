@@ -7,31 +7,27 @@ import Solutions from "./Solutions.astro";
 import Production from "./Production.astro";
 import Footer from "./layout/Footer.astro";
 import Partners from "./Partners.astro";
+import { getSiteContent } from "../i18n/site";
+import { normalizeLocale } from "../i18n/routing";
 
 const { lang = "ro" } = Astro.props;
-const isEnglish = lang === "en";
-
-const meta = isEnglish
-  ? {
-      title: "ISAF | Railway infrastructure",
-      description:
-        "ISAF landing page for railway infrastructure design, production, integration and electrification services.",
-    }
-  : {
-      title: "ISAF | Infrastructura feroviara",
-      description:
-        "Pagina ISAF pentru servicii de proiectare, productie, integrare si electrificare in infrastructura feroviara.",
-    };
+const locale = normalizeLocale(lang);
+const meta = getSiteContent(locale).meta.home;
 ---
 
-<Layout lang={lang} title={meta.title} description={meta.description}>
-  <Header lang={lang} />
+<Layout
+  lang={locale}
+  route="home"
+  title={meta.title}
+  description={meta.description}
+>
+  <Header lang={locale} route="home" />
   <main>
-    <Hero lang={lang} />
-    <About lang={lang} />
-    <Solutions lang={lang} />
-    <Production lang={lang} />
-    <Partners lang={lang} />
+    <Hero lang={locale} />
+    <About lang={locale} />
+    <Solutions lang={locale} />
+    <Production lang={locale} />
+    <Partners lang={locale} />
   </main>
-  <Footer lang={lang} />
+  <Footer lang={locale} route="home" />
 </Layout>

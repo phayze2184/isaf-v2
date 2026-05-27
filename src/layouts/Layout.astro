@@ -1,70 +1,96 @@
 ---
+import {
+  locales,
+  getLocalizedPath,
+  normalizeLocale,
+  type RouteKey,
+} from "../i18n/routing";
+
 const {
-	lang = "ro",
-	title = "ISAF | Infrastructura feroviara",
-	description = "ISAF productie echipamente pentru infrastructura feroviara, oferind solutii inovatoare si durabile pentru intretinerea si modernizarea cailor ferate din Romania.",
+  lang = "ro",
+  route = "home",
+  title = "ISAF | Infrastructura feroviara",
+  description = "ISAF productie echipamente pentru infrastructura feroviara, oferind solutii inovatoare si durabile pentru intretinerea si modernizarea cailor ferate din Romania.",
 } = Astro.props;
+const locale = normalizeLocale(lang);
+const routeKey = route as RouteKey;
+const alternateLinks = locales.map((alternateLocale) => ({
+  locale: alternateLocale,
+  href: getLocalizedPath(alternateLocale, routeKey),
+}));
+const canonicalHref = getLocalizedPath(locale, routeKey);
 
 const baseUrl = import.meta.env.BASE_URL.endsWith("/")
-	? import.meta.env.BASE_URL
-	: `${import.meta.env.BASE_URL}/`;
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
 const faviconHref = `${baseUrl}favicon.svg?v=1`;
 ---
 
 <!doctype html>
-<html lang={lang}>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" sizes="any" href={faviconHref} />
-		<meta name="generator" content={Astro.generator} />
-		<meta
-			name="description"
-			content={description}
-		/>
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href={faviconHref} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalHref} />
+    {
+      alternateLinks.map((link) => (
+        <link rel="alternate" hreflang={link.locale} href={link.href} />
+      ))
+    }
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={getLocalizedPath("ro", routeKey)}
+    />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
 
 <style is:global>
-	:root {
-		--font-display: 'Big Shoulders', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-		--font-body: 'Atkinson Hyperlegible', Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-		color: #07152a;
-		background: #e7edf4;
-		font-family: var(--font-body);
-		font-synthesis: none;
-		text-rendering: optimizeLegibility;
-	}
+  :root {
+    --font-display:
+      "Big Shoulders", Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+    --font-body:
+      "Atkinson Hyperlegible", Inter, ui-sans-serif, system-ui, -apple-system,
+      BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #07152a;
+    background: #e7edf4;
+    font-family: var(--font-body);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+  }
 
-	* {
-		box-sizing: border-box;
-	}
+  * {
+    box-sizing: border-box;
+  }
 
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		min-height: 100%;
-		scroll-behavior: smooth;
-	}
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+    scroll-behavior: smooth;
+  }
 
-	body {
-		overflow-x: hidden;
-		background: #e7edf4;
-	}
+  body {
+    overflow-x: hidden;
+    background: #e7edf4;
+  }
 
-	img,
-	svg {
-		display: block;
-		max-width: 100%;
-	}
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
 
-	a,
-	button {
-		font: inherit;
-	}
+  a,
+  button {
+    font: inherit;
+  }
 </style>

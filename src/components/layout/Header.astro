@@ -4,44 +4,22 @@ import "../../styles/global.css";
 import "../../styles/typography.css";
 import logoIsaf from "../../assets/images/logo-isaf.png";
 import Button from "../ui/Button.astro";
+import {
+  getAlternateLocale,
+  getLocalizedPath,
+  normalizeLocale,
+  type RouteKey,
+} from "../../i18n/routing";
+import { getSiteContent } from "../../i18n/site";
 
-const { lang = "ro" } = Astro.props;
-const isEnglish = lang === "en";
-const baseUrl = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
-const homeHref = isEnglish ? `${baseUrl}en/` : baseUrl;
-const languageHref = isEnglish ? baseUrl : `${baseUrl}en/`;
-const certificationsHref = isEnglish
-  ? `${baseUrl}en/certifications/`
-  : `${baseUrl}certificari/`;
-const copy = isEnglish
-  ? {
-      homeLabel: "ISAF home",
-      navLabel: "Primary navigation",
-      about: "About us",
-      solutions: "Solutions",
-      production: "Production",
-      certifications: "Certifications",
-      contact: "Contact",
-      menuOpen: "Open navigation menu",
-      menuClose: "Close navigation menu",
-      switchLanguage: "Switch to Romanian",
-      nextLanguage: "RO",
-    }
-  : {
-      homeLabel: "Pagina principala ISAF",
-      navLabel: "Navigare principala",
-      about: "Despre noi",
-      solutions: "Soluții",
-      production: "Producție",
-      certifications: "Certificări",
-      contact: "Contact",
-      menuOpen: "Deschide meniul de navigare",
-      menuClose: "Închide meniul de navigare",
-      switchLanguage: "Schimbă limba în engleză",
-      nextLanguage: "EN",
-    };
+const { lang = "ro", route = "home" } = Astro.props;
+const locale = normalizeLocale(lang);
+const routeKey = route as RouteKey;
+const alternateLocale = getAlternateLocale(locale);
+const homeHref = getLocalizedPath(locale, "home");
+const languageHref = getLocalizedPath(alternateLocale, routeKey);
+const certificationsHref = getLocalizedPath(locale, "certifications");
+const copy = getSiteContent(locale).header;
 ---
 
 <header class="header">
@@ -67,8 +45,8 @@ const copy = isEnglish
       <nav
         id="primary-navigation"
         class="primary-nav"
-      aria-label={copy.navLabel}
-    >
+        aria-label={copy.navLabel}
+      >
         <a href={`${homeHref}#about`}>{copy.about}</a>
         <a href={`${homeHref}#solutions`}>{copy.solutions}</a>
         <a href={`${homeHref}#production`}>{copy.production}</a>
@@ -79,13 +57,17 @@ const copy = isEnglish
         <a
           class="language-toggle"
           href={languageHref}
-          hreflang={isEnglish ? "ro" : "en"}
+          hreflang={alternateLocale}
           aria-label={copy.switchLanguage}
         >
           <span>{copy.nextLanguage}</span>
         </a>
         <div class="contact-action">
-          <Button href={`${homeHref}#contact`} variant="secondary" class="header-contact">
+          <Button
+            href={`${homeHref}#contact`}
+            variant="secondary"
+            class="header-contact"
+          >
             <span>{copy.contact}</span>
           </Button>
         </div>
@@ -179,7 +161,7 @@ const copy = isEnglish
     display: flex;
     align-items: center;
     gap: var(--spacing-6);
-    min-inline-size: 0;
+    min-inline-size: 12.5rem;
   }
 
   .brand {
@@ -410,7 +392,7 @@ const copy = isEnglish
     }
 
     .language-toggle {
-      border: var(--border-hairline) solid var(--color-red-50); 
+      border: var(--border-hairline) solid var(--color-red-50);
     }
 
     .language-toggle:hover,

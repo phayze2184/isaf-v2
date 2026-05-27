@@ -7,19 +7,11 @@ import logoAlstom from "../assets/partners/logo-alstom.svg";
 import logoSiemens from "../assets/partners/logo-siemens.svg";
 import logoImsat from "../assets/partners/logo-imsat.svg";
 import EyebrowText from "./ui/EyebrowText.astro";
+import { getSiteContent } from "../i18n/site";
+import { normalizeLocale } from "../i18n/routing";
 
 const { lang = "ro" } = Astro.props;
-const copy = lang === "en"
-  ? {
-      sectionLabel: "Strategic partnerships",
-      eyebrow: "Strategic partnerships",
-      logosLabel: "Strategic partners",
-    }
-  : {
-      sectionLabel: "Parteneriate strategice",
-      eyebrow: "Parteneriate strategice",
-      logosLabel: "Parteneri strategici",
-    };
+const copy = getSiteContent(normalizeLocale(lang)).partners;
 
 const partners = [
   {
@@ -55,7 +47,9 @@ const partners = [
       {
         partners.map((partner, index) => (
           <>
-            {index > 0 && <span class="partners-separator" aria-hidden="true"></span>}
+            {index > 0 && (
+              <span class="partners-separator" aria-hidden="true" />
+            )}
             <div class={`partners-logo ${partner.className}`}>
               <img src={partner.logo.src} alt={partner.name} loading="lazy" />
             </div>
