@@ -1,0 +1,556 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "./layout/Header.astro";
+import Footer from "./layout/Footer.astro";
+import EyebrowText from "./ui/EyebrowText.astro";
+import arrowRight from "../assets/icons/arrowRight.svg";
+import techElemLeft from "../assets/svg/tech-elem-left.svg";
+import techElemRight from "../assets/svg/tech-elem-right.svg";
+import certIsoAfnor from "../assets/certificari/Certificat ISO 9001 AFNOR 2015.67649.5 (valabil 04.07.2027).pdf?url";
+import certSmc from "../assets/certificari/Certificat SMC 027 Sistem de management al calitatii (valabil 2028.04.26).pdf?url";
+import certSsm from "../assets/certificari/Certificat SSM 050 Sistem de management al sanatatii si securitatii in munca (valabil 2028.06.19).pdf?url";
+import certIsoIqnet from "../assets/certificari/Certificat ISO 9001 IQNET 2015.67649.5 (valabil 04.07.2027).pdf?url";
+import certSmm from "../assets/certificari/Certificat SMM 074 Sistem de management de mediu (valabil 2028.04.26).pdf?url";
+
+const { lang = "ro" } = Astro.props;
+const isEnglish = lang === "en";
+
+const productCertificateFiles = import.meta.glob(
+  "../assets/certificari/certificari-produse/*.pdf",
+  {
+    eager: true,
+    import: "default",
+    query: "?url",
+  },
+);
+
+const getCertificateFileName = (path: string) => path.split("/").pop() ?? path;
+const getCertificateSortValue = (fileName: string) => {
+  const prefix = fileName.match(/^(\d+(?:\.\d+)?)(?:\.\s+|\s+)/)?.[1];
+
+  return prefix ? Number(prefix) : Number.MAX_SAFE_INTEGER;
+};
+
+const cleanProductCertificateName = (fileName: string) =>
+  fileName
+    .replace(/\.pdf$/i, "")
+    .replace(/^\d+(?:\.\d+)?(?:\.\s+|\s+)/, "");
+
+const getProductCertificateType = (label: string) => {
+  const type = label.match(/\b(tip|fab|prel)\b/i)?.[1]?.toLowerCase();
+
+  if (isEnglish) {
+    return type === "tip"
+      ? "Type approval"
+      : type === "fab"
+        ? "Manufacturing approval"
+        : type === "prel"
+          ? "Extension"
+          : "Product certificate";
+  }
+
+  return type === "tip"
+    ? "Certificare de tip"
+    : type === "fab"
+      ? "Certificare fabricație"
+      : type === "prel"
+        ? "Prelungire"
+        : "Certificare produs";
+};
+
+const getProductCertificateTitle = (label: string) =>
+  label
+    .replace(/^(COT\s+\d+-\d+|AT\s+\d+-\d+|AL\s+\d+-\d+)\s+/i, "")
+    .replace(/\b(tip|fab|prel)\b\s+/i, "")
+    .replace(/^Autorizatie\s+/i, "Autorizație ")
+    .trim();
+
+const getProductCertificateStandard = (label: string) =>
+  label.match(/^(COT\s+\d+-\d+|AT\s+\d+-\d+|AL\s+\d+-\d+|Autorizatie furnizor feroviar\s+AF\s+\d+-\d+)/i)?.[1] ??
+  (isEnglish ? "Product certificate" : "Certificare produs");
+
+const productCertifications = Object.entries(productCertificateFiles)
+  .map(([path, file]) => {
+    const fileName = getCertificateFileName(path);
+    const label = cleanProductCertificateName(fileName);
+
+    return {
+      standard: getProductCertificateStandard(label),
+      issuer: getProductCertificateType(label),
+      title: getProductCertificateTitle(label),
+      file: file as string,
+      fileName,
+      sortValue: getCertificateSortValue(fileName),
+    };
+  })
+  .sort((a, b) => a.sortValue - b.sortValue || a.fileName.localeCompare(b.fileName));
+
+const certifications = isEnglish
+  ? [
+      {
+        standard: "SMC 027",
+        issuer: "AFER",
+        title: "Quality management system",
+        validity: "Valid until 26.04.2028",
+        file: certSmc,
+        fileName: "Certificat SMC 027 Sistem de management al calitatii (valabil 2028.04.26).pdf",
+      },
+      {
+        standard: "SSM 050",
+        issuer: "AFER",
+        title: "Occupational health and safety management system",
+        validity: "Valid until 19.06.2028",
+        file: certSsm,
+        fileName: "Certificat SSM 050 Sistem de management al sanatatii si securitatii in munca (valabil 2028.06.19).pdf",
+      },
+      {
+        standard: "SMM 074",
+        issuer: "AFER",
+        title: "Environmental management system",
+        validity: "Valid until 26.04.2028",
+        file: certSmm,
+        fileName: "Certificat SMM 074 Sistem de management de mediu (valabil 2028.04.26).pdf",
+      },
+      {
+        standard: "ISO 9001",
+        issuer: "IQNET",
+        title: "Quality management system",
+        validity: "Valid until 04.07.2027",
+        file: certIsoIqnet,
+        fileName: "Certificat ISO 9001 IQNET 2015.67649.5 (valabil 04.07.2027).pdf",
+      },
+      {
+        standard: "ISO 9001",
+        issuer: "AFNOR",
+        title: "Quality management system",
+        validity: "Valid until 04.07.2027",
+        file: certIsoAfnor,
+        fileName: "Certificat ISO 9001 AFNOR 2015.67649.5 (valabil 04.07.2027).pdf",
+      },
+    ]
+  : [
+      {
+        standard: "SMC 027",
+        issuer: "AFER",
+        title: "Sistem de management al calității",
+        validity: "Valabil până la 26.04.2028",
+        file: certSmc,
+        fileName: "Certificat SMC 027 Sistem de management al calitatii (valabil 2028.04.26).pdf",
+      },
+      {
+        standard: "SSM 050",
+        issuer: "AFER",
+        title: "Sistem de management al sănătății și securității în muncă",
+        validity: "Valabil până la 19.06.2028",
+        file: certSsm,
+        fileName: "Certificat SSM 050 Sistem de management al sanatatii si securitatii in munca (valabil 2028.06.19).pdf",
+      },
+      {
+        standard: "SMM 074",
+        issuer: "AFER",
+        title: "Sistem de management de mediu",
+        validity: "Valabil până la 26.04.2028",
+        file: certSmm,
+        fileName: "Certificat SMM 074 Sistem de management de mediu (valabil 2028.04.26).pdf",
+      },
+      {
+        standard: "ISO 9001",
+        issuer: "IQNET",
+        title: "Sistem de management al calității",
+        validity: "Valabil până la 04.07.2027",
+        file: certIsoIqnet,
+        fileName: "Certificat ISO 9001 IQNET 2015.67649.5 (valabil 04.07.2027).pdf",
+      },
+      {
+        standard: "ISO 9001",
+        issuer: "AFNOR",
+        title: "Sistem de management al calității",
+        validity: "Valabil până la 04.07.2027",
+        file: certIsoAfnor,
+        fileName: "Certificat ISO 9001 AFNOR 2015.67649.5 (valabil 04.07.2027).pdf",
+      },
+    ];
+
+const copy = isEnglish
+  ? {
+      title: "ISAF | Certifications",
+      description:
+        "ISAF certifications for quality, environmental, occupational health and safety management systems.",
+      eyebrow: "Certifications",
+      heading: "Certified systems for reliable railway infrastructure equipment",
+      lead:
+        "The certifications below document ISAF's management systems, audited standards and validity periods. Each document is available as a downloadable PDF.",
+      listLabel: "ISAF certifications",
+      managementSubtitle: "Management certifications",
+      productSubtitle: "Equipment certifications",
+      download: "Download PDF",
+    }
+  : {
+      title: "ISAF | Certificări",
+      description:
+        "Certificările ISAF pentru sistemele de management al calității, mediului, sănătății și securității în muncă.",
+      eyebrow: "Certificări",
+      heading: "Sisteme certificate pentru echipamente feroviare conforme și fiabile",
+      lead:
+        "Certificările de mai jos documentează sistemele de management ISAF, standardele auditate și perioadele de valabilitate. Fiecare document este disponibil pentru descărcare în format PDF.",
+      listLabel: "Certificări ISAF",
+      managementSubtitle: "Certificări management",
+      productSubtitle: "Certificări echipamente",
+      download: "Descarcă PDF",
+    };
+---
+
+<Layout lang={lang} title={copy.title} description={copy.description}>
+  <Header lang={lang} />
+  <main class="certifications-page">
+    <section class="certifications-hero" aria-labelledby="certifications-title">
+      <div class="certifications-shell">
+        <div class="certifications-heading">
+          <EyebrowText tone="dark">{copy.eyebrow}</EyebrowText>
+          <h1 id="certifications-title">{copy.heading}</h1>
+          <p>{copy.lead}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="certifications-list-section" aria-label={copy.listLabel}>
+      <div class="certifications-shell certifications-shell--list">
+        <h2 class="certifications-section-title">{copy.managementSubtitle}</h2>
+        <div class="certifications-list">
+          {
+            certifications.map((certificate, index) => (
+              <article class="certification-card">
+                <div class="certification-card-index" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </div>
+                <div class="certification-card-main">
+                  <p class="certification-standard">{certificate.standard}</p>
+                  <h2>{certificate.title}</h2>
+                  <div class="certification-meta">
+                    <span>{certificate.issuer}</span>
+                    {certificate.validity && <span>{certificate.validity}</span>}
+                  </div>
+                </div>
+                <a
+                  class="certification-download"
+                  href={certificate.file}
+                  download={certificate.fileName}
+                  aria-label={`${copy.download}: ${certificate.standard} ${certificate.issuer}`}
+                >
+                  <span class="certification-download-text">{copy.download}</span>
+                  <img
+                    class="certification-download-icon"
+                    src={arrowRight.src}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                  />
+                </a>
+              </article>
+            ))
+          }
+        </div>
+
+        <h2 class="certifications-section-title certifications-section-title--products">
+          {copy.productSubtitle}
+        </h2>
+        <div class="certifications-list">
+          {
+            productCertifications.map((certificate, index) => (
+              <article class="certification-card">
+                <div class="certification-card-index" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </div>
+                <div class="certification-card-main">
+                  <p class="certification-standard">{certificate.standard}</p>
+                  <h2>{certificate.title}</h2>
+                  <div class="certification-meta">
+                    <span>{certificate.issuer}</span>
+                  </div>
+                </div>
+                <a
+                  class="certification-download"
+                  href={certificate.file}
+                  download={certificate.fileName}
+                  aria-label={`${copy.download}: ${certificate.standard}`}
+                >
+                  <span class="certification-download-text">{copy.download}</span>
+                  <img
+                    class="certification-download-icon"
+                    src={arrowRight.src}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                  />
+                </a>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer lang={lang} />
+</Layout>
+
+<style>
+  .certifications-page {
+    background: var(--color-background-page-light);
+  }
+
+  .certifications-shell {
+    inline-size: min(100% - var(--spacing-8), var(--container-max));
+    margin-inline: auto;
+  }
+
+  .certifications-hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: 9.5rem var(--spacing-16);
+    background:
+      linear-gradient(135deg, oklch(12.985% 0.0425 265.1322 / 94%), oklch(25.2161% 0.0562 264.0043 / 90%)),
+      var(--color-background-page-dark);
+    color: var(--color-text-inverse);
+  }
+
+  .certifications-hero::before {
+    position: absolute;
+    inset: 0;
+    content: "";
+    background-image:
+      linear-gradient(var(--color-white-12) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-white-12) 1px, transparent 1px);
+    background-size: 4rem 4rem;
+    opacity: 0.16;
+  }
+
+  .certifications-hero::after {
+    position: absolute;
+    inset-block-end: -4.5rem;
+    inset-inline-end: clamp(1rem, 7vw, 8rem);
+    inline-size: 12rem;
+    block-size: 12rem;
+    content: "";
+    border: var(--border-medium) solid var(--color-red);
+    transform: rotate(45deg);
+    opacity: 0.45;
+  }
+
+  .certifications-hero .certifications-shell {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: var(--spacing-10);
+  }
+
+  .certifications-heading {
+    display: grid;
+    gap: var(--spacing-6);
+    max-inline-size: 58rem;
+  }
+
+  .certifications-list-section {
+    padding-block: var(--spacing-12) var(--spacing-20);
+  }
+
+  .certifications-shell--list {
+    position: relative;
+  }
+
+  .certifications-list {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: var(--spacing-4);
+  }
+
+  .certifications-section-title {
+    margin: 0 0 var(--spacing-8);
+    color: var(--color-text-default);
+    font-family: "Big Shoulders", sans-serif;
+    font-size: clamp(var(--font-size-32), 6vw, var(--font-size-56));
+    font-weight: var(--font-weight-heading);
+    line-height: var(--line-height-110);
+    letter-spacing: var(--letter-spacing-normal);
+    text-transform: uppercase;
+  }
+
+  .certifications-section-title--products {
+    margin-block-start: var(--spacing-16);
+  }
+
+  .certification-card {
+    display: grid;
+    gap: var(--spacing-5);
+    padding: var(--spacing-6);
+    border: var(--border-hairline) solid var(--color-border-subtle);
+    border-inline-start: var(--border-strong) solid var(--color-red);
+    border-radius: var(--radius-md);
+    background: var(--color-background-surface-light);
+    box-shadow: 0 1rem 2.5rem oklch(12.985% 0.0425 265.1322 / 8%);
+  }
+
+  .certification-card-index {
+    color: var(--color-red);
+    font-family: "Atkinson Hyperlegible Mono", monospace;
+    font-size: var(--font-size-14);
+    line-height: var(--line-height-130);
+    letter-spacing: var(--letter-spacing-label);
+  }
+
+  .certification-card-main {
+    display: grid;
+    gap: var(--spacing-3);
+    min-inline-size: 0;
+  }
+
+  .certification-standard {
+    margin: 0;
+    color: var(--color-text-brand);
+    font-family: "Atkinson Hyperlegible Mono", monospace;
+    font-size: var(--font-size-14);
+    line-height: var(--line-height-130);
+    letter-spacing: var(--letter-spacing-label);
+    text-transform: uppercase;
+  }
+
+  .certification-card h2 {
+    margin: 0;
+    max-inline-size: 30ch;
+    color: var(--color-text-default);
+    font-family: "Big Shoulders", sans-serif;
+    font-size: clamp(var(--font-size-24), 5vw, var(--font-size-40));
+    font-weight: var(--font-weight-heading);
+    line-height: var(--line-height-110);
+    letter-spacing: var(--letter-spacing-normal);
+  }
+
+  .certification-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2) var(--spacing-4);
+    color: var(--color-text-muted-light);
+    font-size: var(--font-size-16);
+    line-height: var(--line-height-140);
+  }
+
+  .certification-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-4);
+  }
+
+  .certification-meta span:not(:last-child)::after {
+    content: "";
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    background: var(--color-amber);
+    transform: rotate(45deg);
+  }
+
+  .certification-download {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--spacing-4);
+    min-block-size: var(--size-control-lg);
+    padding: var(--spacing-4);
+    border: var(--border-hairline) solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-default);
+    text-decoration: none;
+    transition:
+      border-color 160ms ease,
+      color 160ms ease,
+      transform 160ms ease;
+  }
+
+  .certification-download:hover,
+  .certification-download:focus-visible {
+    border-color: var(--color-red);
+    color: var(--color-red);
+    transform: translateY(-0.125rem);
+  }
+
+  .certification-download:hover .certification-download-icon,
+  .certification-download:focus-visible .certification-download-icon {
+    filter: brightness(0) saturate(100%) invert(29%) sepia(98%) saturate(2482%) hue-rotate(344deg) brightness(92%) contrast(98%);
+  }
+
+  .certification-download:focus-visible {
+    outline: var(--border-medium) solid var(--color-amber);
+    outline-offset: var(--spacing-1);
+  }
+
+  .certification-download-text {
+    font-size: var(--font-size-16);
+    line-height: var(--line-height-130);
+  }
+
+  .certification-download-icon {
+    grid-column: 2;
+    inline-size: var(--size-icon-lg);
+    block-size: var(--size-icon-lg);
+    object-fit: contain;
+    filter: brightness(0) saturate(100%) invert(4%) sepia(39%) saturate(2206%) hue-rotate(201deg) brightness(94%) contrast(99%);
+    transform: rotate(90deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .certification-download {
+      transition-duration: 0.01ms;
+    }
+
+    .certification-download:hover,
+    .certification-download:focus-visible {
+      transform: none;
+    }
+  }
+
+  @media (min-width: 48em) {
+    .certifications-shell {
+      inline-size: min(100% - var(--spacing-16), var(--container-max));
+    }
+
+    .certifications-hero {
+      padding-block: 11rem var(--spacing-20);
+    }
+
+    .certifications-hero .certifications-shell {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
+
+    .certification-card {
+      grid-template-columns: 3rem minmax(0, 1fr) minmax(14rem, 18rem);
+      align-items: center;
+      padding: var(--spacing-8);
+      gap: var(--spacing-8);
+    }
+
+    .certification-card-index {
+      align-self: start;
+    }
+  }
+
+  @media (min-width: 64em) {
+    .certifications-list-section {
+      padding-block: var(--spacing-16) var(--spacing-24);
+    }
+
+    .certifications-decoration {
+      display: block;
+      inline-size: 11rem;
+    }
+
+    .certifications-decoration--left {
+      inset-block-start: -2rem;
+      inset-inline-start: -4rem;
+    }
+
+    .certifications-decoration--right {
+      inset-block-end: -4rem;
+      inset-inline-end: -4rem;
+    }
+  }
+</style>

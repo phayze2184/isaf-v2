@@ -12,6 +12,9 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   : `${import.meta.env.BASE_URL}/`;
 const homeHref = isEnglish ? `${baseUrl}en/` : baseUrl;
 const languageHref = isEnglish ? baseUrl : `${baseUrl}en/`;
+const certificationsHref = isEnglish
+  ? `${baseUrl}en/certifications/`
+  : `${baseUrl}certificari/`;
 const copy = isEnglish
   ? {
       homeLabel: "ISAF home",
@@ -19,6 +22,7 @@ const copy = isEnglish
       about: "About us",
       solutions: "Solutions",
       production: "Production",
+      certifications: "Certifications",
       contact: "Contact",
       menuOpen: "Open navigation menu",
       menuClose: "Close navigation menu",
@@ -31,6 +35,7 @@ const copy = isEnglish
       about: "Despre noi",
       solutions: "Soluții",
       production: "Producție",
+      certifications: "Certificări",
       contact: "Contact",
       menuOpen: "Deschide meniul de navigare",
       menuClose: "Închide meniul de navigare",
@@ -62,11 +67,12 @@ const copy = isEnglish
       <nav
         id="primary-navigation"
         class="primary-nav"
-        aria-label={copy.navLabel}
-      >
-        <a href="#about">{copy.about}</a>
-        <a href="#solutions">{copy.solutions}</a>
-        <a href="#production">{copy.production}</a>
+      aria-label={copy.navLabel}
+    >
+        <a href={`${homeHref}#about`}>{copy.about}</a>
+        <a href={`${homeHref}#solutions`}>{copy.solutions}</a>
+        <a href={`${homeHref}#production`}>{copy.production}</a>
+        <a href={certificationsHref}>{copy.certifications}</a>
       </nav>
 
       <div class="navbar-actions">
@@ -79,7 +85,7 @@ const copy = isEnglish
           <span>{copy.nextLanguage}</span>
         </a>
         <div class="contact-action">
-          <Button href="#contact" variant="secondary" class="header-contact">
+          <Button href={`${homeHref}#contact`} variant="secondary" class="header-contact">
             <span>{copy.contact}</span>
           </Button>
         </div>
