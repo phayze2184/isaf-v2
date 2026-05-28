@@ -9,7 +9,7 @@ import circuiteCaleImage from "../assets/diagrams/circuite-cale.png";
 import releeImage from "../assets/diagrams/relee.png";
 import arrowRight from "../assets/icons/arrowRight.svg";
 import techElementSolutions from "../assets/svg/tech-elem-prod.svg";
-import EyebrowText from "./ui/EyebrowText.astro";
+import Eyebrow from "./ui/Eyebrow.astro";
 import { getSiteContent } from "../i18n/site";
 import { normalizeLocale } from "../i18n/routing";
 
@@ -26,9 +26,9 @@ const productImages = [
 <section class="solutions" id="solutions" aria-labelledby="solutions-title">
   <div class="solutions-header">
     <div class="solutions-title-group">
-      <EyebrowText class="solutions-eyebrow">
+      <Eyebrow decoration="red-on-light">
         {copy.eyebrow}
-      </EyebrowText>
+      </Eyebrow>
 
       <h2 id="solutions-title">{copy.title}</h2>
       <img
@@ -210,15 +210,11 @@ const productImages = [
     gap: 1.125rem;
   }
 
-  .solutions-eyebrow {
+  .solutions :global(.eyebrow) {
     margin-block-end: 0;
   }
 
-  .solutions-eyebrow :global(.eyebrow-line) {
-    inline-size: var(--spacing-10);
-  }
-
-  .solutions-eyebrow :global(.eyebrow-content) {
+  .solutions :global(.eyebrow .eyebrow-content) {
     color: var(--color-text-muted-light);
     font-size: var(--font-size-18);
   }

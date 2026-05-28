@@ -1,0 +1,72 @@
+---
+import eyebrowDecorGray from "../../assets/svg/eyebrow-decor-gray.svg";
+import eyebrowDecorRed from "../../assets/svg/eyebrow-decor-red.svg";
+
+const {
+  decoration = "red-on-dark",
+} = Astro.props;
+
+const variants = [
+  "red-on-dark",
+  "red-on-light",
+  "gray-on-dark",
+  "gray-on-light",
+];
+
+const eyebrowDecoration = variants.includes(decoration)
+  ? decoration
+  : "red-on-dark";
+
+const isGray = eyebrowDecoration.startsWith("gray");
+const eyebrowDecor = isGray ? eyebrowDecorGray : eyebrowDecorRed;
+---
+
+<div class={`eyebrow eyebrow--${eyebrowDecoration}`}>
+  <span class="eyebrow-decoration" aria-hidden="true">
+    <img class="eyebrow-decor" src={eyebrowDecor.src} alt="" />
+  </span>
+  <p class="eyebrow-content">
+    <slot>experți în infrastructură feroviară</slot>
+  </p>
+</div>
+
+<style>
+  .eyebrow {
+    --eyebrow-content-color: var(--color-text-muted-light);
+
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-4);
+    inline-size: min(100%, 32.75rem);
+  }
+
+  .eyebrow-decoration {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .eyebrow-decor {
+    display: block;
+    flex: none; 
+  }
+
+  .eyebrow-content {
+    flex: 1 1 0;
+    min-inline-size: 0;
+    margin: 0;
+    color: var(--eyebrow-content-color);
+    font-family: "Atkinson Hyperlegible Mono", monospace;
+    font-size: var(--font-size-eyebrow);
+    font-weight: var(--font-weight-label);
+    line-height: var(--line-height-label);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+  }
+
+   .eyebrow--red-on-dark, 
+   .eyebrow--gray-on-dark {
+     --eyebrow-content-color: var(--color-text-muted-dark);
+   }
+</style>

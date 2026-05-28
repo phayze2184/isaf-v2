@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "./layout/Header.astro";
 import Footer from "./layout/Footer.astro";
-import EyebrowText from "./ui/EyebrowText.astro";
+import Eyebrow from "./ui/Eyebrow.astro";
 import arrowRight from "../assets/icons/arrowRight.svg";
 import techElemLeft from "../assets/svg/tech-elem-left.svg";
 import techElemRight from "../assets/svg/tech-elem-right.svg";
@@ -112,7 +112,7 @@ const certifications = copy.management.map((certificate) => ({
     <section class="certifications-hero" aria-labelledby="certifications-title">
       <div class="certifications-shell">
         <div class="certifications-heading">
-          <EyebrowText tone="dark">{copy.eyebrow}</EyebrowText>
+          <Eyebrow decoration="red-on-dark">{copy.eyebrow}</Eyebrow>
           <h1 id="certifications-title">{copy.heading}</h1>
           <p>{copy.lead}</p>
         </div>
