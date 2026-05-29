@@ -113,7 +113,11 @@
   --size-control-lg: 3.25rem; /* 52px */
 
   /* primitives / size / container */
-  --container-max: 1280px;
+  --container-max: 90rem; /* 1440px */
+  --container-gutter: 2rem; /* 32px */
+
+  --section-padding-block: clamp(3.75rem, 8vw, 7.5rem);
+  --hero-wrapper-offset: clamp(3.75rem, 1.25rem + 8.333vw, 7.5rem);
 
   /* primitives / spacing */
   --spacing-1: 0.25rem; /* 4px */
@@ -190,7 +194,8 @@
   --font-size-nav-link: var(--font-size-18);
   --font-size-button: var(--font-size-16);
   --font-size-kpi: var(--font-size-24);
-  --font-size-eyebrow: var(--font-size-18); 
+  --font-size-eyebrow-desktop: var(--font-size-20); 
+  --font-size-eyebrow-mobile: var(--font-size-14);
 
   /* semantic / line-height */
   --line-height-h1: var(--line-height-115);

@@ -93,7 +93,6 @@ const partners = [
 
   .partners :global(.eyebrow .eyebrow-content) {
     color: var(--color-text-inverse-muted);
-    font-size: var(--font-size-20);
     line-height: var(--line-height-110);
     letter-spacing: var(--letter-spacing-label);
     text-align: center;
@@ -174,6 +173,8 @@ const partners = [
     }
 
     .partners :global(.eyebrow) {
+      --eyebrow-content-font-size: var(--font-size-20);
+
       justify-content: flex-start;
       gap: var(--spacing-4);
       inline-size: 21.25rem;
@@ -187,7 +188,6 @@ const partners = [
 
     .partners :global(.eyebrow .eyebrow-content) {
       color: var(--color-text-inverse-muted);
-      font-size: var(--font-size-20);
       line-height: var(--line-height-110);
       letter-spacing: var(--letter-spacing-label);
       white-space: nowrap;

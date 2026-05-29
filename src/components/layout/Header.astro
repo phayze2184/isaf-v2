@@ -23,70 +23,64 @@ const copy = getSiteContent(locale).header;
 ---
 
 <header class="header">
-  <div class="container">
-    <div class="navbar" data-navbar>
-      <div class="navbar-left">
-        <a class="brand" href={homeHref} aria-label={copy.homeLabel}>
-          <img
-            class="brand-logo"
-            src={logoIsaf.src}
-            alt="ISAF"
-            width="1000"
-            height="394"
-          />
-        </a>
+  <div class="navbar" data-navbar>
+    <div class="navbar-left">
+      <a class="brand" href={homeHref} aria-label={copy.homeLabel}>
+        <img
+          class="brand-logo"
+          src={logoIsaf.src}
+          alt="ISAF"
+          width="1000"
+          height="394"
+        />
+      </a>
 
-        <div class="tagline" aria-hidden="true">
-          <span>on track</span>
-          <span>for the future</span>
-        </div>
+      <div class="tagline" aria-hidden="true">
+        <span>on track</span>
+        <span>for the future</span>
       </div>
+    </div>
 
-      <nav
-        id="primary-navigation"
-        class="primary-nav"
-        aria-label={copy.navLabel}
+    <nav id="primary-navigation" class="primary-nav" aria-label={copy.navLabel}>
+      <a href={`${homeHref}#about`}>{copy.about}</a>
+      <a href={`${homeHref}#solutions`}>{copy.solutions}</a>
+      <a href={`${homeHref}#production`}>{copy.production}</a>
+      <a href={certificationsHref}>{copy.certifications}</a>
+    </nav>
+
+    <div class="navbar-actions">
+      <a
+        class="language-toggle"
+        href={languageHref}
+        hreflang={alternateLocale}
+        aria-label={copy.switchLanguage}
       >
-        <a href={`${homeHref}#about`}>{copy.about}</a>
-        <a href={`${homeHref}#solutions`}>{copy.solutions}</a>
-        <a href={`${homeHref}#production`}>{copy.production}</a>
-        <a href={certificationsHref}>{copy.certifications}</a>
-      </nav>
-
-      <div class="navbar-actions">
-        <a
-          class="language-toggle"
-          href={languageHref}
-          hreflang={alternateLocale}
-          aria-label={copy.switchLanguage}
+        <span>{copy.nextLanguage}</span>
+      </a>
+      <div class="contact-action">
+        <Button
+          href={`${homeHref}#contact`}
+          variant="secondary"
+          class="header-contact"
         >
-          <span>{copy.nextLanguage}</span>
-        </a>
-        <div class="contact-action">
-          <Button
-            href={`${homeHref}#contact`}
-            variant="secondary"
-            class="header-contact"
-          >
-            <span>{copy.contact}</span>
-          </Button>
-        </div>
-
-        <button
-          class="menu-toggle"
-          type="button"
-          aria-label={copy.menuOpen}
-          aria-expanded="false"
-          aria-controls="primary-navigation"
-          data-menu-open-label={copy.menuOpen}
-          data-menu-close-label={copy.menuClose}
-          data-menu-toggle
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+          <span>{copy.contact}</span>
+        </Button>
       </div>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-label={copy.menuOpen}
+        aria-expanded="false"
+        aria-controls="primary-navigation"
+        data-menu-open-label={copy.menuOpen}
+        data-menu-close-label={copy.menuClose}
+        data-menu-toggle
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </div>
 </header>
@@ -128,20 +122,20 @@ const copy = getSiteContent(locale).header;
 
 <style>
   .header {
+    inline-size: 100%;
+    margin: 0 auto;
     position: absolute;
     inset-block-start: 0;
     inset-inline-start: 0;
     z-index: 10;
-    inline-size: 100%;
     padding-block-start: var(--spacing-4);
-  }
-
-  .header :global(.container) {
-    width: min(calc(100% - 2rem), 75rem);
+    padding-inline: 0;
   }
 
   .navbar {
     display: grid;
+    inline-size: min(calc(100% - 2rem), var(--container-max));
+    margin-inline: auto;
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
       "brand actions"
@@ -156,6 +150,10 @@ const copy = getSiteContent(locale).header;
     background: var(--color-background-surface-card-80);
   }
 
+  .navbar.is-menu-open {
+    row-gap: var(--spacing-4);
+  }
+
   .navbar-left {
     grid-area: brand;
     display: flex;
@@ -166,9 +164,9 @@ const copy = getSiteContent(locale).header;
 
   .brand {
     display: inline-flex;
+    flex: none;
     align-items: center;
     min-inline-size: 0;
-    flex: none;
   }
 
   .brand-logo {
@@ -178,8 +176,8 @@ const copy = getSiteContent(locale).header;
   }
 
   .tagline {
-    min-block-size: 2.75rem;
     display: none;
+    min-block-size: 2.75rem;
     align-content: center;
     gap: 0.125rem;
     padding-inline-start: var(--spacing-6);
@@ -196,6 +194,7 @@ const copy = getSiteContent(locale).header;
   .primary-nav {
     grid-area: nav;
     display: none;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: var(--spacing-4);
@@ -213,10 +212,6 @@ const copy = getSiteContent(locale).header;
     display: flex;
   }
 
-  .navbar.is-menu-open {
-    row-gap: var(--spacing-4);
-  }
-
   .primary-nav a:hover,
   .primary-nav a:focus-visible {
     color: var(--color-text-accent);
@@ -228,24 +223,20 @@ const copy = getSiteContent(locale).header;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: var(--spacing-1);
-    inline-size: 9.96875rem;
+    gap: var(--spacing-3);
   }
 
   .language-toggle {
-    display: inline-grid;
-    place-items: center;
-    inline-size: 3rem;
-    block-size: 3rem;
-    min-inline-size: 3rem;
-    min-block-size: 3rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 0;
-    border: none;
+    border: 0;
     border-radius: var(--radius-sm);
     background: transparent;
     color: var(--color-text-inverse-muted);
     font-family: "Atkinson Hyperlegible", sans-serif;
-    font-size: var(--font-size-14);
+    font-size: var(--font-size-body-sm);
     font-weight: var(--font-weight-label);
     line-height: var(--line-height-130);
     letter-spacing: var(--letter-spacing-wider);
@@ -258,15 +249,13 @@ const copy = getSiteContent(locale).header;
     color: var(--color-text-accent);
   }
 
-  .language-toggle:focus-visible {
+  .language-toggle:focus-visible,
+  .menu-toggle:focus-visible {
     outline: var(--border-medium) solid var(--color-text-accent);
     outline-offset: var(--spacing-1);
   }
 
-  .language-toggle:active,
-  .language-toggle:focus,
-  .language-toggle:focus-visible {
-    border: 0;
+  .language-toggle:focus:not(:focus-visible) {
     outline: none;
   }
 
@@ -297,9 +286,9 @@ const copy = getSiteContent(locale).header;
   }
 
   .contact-action :global(.header-contact .button-label) {
-    block-size: 100%;
     display: inline-flex;
     align-items: center;
+    block-size: 100%;
     padding-inline-start: var(--spacing-6);
     line-height: var(--line-height-130);
     white-space: nowrap;
@@ -317,16 +306,16 @@ const copy = getSiteContent(locale).header;
   }
 
   .menu-toggle {
-    grid-area: menu;
-    inline-size: 2.75rem;
-    block-size: 2.75rem;
-    min-inline-size: 2.75rem;
-    min-block-size: 2.75rem;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: var(--spacing-2);
+    inline-size: var(--size-control-md);
+    block-size: var(--size-control-md);
+    min-inline-size: var(--size-control-md);
+    min-block-size: var(--size-control-md);
     padding: 0;
     border: var(--border-hairline) solid var(--color-red-50);
     border-radius: var(--radius-sm);
@@ -338,28 +327,38 @@ const copy = getSiteContent(locale).header;
   }
 
   .menu-toggle span {
+    position: absolute;
+    inset-inline-start: 50%;
     inline-size: 1.375rem;
     block-size: var(--border-hairline);
     border-radius: var(--radius-full);
     background: currentColor;
+    transform: translateX(-50%);
     transition:
       opacity 160ms ease,
       transform 160ms ease;
   }
 
-  .menu-toggle:hover,
-  .menu-toggle:focus-visible {
-    color: var(--color-text-accent);
-    border-color: var(--color-text-accent);
+  .menu-toggle span:nth-child(1) {
+    inset-block-start: 0.8125rem;
   }
 
+  .menu-toggle span:nth-child(2) {
+    inset-block-start: 1.3125rem;
+  }
+
+  .menu-toggle span:nth-child(3) {
+    inset-block-start: 1.8125rem;
+  }
+
+  .menu-toggle:hover,
   .menu-toggle:focus-visible {
-    outline: var(--border-medium) solid var(--color-text-accent);
-    outline-offset: var(--spacing-1);
+    border-color: var(--color-text-accent);
+    color: var(--color-text-accent);
   }
 
   .navbar.is-menu-open .menu-toggle span:nth-child(1) {
-    transform: translateY(0.5rem) rotate(45deg);
+    transform: translate(-50%, 0.5rem) rotate(45deg);
   }
 
   .navbar.is-menu-open .menu-toggle span:nth-child(2) {
@@ -367,7 +366,13 @@ const copy = getSiteContent(locale).header;
   }
 
   .navbar.is-menu-open .menu-toggle span:nth-child(3) {
-    transform: translateY(-0.5rem) rotate(-45deg);
+    transform: translate(-50%, -0.5rem) rotate(-45deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-toggle span {
+      transition-duration: 0.01ms;
+    }
   }
 
   @media (min-width: 48em) {
@@ -376,84 +381,12 @@ const copy = getSiteContent(locale).header;
     }
 
     .navbar {
-      grid-template-columns: auto minmax(0, 1fr) auto;
-      grid-template-areas: "brand nav actions";
-      gap: var(--spacing-6);
-      padding: var(--spacing-4) var(--spacing-8);
+      column-gap: var(--spacing-6);
+      padding: var(--spacing-4);
       border: var(--border-hairline) solid var(--color-border-navbar-stroke);
       border-radius: var(--radius-md);
+      -webkit-backdrop-filter: blur(12px);
       backdrop-filter: blur(12px);
-    }
-
-    .brand-logo {
-      inline-size: clamp(3.75rem, 20vw, 6.75rem);
-    }
-
-    .navbar-actions {
-      justify-self: end;
-      display: flex;
-      align-items: center;
-      inline-size: auto;
-      gap: var(--spacing-4);
-    }
-
-    .language-toggle {
-      display: inline-grid;
-      padding-inline: var(--spacing-3);
-      border: var(--border-hairline) solid var(--color-red-50);
-      color: var(--color-red-50);
-      font-family: "Atkinson Hyperlegible Mono", monospace;
-      line-height: var(--line-height-110);
-      letter-spacing: var(--letter-spacing-label);
-      box-shadow: 0 0.25rem 1.25rem 0 oklch(0% 0 0 / 24%);
-    }
-
-    .language-toggle:hover,
-    .language-toggle:focus-visible {
-      border-color: var(--color-text-accent);
-    }
-
-    .language-toggle:active,
-    .language-toggle:focus:not(:focus-visible) {
-      border: var(--border-hairline) solid var(--color-red-50);
-    }
-
-    .primary-nav {
-      display: flex;
-      justify-content: flex-end;
-      gap: var(--spacing-6);
-      padding: var(--spacing-3) var(--spacing-5);
-      border-block-start: 0;
-      border-radius: var(--radius-sm);
-      font-size: var(--font-size-nav-link);
-    }
-
-    .contact-action {
-      display: block;
-      margin-inline-start: 0;
-    }
-
-    .menu-toggle {
-      display: none;
-    }
-  }
-
-  @media (min-width: 64em) {
-    .header {
-      padding-block-start: var(--spacing-8);
-    }
-
-    .navbar {
-      max-block-size: none;
-      grid-template-columns: auto minmax(0, 1fr) auto;
-      column-gap: 2.25rem;
-      padding: var(--spacing-4);
-      border-radius: var(--radius-lg);
-    }
-
-    .navbar-left {
-      gap: var(--spacing-6);
-      min-inline-size: 12.5rem;
     }
 
     .brand-logo {
@@ -461,47 +394,60 @@ const copy = getSiteContent(locale).header;
       block-size: 2.9375rem;
     }
 
+    .primary-nav {
+      gap: var(--spacing-6);
+      font-size: var(--font-size-nav-link);
+    }
+
+    .navbar-actions {
+      gap: var(--spacing-4);
+    }
+  }
+
+  @media (min-width: 64em) {
+    .header {
+      display: flex;
+      justify-content: center;
+      padding-block-start: var(--spacing-8);
+    }
+
+    .navbar {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-areas: "brand nav actions";
+      column-gap: 2.25rem;
+      padding: var(--spacing-4);
+      border-radius: var(--radius-lg);
+    }
+
+    .navbar-left {
+      min-inline-size: 12.5rem;
+    }
+
     .tagline {
       display: grid;
-      min-block-size: 2.75rem;
       color: var(--color-text-inverse-muted);
       font-weight: var(--font-weight-label);
     }
 
     .primary-nav {
+      display: flex;
       justify-content: flex-end;
-      gap: var(--spacing-6);
       padding: var(--spacing-3) var(--spacing-5);
+      border-block-start: 0;
+      border-radius: var(--radius-sm);
       font-weight: var(--font-weight-label);
+    }
+
+    .contact-action {
+      display: block;
+    }
+
+    .menu-toggle {
+      display: none;
     }
 
     .navbar-actions {
       gap: var(--spacing-3);
-    }
-
-    .language-toggle {
-      border: 0;
-      color: var(--color-text-inverse-muted);
-      font-family: "Atkinson Hyperlegible", sans-serif;
-      line-height: var(--line-height-130);
-      letter-spacing: var(--letter-spacing-wider);
-      box-shadow: none;
-    }
-
-    .language-toggle:hover,
-    .language-toggle:focus-visible {
-      border-color: transparent;
-    }
-
-    .language-toggle:active,
-    .language-toggle:focus:not(:focus-visible) {
-      border: 0;
-    }
-
-    .contact-action :global(.header-contact) {
-      block-size: 3rem;
-      min-block-size: 3rem;
-      min-inline-size: 7.75rem;
     }
   }
 </style>

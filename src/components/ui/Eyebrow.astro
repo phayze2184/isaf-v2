@@ -33,11 +33,12 @@ const eyebrowDecor = isGray ? eyebrowDecorGray : eyebrowDecorRed;
 <style>
   .eyebrow {
     --eyebrow-content-color: var(--color-text-muted-light);
+    --eyebrow-content-font-size: var(--font-size-eyebrow-mobile);
 
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-4);
-    inline-size: min(100%, 32.75rem);
+    inline-size: min(100%, 20rem);
   }
 
   .eyebrow-decoration {
@@ -49,7 +50,7 @@ const eyebrowDecor = isGray ? eyebrowDecorGray : eyebrowDecorRed;
 
   .eyebrow-decor {
     display: block;
-    flex: none; 
+    flex: none;
   }
 
   .eyebrow-content {
@@ -58,15 +59,21 @@ const eyebrowDecor = isGray ? eyebrowDecorGray : eyebrowDecorRed;
     margin: 0;
     color: var(--eyebrow-content-color);
     font-family: "Atkinson Hyperlegible Mono", monospace;
-    font-size: var(--font-size-eyebrow);
+    font-size: var(--eyebrow-content-font-size);
     font-weight: var(--font-weight-label);
     line-height: var(--line-height-label);
     letter-spacing: var(--letter-spacing-eyebrow);
     text-transform: uppercase;
   }
 
-   .eyebrow--red-on-dark, 
-   .eyebrow--gray-on-dark {
-     --eyebrow-content-color: var(--color-text-muted-dark);
-   }
+  .eyebrow--red-on-dark,
+  .eyebrow--gray-on-dark {
+    --eyebrow-content-color: var(--color-text-muted-dark);
+  }
+
+  @media (min-width: 48em) {
+    .eyebrow {
+      --eyebrow-content-font-size: var(--font-size-eyebrow-desktop);
+    }
+  }
 </style>

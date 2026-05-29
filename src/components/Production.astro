@@ -111,7 +111,7 @@ const galleryImages = commonGalleryImages.map((image, index) => ({
       <GalleryNavigation
         class="production-controls"
         current={1}
-        total={6}
+        total={galleryImages.length}
         navigationLabel={copy.navigationLabel}
         counterSeparator={copy.counterSeparator}
         previousLabel={copy.previousImage}
@@ -164,6 +164,7 @@ const galleryImages = commonGalleryImages.map((image, index) => ({
 
       const formatCount = (value: number | string) =>
         String(value).padStart(2, "0");
+      const totalCount = formatCount(slides.length);
 
       const updateGallery = () => {
         slides.forEach((slide, index) => {
@@ -177,7 +178,7 @@ const galleryImages = commonGalleryImages.map((image, index) => ({
           currentCount.textContent = currentValue;
           counter?.setAttribute(
             "aria-label",
-            `${currentValue} ${counterSeparator} 06`,
+            `${currentValue} ${counterSeparator} ${totalCount}`,
           );
         }
 
@@ -292,7 +293,6 @@ const galleryImages = commonGalleryImages.map((image, index) => ({
 
   .production :global(.eyebrow .eyebrow-content) {
     color: var(--color-text-muted-light);
-    font-size: var(--font-size-20);
     line-height: var(--line-height-110);
     letter-spacing: var(--letter-spacing-label);
   }
@@ -506,10 +506,8 @@ const galleryImages = commonGalleryImages.map((image, index) => ({
       gap: 1.125rem;
     }
 
-    .production :global(.eyebrow .eyebrow-content) {
-      font-size: var(--font-size-20);
-      line-height: var(--line-height-110);
-      letter-spacing: var(--letter-spacing-label);
+    .production :global(.eyebrow) {
+      --eyebrow-content-font-size: var(--font-size-20);
     }
 
     .production h2 {

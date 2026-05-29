@@ -25,23 +25,11 @@ body {
   }
 
 .section {
-    display: flex;
-    align-items: center;
-    padding-block: clamp(3.75rem, 8vw, 7.5rem);  
-  } 
+    padding-block: var(--section-padding-block);
+  }
 
 .container {
-    width: min(calc(100% - 2rem), var(--container-max));
-    margin-inline: auto;
-  }
-
-.container-sm {
-    width: min(calc(100% - 2rem), 960px);
-    margin-inline: auto;
-  }
-  
-.container-lg {
-    width: min(calc(100% - 2rem), 1440px);
+    inline-size: min(calc(100% - 2rem), var(--container-max));
     margin-inline: auto;
   }
 

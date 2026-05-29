@@ -2,7 +2,7 @@
 import videoDesktop from "../assets/video/hero-section-video__desktop.mp4";
 import videoMobile from "../assets/video/hero-section-video__mobile.mp4";
 import posterMobile from "../assets/images/hero-poster-mobile.jpeg";
-import Button from "./ui/Button.astro";
+import HeroCard from "./ui/HeroCard.astro";
 import element1 from "../assets/svg/element-1.svg";
 import element2 from "../assets/svg/element-2.svg";
 import element3 from "../assets/svg/element-3.svg";
@@ -34,38 +34,20 @@ const copy = getSiteContent(normalizeLocale(lang)).hero;
     playsinline
     preload="metadata"
     poster={posterMobile.src}
-    aria-hidden="true"></video>
+    aria-hidden="true"
+  >
+  </video>
 
   <div class="hero-overlay" aria-hidden="true"></div>
 
   <div class="hero-wrapper">
-    <div class="hero-card">
-      <div class="hero-content">
-        <div class="hero-eyebrow">
-          <span class="hero-eyebrow-line" aria-hidden="true"></span>
-          <p>
-            {copy.eyebrow[0]}
-            <br />
-            {copy.eyebrow[1]}
-          </p>
-        </div>
-
-        <div class="hero-copy">
-          <h1 id="hero-title" class="headline">
-            {copy.title}
-            <span>{copy.titleAccent}</span>
-          </h1>
-
-          <p class="hero-lead">
-            {copy.lead}
-          </p>
-        </div>
-      </div>
-
-      <Button href="#solutions" class="hero-cta" variant="primary">
-        <span>{copy.cta}</span>
-      </Button>
-    </div>
+    <HeroCard
+      eyebrow={copy.eyebrow}
+      title={copy.title}
+      titleAccent={copy.titleAccent}
+      lead={copy.lead}
+      cta={copy.cta}
+    />
 
     <div class="trust-elements" aria-hidden="true">
       <div class="trust-item trust-item--experience">
@@ -178,47 +160,30 @@ const copy = getSiteContent(normalizeLocale(lang)).hero;
 
 <style>
   .hero {
-    --section-padding-block-start: 8rem;
-    --section-padding-block-end: 3.75rem;
-
     position: relative;
     display: grid;
-    min-height: 100svh;
-    place-items: center;
-    padding-block: var(--section-padding-block-start)
-      var(--section-padding-block-end);
-    padding-inline: var(--spacing-4);
+    block-size: 100vh;
+    block-size: 100svh;
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+    align-items: end;
+    justify-items: center;
     flex-shrink: 0;
     align-self: stretch;
     overflow: hidden;
     background: var(--color-background-page-dark);
   }
 
-  .hero::after {
-    position: absolute;
-    content: "";
-    inset-inline: 0;
-    inset-block-end: 0;
-    z-index: 1;
-    block-size: 10rem;
-    pointer-events: none;
-    background: linear-gradient(
-      180deg,
-      rgba(7, 17, 20, 0) 0%,
-      rgba(7, 17, 20, 0.2) 38%,
-      rgba(7, 17, 20, 0.42) 72%,
-      rgba(7, 17, 20, 0.62) 100%
-    );
-  }
-
   .hero-wrapper {
     position: relative;
+    inline-size: min(calc(100% - 2rem), var(--container-max));
     z-index: 2;
-    inline-size: min(100%, var(--container-max));
-    margin: 0 auto;
     display: flex;
     align-items: center;
     gap: 2.3125rem;
+    margin-inline: auto;
+    margin-block-start: auto;
+    margin-block-end: var(--hero-wrapper-offset);
   }
 
   .hero-media,
@@ -242,94 +207,11 @@ const copy = getSiteContent(normalizeLocale(lang)).hero;
     background:
       linear-gradient(
         180deg,
-        rgba(7, 17, 20, 0.04) 0%,
-        rgba(7, 17, 20, 0.22) 55%,
-        rgba(7, 17, 20, 0.55) 100%
+        rgba(7, 17, 20, 0) 0%,
+        rgba(7, 17, 20, 0.09) 45%,
+        rgba(7, 17, 20, 0.184) 100%
       ),
-      linear-gradient(0deg, rgba(30, 30, 30, 0.16), rgba(30, 30, 30, 0.16));
-  }
-
-  .hero-card {
-    inline-size: min(100%, 40em);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-8);
-    overflow: hidden;
-    padding: var(--spacing-12) var(--spacing-10);
-    border: var(--border-hairline) solid oklch(100% 0 0 / 10%);
-    border-radius: var(--radius-lg);
-    background: linear-gradient(
-      180deg,
-      oklch(18% 0.035 245 / 64%) 0%,
-      oklch(7% 0.028 255 / 78%) 100%
-    );
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-    isolation: isolate;
-  }
-
-  .hero-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-4);
-    inline-size: 100%;
-  }
-
-  .hero-eyebrow {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-4);
-    inline-size: 100%;
-  }
-
-  .hero-eyebrow-line {
-    inline-size: var(--spacing-8);
-    block-size: var(--border-strong);
-    flex: none;
-    border-radius: var(--radius-full);
-    background: var(--color-red);
-  }
-
-  .hero-eyebrow p {
-    margin: 0;
-    color: var(--color-text-inverse-muted);
-    font-family: "Atkinson Hyperlegible Mono", monospace;
-    font-size: var(--font-size-14);
-    font-weight: var(--font-weight-label);
-    line-height: var(--line-height-110);
-    letter-spacing: var(--letter-spacing-label);
-    text-transform: uppercase;
-  }
-
-  .hero-copy {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-2);
-    inline-size: 100%;
-  }
-
-  .headline {
-    font-size: var(--font-size-32);
-    line-height: var(--line-height-h1);
-    letter-spacing: var(--letter-spacing-display);
-    margin: 0;
-  }
-
-  .headline span {
-    color: var(--color-amber);
-  }
-
-  .hero-lead {
-    font-size: var(--font-size-16);
-    line-height: var(--line-height-body);
-    color: var(--color-text-muted-dark);
-    margin: 0;
-  }
-
-  :global(.hero-cta) {
-    block-size: var(--size-control-lg);
+      linear-gradient(90deg, rgba(30, 30, 30, 0.15), rgba(30, 30, 30, 0.15));
   }
 
   .trust-elements {
@@ -592,42 +474,44 @@ const copy = getSiteContent(normalizeLocale(lang)).hero;
 
   @media (min-width: 48em) {
     .hero {
-      --section-padding-block-end: 7.5rem;
-
+      block-size: 100vh;
       block-size: 100svh;
+      min-block-size: 100vh;
       min-block-size: 100svh;
-      padding-inline: var(--spacing-8);
-    }
-
-    .hero::after {
-      block-size: 18rem;
-      background: linear-gradient(
-        180deg,
-        rgba(7, 17, 20, 0) 0%,
-        rgba(7, 17, 20, 0.16) 34%,
-        rgba(7, 17, 20, 0.38) 68%,
-        rgba(7, 17, 20, 0.58) 100%
-      );
-    }
-
-    .hero-card {
-      padding: var(--spacing-12) var(--spacing-10);
-    }
-
-    .headline {
-      font-size: var(--font-size-h1);
-    }
-  }
-
-  @media (min-width: 64em) {
-    .headline {
-      font-size: var(--font-size-h1);
     }
   }
 
   @media (min-width: 75em) {
+    .hero-wrapper {
+      block-size: 28.4375rem;
+      justify-content: space-between;
+    }
+
     .trust-elements {
       display: block;
+      flex: 1 1 0;
+      block-size: 100%;
+      min-block-size: 0;
+      min-inline-size: 0;
+    }
+
+    .trust-item--experience {
+      inline-size: 11.15rem;
+      min-block-size: 5.38rem;
+    }
+
+    .trust-item--rail {
+      inset-block-start: 7.21rem;
+      inset-inline-start: min(22.37rem, calc(100% - 17.81rem));
+      inline-size: 17.81rem;
+      min-block-size: 7.05rem;
+    }
+
+    .trust-item--partnerships {
+      inset-block-start: 21.38rem;
+      inset-inline-start: min(15.71875rem, calc(100% - 17.8125rem));
+      inline-size: 17.81rem;
+      min-block-size: 7.05rem;
     }
   }
 </style>

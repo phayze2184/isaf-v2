@@ -1,0 +1,128 @@
+---
+import Button from "./Button.astro";
+import Eyebrow from "./Eyebrow.astro";
+
+const {
+  eyebrow = [],
+  title,
+  titleAccent,
+  lead,
+  cta,
+  href = "#solutions",
+} = Astro.props;
+
+const eyebrowText = Array.isArray(eyebrow) ? eyebrow.join(" ") : eyebrow;
+---
+
+<div class="hero-card">
+  <div class="hero-card-content">
+    <Eyebrow decoration="red-on-dark">
+      {eyebrowText}
+    </Eyebrow>
+
+    <div class="hero-card-copy">
+      <h1 id="hero-title" class="hero-card-title">
+        {title}
+        <span>{titleAccent}</span>
+      </h1>
+
+      <p class="hero-card-lead">
+        {lead}
+      </p>
+    </div>
+  </div>
+
+  <Button href={href} class="hero-card-cta" variant="primary">
+    <span>{cta}</span>
+  </Button>
+</div>
+
+<style>
+  .hero-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-8);
+    inline-size: 100%;
+    overflow: hidden;
+    padding: var(--spacing-8);
+    border: var(--border-hairline) solid var(--color-white-14);
+    border-radius: var(--radius-lg);
+    background: var(--color-background-surface-card-60);
+    -webkit-backdrop-filter: blur(0.6875rem);
+    backdrop-filter: blur(0.6875rem);
+    isolation: isolate;
+  }
+
+  .hero-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--spacing-6);
+    inline-size: 100%;
+  }
+
+  .hero-card :global(.eyebrow) {
+    --eyebrow-content-color: var(--color-text-inverse-muted);
+    --eyebrow-content-font-size: var(--font-size-eyebrow-mobile);
+
+    inline-size: 100%;
+  }
+
+  .hero-card-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--spacing-4);
+    inline-size: 100%;
+    min-inline-size: 0;
+    word-break: break-word;
+  }
+
+  .hero-card-title {
+    margin: 0;
+    inline-size: 100%;
+    color: var(--color-text-on-brand);
+    font-family: "Big Shoulders", sans-serif;
+    font-size: var(--font-size-32);
+    font-weight: var(--font-weight-heading);
+    line-height: 1.05;
+    letter-spacing: var(--letter-spacing-display);
+  }
+
+  .hero-card-title span {
+    color: var(--color-amber);
+  }
+
+  .hero-card-lead {
+    margin: 0;
+    inline-size: 100%;
+    color: var(--color-text-muted-dark);
+    font-size: var(--font-size-body-md);
+    line-height: var(--line-height-body);
+    letter-spacing: var(--letter-spacing-body);
+  }
+
+  :global(.hero-card-cta) {
+    block-size: 3rem;
+  }
+
+  @media (min-width: 48em) {
+    .hero-card {
+      padding: var(--spacing-16);
+      inline-size: 41.5rem;
+      max-inline-size: 100%;
+    }
+
+    .hero-card :global(.eyebrow) {
+      --eyebrow-content-font-size: var(--font-size-eyebrow-desktop);
+    }
+
+    .hero-card-title {
+      font-size: var(--font-size-h1);
+      line-height: var(--line-height-110);
+    }
+  }
+</style>
