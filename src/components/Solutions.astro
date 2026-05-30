@@ -23,71 +23,77 @@ const productImages = [
 ];
 ---
 
-<section class="solutions" id="solutions" aria-labelledby="solutions-title">
-  <div class="solutions-header">
-    <div class="solutions-title-group">
-      <Eyebrow decoration="red-on-light">
-        {copy.eyebrow}
-      </Eyebrow>
+<section
+  class="section solutions"
+  id="solutions"
+  aria-labelledby="solutions-title"
+>
+  <div class="container">
+    <div class="solutions-header">
+      <div class="solutions-title-group">
+        <Eyebrow decoration="red-on-light">
+          {copy.eyebrow}
+        </Eyebrow>
 
-      <h2 id="solutions-title">{copy.title}</h2>
-      <img
-        class="solutions-tech"
-        src={techElementSolutions.src}
-        alt=""
-        aria-hidden="true"
-        loading="lazy"
-      />
+        <h2 id="solutions-title">{copy.title}</h2>
+        <img
+          class="solutions-tech"
+          src={techElementSolutions.src}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+        />
+      </div>
+
+      <div class="solutions-intro">
+        <p>
+          {copy.intro}
+        </p>
+      </div>
     </div>
 
-    <div class="solutions-intro">
-      <p>
-        {copy.intro}
-      </p>
-    </div>
-  </div>
-
-  <div class="products-carousel" data-products-carousel>
-    <div
-      class="products-scroll"
-      data-products-track
-      aria-label={copy.productsLabel}
-      tabindex="0"
-    >
-      {
-        copy.products.map((product, index) => (
-          <ProductCard
-            image={productImages[index]}
-            title={product.title}
-            items={product.items}
-          />
-        ))
-      }
-    </div>
-
-    <div class="products-controls" aria-label={copy.controlsLabel}>
-      <button
-        class="products-control"
-        type="button"
-        data-products-prev
-        aria-label={copy.previousProduct}
+    <div class="products-carousel" data-products-carousel>
+      <div
+        class="products-scroll"
+        data-products-track
+        aria-label={copy.productsLabel}
+        tabindex="0"
       >
-        <span
-          class="products-control-icon products-control-icon--prev"
-          style={`--products-control-icon: url("${arrowRight.src}")`}
-          aria-hidden="true"></span>
-      </button>
-      <button
-        class="products-control"
-        type="button"
-        data-products-next
-        aria-label={copy.nextProduct}
-      >
-        <span
-          class="products-control-icon"
-          style={`--products-control-icon: url("${arrowRight.src}")`}
-          aria-hidden="true"></span>
-      </button>
+        {
+          copy.products.map((product, index) => (
+            <ProductCard
+              image={productImages[index]}
+              title={product.title}
+              items={product.items}
+            />
+          ))
+        }
+      </div>
+
+      <div class="products-controls" aria-label={copy.controlsLabel}>
+        <button
+          class="products-control"
+          type="button"
+          data-products-prev
+          aria-label={copy.previousProduct}
+        >
+          <span
+            class="products-control-icon products-control-icon--prev"
+            style={`--products-control-icon: url("${arrowRight.src}")`}
+            aria-hidden="true"></span>
+        </button>
+        <button
+          class="products-control"
+          type="button"
+          data-products-next
+          aria-label={copy.nextProduct}
+        >
+          <span
+            class="products-control-icon"
+            style={`--products-control-icon: url("${arrowRight.src}")`}
+            aria-hidden="true"></span>
+        </button>
+      </div>
     </div>
   </div>
 </section>
@@ -187,15 +193,19 @@ const productImages = [
 </script>
 
 <style>
-  .solutions {
+  #solutions {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-10);
     overflow: hidden;
-    padding-block: var(--spacing-15);
-    padding-inline: var(--spacing-10);
     background: var(--color-slate-200);
     color: var(--color-text-default);
+  }
+
+  #solutions .container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-10);
   }
 
   .solutions-header {
@@ -358,8 +368,10 @@ const productImages = [
   @media (min-width: 48em) {
     .solutions {
       gap: var(--spacing-14);
-      padding-block: 7.1875rem 7.5rem;
-      padding-inline: clamp(var(--spacing-16), 8.2vw, 7.375rem);
+    }
+
+    .solutions .container {
+      gap: var(--spacing-14);
     }
 
     .solutions-header {
@@ -371,9 +383,7 @@ const productImages = [
       align-items: center;
       justify-content: space-between;
       gap: clamp(var(--spacing-16), 10vw, 17.375rem);
-      inline-size: min(100%, 76rem);
-      max-inline-size: var(--container-max);
-      margin-inline: auto;
+      inline-size: 100%;
     }
 
     .solutions-title-group {
@@ -390,7 +400,7 @@ const productImages = [
     }
 
     .products-carousel {
-      inline-size: min(100%, 76rem);
+      inline-size: 100%;
       margin-inline: auto;
     }
 

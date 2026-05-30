@@ -42,7 +42,7 @@ const galleryImages = commonGalleryImages.map((image, index) => ({
   id="production"
   aria-labelledby="production-title"
 >
-  <div class="production-inner">
+  <div class="container production-inner">
     <div class="section-left">
       <header class="production-header">
         <div class="production-heading">
@@ -260,7 +260,6 @@ const galleryImages = commonGalleryImages.map((image, index) => ({
     flex-direction: column;
     align-items: center;
     gap: var(--spacing-14);
-    inline-size: min(100%, 24.5625rem);
     padding-inline: 0;
   }
 
@@ -340,7 +339,7 @@ const galleryImages = commonGalleryImages.map((image, index) => ({
   }
 
   .production :global(.production-kpis) {
-    inline-size: calc(100% - (var(--spacing-6) * 2));
+    inline-size: 100%;
   }
 
   .production :global(.production-kpis--desktop) {
@@ -444,7 +443,6 @@ const galleryImages = commonGalleryImages.map((image, index) => ({
 
   @media (min-width: 48em) {
     .production-inner {
-      inline-size: min(100%, 76rem);
       align-items: stretch;
     }
 
@@ -477,9 +475,7 @@ const galleryImages = commonGalleryImages.map((image, index) => ({
       align-items: start;
       justify-content: space-between;
       column-gap: 7.625rem;
-      inline-size: min(100%, 75rem);
       block-size: 48.4375rem;
-      max-inline-size: 75rem;
       padding-inline: 0;
     }
 
@@ -592,7 +588,7 @@ const galleryImages = commonGalleryImages.map((image, index) => ({
     }
 
     .production :global(.production-kpis) {
-      inline-size: 29.9375rem;
+      inline-size: 100%;
     }
 
     .production :global(.production-kpis--mobile) {

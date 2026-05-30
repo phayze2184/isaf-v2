@@ -26,10 +26,10 @@ const footerLinks = [
 
 <footer
   id="contact"
-  class="site-footer"
+  class="section site-footer"
   style={`--footer-bg-mobile: url("${footerBgMobile.src}"); --footer-bg-desktop: url("${footerBgDesktop.src}")`}
 >
-  <div class="footer-wrapper">
+  <div class="container footer-wrapper">
     <div class="footer-contact-cards">
       {
         contactCards.map((card) => (
@@ -131,9 +131,7 @@ const footerLinks = [
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-15);
-    inline-size: min(100%, 24.5625rem);
     overflow: hidden;
-    padding: var(--spacing-15) var(--spacing-10);
   }
 
   .footer-contact-cards {
@@ -346,7 +344,6 @@ const footerLinks = [
       flex-direction: column;
       align-items: center;
       gap: var(--spacing-15);
-      padding-block: 7.5rem var(--spacing-15);
     }
 
     .site-footer::before {
@@ -363,8 +360,6 @@ const footerLinks = [
         "brand copyright";
       align-items: center;
       gap: var(--spacing-15);
-      inline-size: min(100%, 75rem);
-      padding: 0;
       overflow: visible;
     }
 

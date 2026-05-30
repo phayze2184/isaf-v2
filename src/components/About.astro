@@ -23,7 +23,7 @@ const timelineIcons = [
 ];
 ---
 
-<section class="about" id="about" aria-labelledby="about-title">
+<section class="section" id="about" aria-labelledby="about-title">
   <svg
     class="about-panel-shape"
     viewBox="0 0 1920 657"
@@ -32,42 +32,60 @@ const timelineIcons = [
     focusable="false"
   >
     <defs>
-      <pattern
-        id="about-grid-large"
-        width="64"
-        height="64"
-        patternUnits="userSpaceOnUse"
-      >
-        <rect
-          x="0"
-          y="0"
-          width="64"
-          height="64"
-          fill="none"
-          stroke="#94a3b8"
-          stroke-opacity="0.08"></rect>
-      </pattern>
+      <radialGradient id="about-blue-glow" cx="50%" cy="44%" r="62%">
+        <stop offset="0%" stop-color="#123f68" stop-opacity="0.78"></stop>
+        <stop offset="48%" stop-color="#0a2d4d" stop-opacity="0.42"></stop>
+        <stop offset="100%" stop-color="#020b19" stop-opacity="0"></stop>
+      </radialGradient>
+
       <pattern
         id="about-grid-small"
-        width="16"
-        height="16"
+        width="45"
+        height="45"
         patternUnits="userSpaceOnUse"
       >
         <rect
           x="0"
           y="0"
-          width="16"
-          height="16"
+          width="45"
+          height="45"
           fill="none"
-          stroke="#94a3b8"
-          stroke-opacity="0.03"></rect>
+          stroke="#5d86aa"
+          stroke-opacity="0.14"
+          stroke-width="1"></rect>
+      </pattern>
+
+      <pattern
+        id="about-grid-large"
+        width="180"
+        height="180"
+        patternUnits="userSpaceOnUse"
+      >
+        <rect
+          x="0"
+          y="0"
+          width="180"
+          height="180"
+          fill="none"
+          stroke="#7fa9c8"
+          stroke-opacity="0.11"
+          stroke-width="2"></rect>
       </pattern>
     </defs>
 
-    <g>
+    <g class="about-blueprint">
       <rect width="1920" height="657" fill="#020b19"></rect>
-      <rect width="1920" height="657" fill="url(#about-grid-large)"></rect>
+      <rect width="1920" height="657" fill="url(#about-blue-glow)"></rect>
       <rect width="1920" height="657" fill="url(#about-grid-small)"></rect>
+      <rect width="1920" height="657" fill="url(#about-grid-large)"></rect>
+
+      <g class="about-blueprint-geometry">
+        <circle cx="960" cy="328.5" r="560" fill="none"></circle>
+        <circle cx="960" cy="328.5" r="224" fill="none"></circle>
+        <line x1="0" y1="328.5" x2="1920" y2="328.5"></line>
+        <line x1="960" y1="0" x2="960" y2="657"></line>
+        <line x1="960" y1="328.5" x2="960" y2="760"></line>
+      </g>
     </g>
   </svg>
 
@@ -119,26 +137,52 @@ const timelineIcons = [
 </section>
 
 <style>
-  .about {
+  #about {
     position: relative;
     overflow: hidden;
-    padding-block: var(--spacing-15);
-    background: #020b19;
+    background: var(--color-background-page-dark);
   }
 
-  .about::before,
-  .about::after {
+  #about::before,
+  #about::after {
     position: absolute;
     content: "";
+    inset: 0;
+    z-index: 0;
     pointer-events: none;
   }
 
-  .about::before {
-    content: none;
+  #about::before {
+    background:
+      radial-gradient(
+        ellipse at center,
+        oklch(58% 0.12 245 / 16%) 0%,
+        oklch(38% 0.1 245 / 9%) 34%,
+        transparent 62%
+      ),
+      linear-gradient(
+        90deg,
+        oklch(3% 0.02 255 / 74%) 0%,
+        transparent 18%,
+        transparent 82%,
+        oklch(3% 0.02 255 / 78%) 100%
+      );
+    mix-blend-mode: screen;
   }
 
-  .about::after {
-    content: none;
+  #about::after {
+    background:
+      linear-gradient(
+        180deg,
+        oklch(100% 0 0 / 8%) 0 0.0625rem,
+        transparent 0.0625rem
+      ),
+      radial-gradient(
+        ellipse at center,
+        transparent 52%,
+        oklch(0% 0 0 / 42%) 100%
+      );
+    opacity: 0.72;
   }
 
   .about-panel {
@@ -148,7 +192,6 @@ const timelineIcons = [
     flex-direction: column;
     justify-content: center;
     min-block-size: auto;
-    padding-block: 0;
     padding-inline: var(--spacing-10);
   }
 
@@ -174,6 +217,12 @@ const timelineIcons = [
     inline-size: 100%;
     block-size: 100%;
     pointer-events: none;
+  }
+
+  .about-blueprint-geometry {
+    stroke: #7da7c7;
+    stroke-width: 2;
+    stroke-opacity: 0.09;
   }
 
   .about-content {
@@ -358,24 +407,8 @@ const timelineIcons = [
   }
 
   @media (min-width: 48em) {
-    .about {
-      padding-block: 0;
-      margin-block-start: calc(-1 * var(--about-hero-overlap));
-      margin-block-end: var(--about-hero-overlap);
-      overflow: visible;
-      border: 0;
-      background: transparent;
-    }
-
-    .about::before,
-    .about::after {
-      content: none;
-    }
-
     .about-panel {
       isolation: isolate;
-      min-block-size: 41.1875rem;
-      padding-block: 7.5rem;
       padding-inline: var(--spacing-12);
       background: transparent;
     }
